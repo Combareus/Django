@@ -132,7 +132,7 @@ class Schedule():
 		"""
 		Raises an error in case of an incorrect input
 		"""
-		#this is left purposely blank until the html file is created
+		#this is left purposely blank until the display is created
 		return True
 
 
