@@ -3,7 +3,7 @@ Classes for scheduling, employees (including surgeons, cleaner), patients
 Progress: 
 1/24/2024 - Classes for people created and initialized Lines: 180
 1/30/2024 - Classes for schedule created, some validation done Lines: 309
-2/06/2024 - Occupy and Conflict functions created Lines: 385
+2/06/2024 - Occupy and Conflict functions created Lines: 385]
 """
 
 class Schedule():
