@@ -209,7 +209,7 @@ class Employee():
 			timeend (1d list of ints: [year, month, day, hour, minute])
 
 		Returns
-			-1 - There is a conflict
+			False - There is a conflict
 			index - index of availability in self._availability 
 		"""
 		for x in self._availability:
@@ -225,9 +225,9 @@ class Employee():
 					
 					#we found an open slot
 					return self._availability.index(x)
-		return -1
+		return False
 		
-	def occupy(self, timestart, timeend):
+	def assign(self, timestart, timeend):
 		"""
 		Give assignment to person and change their availability and assignments
 		Attributes
@@ -314,6 +314,30 @@ class Surgeon(Employee):
 		if type not in self._qualifications:
 			return False
 		return True
+
+		
+	def assignsurgeon(self, type, title, timestart, timeend):
+		"""
+		Give assignment to surgeon and change their availability and assignments
+		Note: This is DIFFERENT than assigning a regular employee
+		Attributes
+			Self (surgeon)
+			type - Surgery type
+			title - title required (jr or sr)
+			timestart (1d list of ints) - start of assignment
+			timeend (1d list of ints) - end of assignment
+
+		Returns
+			True - Operation could be done
+			False - Operation could not be done
+		"""
+		#if the surgeon does not have the necessary credentials
+		if self.qualcheck(self, type, title) == False:
+			return False
+		else:
+			#otherwise assign - this doesnt necessarily return True, if there is a conflict it will return False in self.conflict()
+			self.assign(self, timestart, timeend)
+			return True
 
 class Cleaner(Employee):
 	def __init__(self, fullName, availability, assignments):
