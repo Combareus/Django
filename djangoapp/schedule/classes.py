@@ -3,7 +3,8 @@ Classes for scheduling, employees (including surgeons, cleaner), patients
 Progress: 
 1/24/2024 - Classes for people created and initialized Lines: 180
 1/30/2024 - Classes for schedule created, some validation done Lines: 309
-2/06/2024 - Occupy and Conflict functions created Lines: 385]
+2/06/2024 - Occupy and Conflict functions created Lines: 385
+2/06/2024 to 2/22/2024 - minor levels of cooking Lines: 417
 """
 
 class Schedule():
@@ -164,7 +165,7 @@ class Employee():
 		return self._availability
 
 	@property 
-	def assginments(self):
+	def assignments(self):
 		"""Getter for availability"""
 		return self._assignments
 
@@ -257,6 +258,16 @@ class Employee():
 			self._availability.insert(res+1, temp)
 			
 			return True
+		
+	#def addtime(self, days):
+		"""
+		Adds certain amount of days to employee's assignment period
+		Attributes
+			Self (employee)
+			days (int) - days needed to be added
+		"""
+		#
+		#if 
 
 class Surgeon(Employee):
 	def __init__(self, fullName, availability, assignments, qualifications, exp):
@@ -338,6 +349,7 @@ class Surgeon(Employee):
 			#otherwise assign - this doesnt necessarily return True, if there is a conflict it will return False in self.conflict()
 			self.assign(self, timestart, timeend)
 			return True
+	
 
 class Cleaner(Employee):
 	def __init__(self, fullName, availability, assignments):
