@@ -4,6 +4,7 @@ Progress:
 1/24/2024 - Classes for people created and initialized Lines: 180
 1/30/2024 - Classes for schedule created, some validation done Lines: 309
 2/06/2024 - Occupy and Conflict functions created Lines: 385
+2/06/2024 to 2/22/2024 - minor levels of cooking Lines: 417
 """
 
 class Schedule():
@@ -132,7 +133,7 @@ class Schedule():
 		"""
 		Raises an error in case of an incorrect input
 		"""
-		#this is left purposely blank until the html file is created
+		#this is left purposely blank until the display is created
 		return True
 
 
@@ -164,7 +165,7 @@ class Employee():
 		return self._availability
 
 	@property 
-	def assginments(self):
+	def assignments(self):
 		"""Getter for availability"""
 		return self._assignments
 
@@ -209,7 +210,7 @@ class Employee():
 			timeend (1d list of ints: [year, month, day, hour, minute])
 
 		Returns
-			-1 - There is a conflict
+			False - There is a conflict
 			index - index of availability in self._availability 
 		"""
 		for x in self._availability:
@@ -225,9 +226,9 @@ class Employee():
 					
 					#we found an open slot
 					return self._availability.index(x)
-		return -1
+		return False
 		
-	def occupy(self, timestart, timeend):
+	def assign(self, timestart, timeend):
 		"""
 		Give assignment to person and change their availability and assignments
 		Attributes
@@ -257,6 +258,16 @@ class Employee():
 			self._availability.insert(res+1, temp)
 			
 			return True
+		
+	#def addtime(self, days):
+		"""
+		Adds certain amount of days to employee's assignment period
+		Attributes
+			Self (employee)
+			days (int) - days needed to be added
+		"""
+		#
+		#if 
 
 class Surgeon(Employee):
 	def __init__(self, fullName, availability, assignments, qualifications, exp):
@@ -314,6 +325,31 @@ class Surgeon(Employee):
 		if type not in self._qualifications:
 			return False
 		return True
+
+		
+	def assignsurgeon(self, type, title, timestart, timeend):
+		"""
+		Give assignment to surgeon and change their availability and assignments
+		Note: This is DIFFERENT than assigning a regular employee
+		Attributes
+			Self (surgeon)
+			type - Surgery type
+			title - title required (jr or sr)
+			timestart (1d list of ints) - start of assignment
+			timeend (1d list of ints) - end of assignment
+
+		Returns
+			True - Operation could be done
+			False - Operation could not be done
+		"""
+		#if the surgeon does not have the necessary credentials
+		if self.qualcheck(self, type, title) == False:
+			return False
+		else:
+			#otherwise assign - this doesnt necessarily return True, if there is a conflict it will return False in self.conflict()
+			self.assign(self, timestart, timeend)
+			return True
+	
 
 class Cleaner(Employee):
 	def __init__(self, fullName, availability, assignments):
