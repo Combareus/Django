@@ -2,22 +2,14 @@
 #from django.test import TestCase
 
 #imports 
-from classes import Surgeon
-#from classes import Employee
-from classes import Patient
-from classes import Schedule
-from classes import Cleaner
+from classes import Surgeon, Employee, Patient, Schedule, Cleaner
+
 # Create your tests here.
 
-
-
-import pytz
-#its not importing idk why
-import datetime
+from datetime import datetime, timedelta
 #this is a TEXT BASED test
-#surgeon1 = Surgeon("John Doe", )
-print(5)
-
-print(datetime.now(pytz.utc))
-#print(datetime.utcnow())   pip install pytz
+surgeon1 = Surgeon("John Doe", "Sr")
+print(str(surgeon1))
+time = datetime.now() - timedelta(hours = 11)
+print(time)
 

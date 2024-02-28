@@ -138,7 +138,7 @@ class Schedule():
 
 
 class Employee():
-	def __init__(self, fullName, availability, assignments):
+	def __init__(self, fullName, assignments = [], availability = []):
 		"""
 		Initializes class
 		Attributes
@@ -258,7 +258,8 @@ class Employee():
 			self._availability.insert(res+1, temp)
 			
 			return True
-		
+
+
 	#def addtime(self, days):
 		"""
 		Adds certain amount of days to employee's assignment period
@@ -270,7 +271,7 @@ class Employee():
 		#if 
 
 class Surgeon(Employee):
-	def __init__(self, fullName, availability, assignments, qualifications, exp):
+	def __init__(self, fullName, exp, qualifications = [], assignments = [], availability = []):
 		"""
 		Initializes class
 		Attributes
@@ -285,6 +286,12 @@ class Surgeon(Employee):
 
 		self.qualifications = qualifications
 		self.exp = exp
+
+	def __str__(self):
+		"""
+		String (for testing printing)
+		"""
+		return f"Type: Surgeon \nName: {self._fullName} \nExperience: {self._exp}\n\n"
 
 	@property
 	def qualifications(self):
@@ -314,9 +321,7 @@ class Surgeon(Employee):
 			self (surgeon)
 			title (str)
 		"""
-		while title != "Jr" and title != "Sr":
-			title = input("Invalid experience level, type Sr or Jr")
-		self.exp = title
+		self._exp = title
 
 	def qualcheck(self, type, title):
 		if title == "Sr":
@@ -352,7 +357,7 @@ class Surgeon(Employee):
 	
 
 class Cleaner(Employee):
-	def __init__(self, fullName, availability, assignments):
+	def __init__(self, fullName, assignments = [], availability = []):
 		"""
 		Initializes class
 		Attributes
