@@ -8,6 +8,7 @@ from django.http import HttpResponse
 def say_hello(request):
     '''
     Testing View Function that is called at an url
-
     '''
-    return HttpResponse("Hello world:)")
+    x=1
+    y=2
+    return render(request, 'hello.html', {'key': '1'})
