@@ -10,6 +10,7 @@ from datetime import datetime, timedelta
 #this is a TEXT BASED test
 surgeon1 = Surgeon("John Doe", "Sr")
 print(str(surgeon1))
+cleaner1 = Cleaner("John Wayne")
 time = datetime.now() - timedelta(hours = 11)
 print(time)
 

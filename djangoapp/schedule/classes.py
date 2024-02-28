@@ -367,6 +367,12 @@ class Cleaner(Employee):
 		"""
 		super().__init__(fullName, availability, assignments)
 
+	def __str__(self):
+		"""
+		String (for testing printing)
+		"""
+		return f"Type: Cleaner \nName: {self._fullName}\n\n"
+
 class Patient():
 	def __init__(self, fullName, conditionType, severity):
 		"""
