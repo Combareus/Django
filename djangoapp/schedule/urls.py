@@ -3,6 +3,6 @@ from . import views #import view functions from current folder
 
 #url configuration
 urlpatterns = [
-    path('', views.say_hello),
+    path('', views.index, name='index'),
     path('test/', views.say_hello) #url path objects that receives the url, calls the function
 ]
