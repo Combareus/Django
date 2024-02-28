@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from schedule.classes import Surgeon, Employee, Patient, Schedule, Cleaner
 
 # Create your views here.
 # view function: request -> response (request handler)
@@ -10,6 +11,11 @@ def say_hello(request):
     '''
     x=1
     y=2
-    return render(request, 'hello.html', {'key': '1'})
+    return render(request, 'hello.html', {
+        'key': '1', 
+        'surgeons': [Surgeon("John Doe", "Sr"), Surgeon("Alex", "Jr")]
+        })
+
+
 def index(request):
     return render(request, 'index.html')

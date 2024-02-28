@@ -2,4 +2,12 @@
 <h1>Hello World {{key}}</h1>
 {% else %}
 <h1>No</h1>
-{% endif}
+{% endif %}
+
+{%if surgeons%}
+<ul>
+{%for surgeon in surgeons%} 
+    <li> Surgeon Name: {{str(surgeon)}} Surgeon Position:</li>
+{%endfor%}
+</ul>
+{%endif%}
