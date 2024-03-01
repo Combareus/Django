@@ -1,15 +1,12 @@
 #dummy main
 
 #imports 
-from classes import Surgeon
-#from classes import Employee
-from classes import Patient
-from classes import Schedule
-from classes import Cleaner
+from models import Surgeon
+#from models import Employee
+from models import Patient
+from models import Schedule
+from models import Cleaner
 
 surgeons = []
 patients = []
 cleaners = []
-
-#def add_surgeon():
-    #
