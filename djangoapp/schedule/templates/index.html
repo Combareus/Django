@@ -1,0 +1,9 @@
+{%if Surgeons%}
+<ul>
+{%for surgeon in Surgeons%} 
+    <li> Surgeon Name: {{surgeon.fullName}} 
+        Surgeon Position: {{surgeon.exp}}
+    </li>
+{%endfor%}
+</ul>
+{%endif%}
