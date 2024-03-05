@@ -17,8 +17,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 
+#any url starting with schedule gets routed to that app's url file
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('schedule/', include("schedule.urls")), #any url starting with schedule gets routed to that app's url file
+    #path('', include('homepage.urls')),
+    path('', include('homepage.urls')),
+    path('schedule/', include("schedule.urls")), 
+    path('user/', include("user_settings.urls")), 
 ]
 
+  

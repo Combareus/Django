@@ -96,3 +96,5 @@ def compare_date(time1, time2):
     elif time1[0] > time2[0]:
         return time2
     return time1
+
+#def schedule_surgery(surgeons, cleaners, patients, time):

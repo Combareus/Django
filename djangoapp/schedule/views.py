@@ -30,6 +30,7 @@ def index(request):
     })
 
 
+"""
 #login page at /schedule/login
 def login(request):
     return HttpResponse('<h1> This is a login page </h1>')
@@ -37,3 +38,4 @@ def login(request):
 #signup page at /schedule/signup
 def signup(request):
     return HttpResponse('<h1> This is a signup page </h1>')
+"""

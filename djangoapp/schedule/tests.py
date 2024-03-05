@@ -16,7 +16,7 @@ print(str(surgeon1))
 cleaner1 = Cleaner("John Wayne")
 print(str(cleaner1))
 
-patient1 = Patient("John Wang", "Heart problems", 95)
+patient1 = Patient("John Wang", "Heart problems", 95, [1, 1, 2024])
 print(str(patient1))
 
 #adjusted to chinese time 

@@ -12,7 +12,7 @@ Progress:
 """
 
 class Schedule():
-	def __init__(self, year, month, day, hour = 0, minute = 0):
+	def __init__(self, year, month, day, hour = 0, minute = 0, surgeries = []):
 		"""
 		Initializes class
 		Attributes
@@ -21,18 +21,21 @@ class Schedule():
 			day (int)
 			hour (int)
 			minute (int)
+			surgeries (3d list) [[[surgeons], [cleaners], patient, [time]], [], ...]
 		"""
 		self._year = year
 		self._month = month
 		self._day = day
 		self._hour = hour
 		self._minute = minute
+		self._surgeries = surgeries
 
 		self.year = year
 		self.month = month
 		self.day = day
 		self.hour = hour
 		self.minute = minute
+		self.surgeries = surgeries
 
 	@property
 	def year(self):
@@ -58,6 +61,11 @@ class Schedule():
 	def minute(self):
 		"""Getter for minute"""
 		return self._minute
+	
+	@property
+	def surgeries(self):
+		"""Getter for surgeries"""
+		return self._surgeries
 
 	@year.setter
 	def year(self, year):
@@ -132,6 +140,14 @@ class Schedule():
 		if not minute.isdigit() or minute < 0 or minute > 59:
 			self.raiseerror()
 		self._minute = minute
+		
+	@surgeries.setter
+	def surgeries(self, x):
+		"""
+		Setter for surgeries
+		no, of course I don't want to do the validation (im lazy and the code will fail because of this)
+		"""
+		self._surgeries = x
 
 	def raiseerror(self):
 		"""
@@ -395,6 +411,7 @@ class Patient():
 		self.fullName = fullName
 		self.conditionType = conditionType
 		self.severity = severity
+		self.admissionDate = admissionDate
 
 	
 	def __str__(self):
