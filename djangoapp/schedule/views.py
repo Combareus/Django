@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from schedule.classes import Surgeon, Employee, Patient, Schedule, Cleaner
 
+from .models import Surgeon
 # Create your views here.
 # view function: request -> response (request handler)
 
@@ -20,3 +20,12 @@ def index(request):
     return render(request, 'index.html',{
         'Surgeons': [Surgeon("John Doe", "Sr"), Surgeon("Smith", "Sr")]
     })
+
+
+#login page at /schedule/login
+def login(request):
+    return HttpResponse('<h1> This is a login page </h1>')
+
+#signup page at /schedule/signup
+def signup(request):
+    return HttpResponse('<h1> This is a signup page </h1>')

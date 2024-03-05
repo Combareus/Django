@@ -4,5 +4,7 @@ from . import views #import view functions from current folder
 #url configuration
 urlpatterns = [
     path('', views.say_hello, name='index'),
-    path('test/', views.index) #url path objects that receives the url, calls the function
+    path('test/', views.index), #url path objects that receives the url, calls the function
+    path('login/', views.login, name='schedule-login'),
+    path('signup/', views.signup, name='schedule-signup')
 ]
