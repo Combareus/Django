@@ -17,6 +17,14 @@ def say_hello(request):
 
 
 def index(request):
+    '''
+    View function displays calls template to display current surgeons
+    Input:
+        request (HTML request)
+    Output:
+        render() (HTML file): note 
+    '''
+    surgeonlst = [Surgeon("John Doe", "Sr"), Surgeon("Smith", "Sr")] #list of surgeons to be linked with database
     return render(request, 'index.html',{
         'Surgeons': [Surgeon("John Doe", "Sr"), Surgeon("Smith", "Sr")]
     })
