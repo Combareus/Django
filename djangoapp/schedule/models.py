@@ -421,7 +421,7 @@ class Patient():
 	@property
 	def admissionDate(self):
 		"""Getter for AdmissionType"""
-		return self._admissionType
+		return self._admissionDate
 
 	@fullName.setter
 	def fullName(self, n):
