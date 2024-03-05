@@ -19,6 +19,7 @@ from django.urls import include, path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', include("home.urls")), 
     path('schedule/', include("schedule.urls")), #any url starting with schedule gets routed to that app's url file
 ]
 
