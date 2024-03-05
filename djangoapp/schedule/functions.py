@@ -76,4 +76,23 @@ def edit_cleaner(cleaners, name, newavailability):
     #cleaner not found
     return False
 
-
+def compare_date(time1, time2):
+    """
+    Compares two dates and returns the earliest one
+    If there is a tie, return first time given
+    Time1 - (list of ints) [MM, DD, YYYY]
+    Time2 - (list of ints) [MM, DD, YYYY]
+    """
+    if time1[2] < time2[2]:
+        return time1
+    elif time1[2] > time2[2]:
+        return time2
+    elif time1[1] < time2[1]:
+        return time1
+    elif time1[1] > time2[1]:
+        return time2
+    elif time1[0] < time2[0]:
+        return time1
+    elif time1[0] > time2[0]:
+        return time2
+    return time1

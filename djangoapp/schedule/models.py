@@ -12,7 +12,7 @@ Progress:
 """
 
 class Schedule():
-	def __init__(self, year, month, day, hour, minute):
+	def __init__(self, year, month, day, hour = 0, minute = 0):
 		"""
 		Initializes class
 		Attributes
@@ -378,17 +378,19 @@ class Cleaner(Employee):
 		return f"Type: Cleaner \nName: {self._fullName}\n\n"
 
 class Patient():
-	def __init__(self, fullName, conditionType, severity):
+	def __init__(self, fullName, conditionType, severity, admissionDate):
 		"""
 		Initializes class
 		Attributes
 			fullName (str): fullname of person
 			conditionType (str): type of surgery needed
 			severity (int): severity on a scale of 1 to 100
+			admissionDate (list of int): DD, MM, YYYY
 		"""
 		self._fullName = fullName
 		self._conditionType = conditionType
 		self._severity = severity
+		self._admissionDate = admissionDate
 
 		self.fullName = fullName
 		self.conditionType = conditionType
@@ -415,6 +417,11 @@ class Patient():
 	def severity(self):
 		"""Getter for severity"""
 		return self._severity
+	
+	@property
+	def admissionDate(self):
+		"""Getter for AdmissionType"""
+		return self._admissionType
 
 	@fullName.setter
 	def fullName(self, n):
@@ -447,3 +454,13 @@ class Patient():
 			n (int)
 		"""
 		self._severity = n
+
+	@admissionDate.setter
+	def admissionDate(self, n):
+		"""
+		Setter for admissionDate
+		Attributes
+			self (patient)
+			n (list)
+		"""
+		self._admissionDate = n
