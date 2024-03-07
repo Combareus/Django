@@ -4,17 +4,18 @@ Creation - 02/28
 """
 
 #imports 
-from models import Surgeon
+from .models import Surgeon
 #from models import Employee
-from models import Patient
-from models import Schedule
-from models import Cleaner
+from .models import Patient
+from .models import Schedule
+from .models import Cleaner
 
 def add_surgeon(surgeons, name, exp):
     """
     Function for adding a surgeon to surgeons
     """
     surgeons.append(Surgeon(name, exp))
+    return True
 
 def edit_surgeon(surgeons, name, newexp, newavailability, newqualifications):
     """
@@ -78,6 +79,7 @@ def edit_cleaner(cleaners, name, newavailability):
 
 def compare_date(time1, time2):
     """
+    THIS FUNCTION IS FOR ORDERING PATIENTS
     Compares two dates and returns the earliest one
     If there is a tie, return first time given
     Time1 - (list of ints) [MM, DD, YYYY]
@@ -97,4 +99,32 @@ def compare_date(time1, time2):
         return time2
     return time1
 
-#def schedule_surgery(surgeons, cleaners, patients, time):
+def schedule_surgery(surgeons, cleaners, patient, time, schedule):
+    """
+    Implementation of a scheduling of a singular surgery
+    Attributes
+        surgeons - list of surgeons involved
+        cleaners - list of cleaners involved
+        patient - patient class
+        time - 2d array (2x5) [time start->[year, month, day, hour, minute], time end->[year, month, day, hour, minute]]
+    Returns
+        True -> surgery went throuhg
+        false - > surgery did not go throuhg, there was at least 1 scheduling error
+    """
+    for x in surgeons:
+        res = x.assign(time[0], time[1]) 
+        if res == False:
+            return False
+    
+    for x in cleaners:
+        res = x.assign(time[0], time[1])
+        if res == False:
+            return False
+
+    if patient.status == "scheduled":
+        return False
+    else:
+        patient.status == "scheduled"
+
+    schedule.surgeries.append([surgeons, cleaners, patient, time])
+    return True

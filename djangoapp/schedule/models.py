@@ -10,9 +10,37 @@ Progress:
 2/06/2024 to 2/22/2024 - minor levels of cooking Lines: 417
 2/28/2024 - Changed intializes, added strings for all Lines: 447
 """
+# class Schedule(models.Model):
+# 	def __init__(self, year, month, day, hour = 0, minute = 0, surgeries = []):
+# 		"""
+# 		Initializes class
+# 		Attributes
+# 			year (int)
+# 			month (int)
+# 			day (int)
+# 			hour (int)
+# 			minute (int)
+# 			surgeries (3d list) [[[surgeons], [cleaners], patient, [time]], [], ...]
+# 		"""
+# 		self._year = year
+# 		self._month = month
+# 		self._day = day
+# 		self._hour = hour
+# 		self._minute = minute
+# 		self._surgeries = surgeries
 
-class Schedule():
-	def __init__(self, year, month, day, hour = 0, minute = 0, surgeries = []):
+# 		self.year = year
+# 		self.month = month
+# 		self.day = day
+# 		self.hour = hour
+# 		self.minute = minute
+# 		self.surgeries = surgeries
+
+#master = Schedule(year = 2024, month = 12, ....)
+#master = Schedule(2024, 12, ....)
+
+class Schedule(models.Model):
+	def __init__(self, year, month, day, hour = 0, minute = 0, surgeries = [], *args, **kwargs):
 		"""
 		Initializes class
 		Attributes
@@ -23,6 +51,7 @@ class Schedule():
 			minute (int)
 			surgeries (3d list) [[[surgeons], [cleaners], patient, [time]], [], ...]
 		"""
+		super(models.Model, self).__init__(self, *args, **kwargs)
 		self._year = year
 		self._month = month
 		self._day = day
@@ -157,8 +186,8 @@ class Schedule():
 		return True
 
 
-class Employee():
-	def __init__(self, fullName, assignments = [], availability = []):
+class Employee(models.Model):
+	def __init__(self, fullName, assignments = [], availability = [], *args, **kwargs):
 		"""
 		Initializes class
 		Attributes
@@ -166,6 +195,7 @@ class Employee():
 			Availability (2d lists with ints) - [[yearstart, month of start, day of start, hour of start, minute of start, yearend, monthend, dayend, hourend, minuteend], ...] - their availability based off of time of day, hours available, and day of week
 			Assignments (2d lists with ints) - [[yearstart, month of start, day of start, hour of start, minute of start, yearend, monthend, dayend, hourend, minuteend], ...] - their assignments
 		"""
+		super(models.Model, self).__init__(self, *args, **kwargs)
 		self._fullName = fullName
 		self._availability = availability
 		self._assignments = assignments
@@ -262,7 +292,7 @@ class Employee():
 		"""
 		#store res of the conflict operation
 		res = self.conflict(timestart, timeend)
-		if res == -1:
+		if res == False:
 			#Assignment could not be assigned
 			return False
 		else:
@@ -290,8 +320,8 @@ class Employee():
 		#
 		#if 
 
-class Surgeon(Employee):
-	def __init__(self, fullName, exp, qualifications = [], assignments = [], availability = []):
+class Surgeon(Employee, models.Model):
+	def __init__(self, fullName, exp, qualifications = [], assignments = [], availability = [], *args, **kwargs):
 		"""
 		Initializes class
 		Attributes
@@ -300,6 +330,7 @@ class Surgeon(Employee):
 			Qualifications (list of strings): list of genre of surgeries surgeon can perform
 			exp (str): Senior or Junior ("Sr" or "Jr")
 		"""
+		super(models.Model, self).__init__(self, *args, **kwargs)
 		super().__init__(fullName, availability, assignments)
 		self._qualifications = qualifications
 		self._exp = exp
@@ -376,8 +407,8 @@ class Surgeon(Employee):
 			return True
 	
 
-class Cleaner(Employee):
-	def __init__(self, fullName, assignments = [], availability = []):
+class Cleaner(Employee, models.Model):
+	def __init__(self, fullName, assignments = [], availability = [], *args, **kwargs):
 		"""
 		Initializes class
 		Attributes
@@ -385,6 +416,7 @@ class Cleaner(Employee):
 			Availability (2d lists with ints) - [[day of week, start of availability, hours available], ...] - their availability based off of time of day, hours available, and day of week
 
 		"""
+		super(models.Model, self).__init__(self, *args, **kwargs)
 		super().__init__(fullName, availability, assignments)
 
 	def __str__(self):
@@ -393,8 +425,8 @@ class Cleaner(Employee):
 		"""
 		return f"Type: Cleaner \nName: {self._fullName}\n\n"
 
-class Patient():
-	def __init__(self, fullName, conditionType, severity, admissionDate):
+class Patient(models.Model):
+	def __init__(self, fullName, conditionType, severity, admissionDate, status, *args, **kwargs):
 		"""
 		Initializes class
 		Attributes
@@ -402,16 +434,20 @@ class Patient():
 			conditionType (str): type of surgery needed
 			severity (int): severity on a scale of 1 to 100
 			admissionDate (list of int): DD, MM, YYYY
+			status (string): "unscheduled" or "scheduled"
 		"""
+		super(models.Model, self).__init__(self, *args, **kwargs)
 		self._fullName = fullName
 		self._conditionType = conditionType
 		self._severity = severity
 		self._admissionDate = admissionDate
+		self._status = status
 
 		self.fullName = fullName
 		self.conditionType = conditionType
 		self.severity = severity
 		self.admissionDate = admissionDate
+		self.status = status
 
 	
 	def __str__(self):
@@ -439,6 +475,11 @@ class Patient():
 	def admissionDate(self):
 		"""Getter for AdmissionType"""
 		return self._admissionDate
+
+	@property
+	def status(self):
+		"""Getter for status"""
+		return self._status
 
 	@fullName.setter
 	def fullName(self, n):
@@ -481,3 +522,13 @@ class Patient():
 			n (list)
 		"""
 		self._admissionDate = n
+
+	@status.setter
+	def status (self, status):
+		"""
+		Setter for status
+		Attributes
+			self (patient)
+			status (status)
+		"""
+		self._status = status
