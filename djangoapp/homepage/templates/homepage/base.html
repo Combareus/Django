@@ -1,10 +1,23 @@
 <html>
 <head>
-    <title> My Website </title>
+    <title> {% block title%} My Website {%endblock%}</title>
 </head>
 
 <body>
     <p> Base Template </p>
+    <p> {{name}} </p>
+
+    <div id='content', name='content'>
+        <p> {% block content %}</p>
+        <p> {% endblock  %}</p>
+    </div>
+
+    <div id='scheduling', name='scheduling'>
+        <p> {% block content %}</p>
+        <p> {% endblock  %}</p>
+    </div>
+
+
 <body>
 
 </html>

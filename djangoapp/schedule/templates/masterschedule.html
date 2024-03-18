@@ -1,0 +1,23 @@
+{%extends 'homepage/base.html'%}
+<!-- The html block inherits from the original base stuff -->
+<p> {% block title %}</p>
+<h1> Master Schedule </h1> 
+<p> {% endblock  %}</p>
+
+
+<p> {% block content %}</p>
+<h1> Content in Home Page </h1> 
+<p> {% endblock  %}</p>
+
+<p> {% block scheduling %}</p>
+<h1> Insert Scheduling Stuff Here </h1> 
+{%if Surgeons%}
+<ul>
+{%for surgeon in Surgeons%} 
+    <li> Surgeon Name: {{surgeon.fullName}} 
+        Surgeon Position: {{surgeon.exp}}
+    </li>
+{%endfor%}
+</ul>
+{%endif%}
+<p> {% endblock  %}</p>

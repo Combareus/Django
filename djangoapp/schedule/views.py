@@ -26,7 +26,7 @@ def index(request):
     '''
     surgeonlst = [Surgeon("John Doe", "Sr"), Surgeon("Smith", "Sr")] #list of surgeons to be linked with database
     return render(request, 'index.html',{
-        'Surgeons': [Surgeon("John Doe", "Sr"), Surgeon("Smith", "Sr")]
+        'Surgeons': surgeonlst
     })
 
 

@@ -186,14 +186,19 @@ class Schedule(models.Model):
 		return True
 
 
+"""
+Timestart and timeend are always in yyyy, mm, dd, hh, mm
+"""
+
 class Employee(models.Model):
 	def __init__(self, fullName, assignments = [], availability = [], *args, **kwargs):
 		"""
 		Initializes class
 		Attributes
 			fullName (str): fullname of person
-			Availability (2d lists with ints) - [[yearstart, month of start, day of start, hour of start, minute of start, yearend, monthend, dayend, hourend, minuteend], ...] - their availability based off of time of day, hours available, and day of week
-			Assignments (2d lists with ints) - [[yearstart, month of start, day of start, hour of start, minute of start, yearend, monthend, dayend, hourend, minuteend], ...] - their assignments
+			Availability (2d lists with ints) - [[timestart, timeend], ...] - time open
+			Assignments (2d lists with ints) - [[timestart, timeend, patient], ...] - their assignments
+			sched (3d list with ints (7x_)) - [[[timestart, timeend], [timestart, timeend], [timestart, timeend], ...]*7] list of regular times available throughout week 
 		"""
 		super(models.Model, self).__init__(self, *args, **kwargs)
 		self._fullName = fullName
@@ -250,6 +255,7 @@ class Employee(models.Model):
 				avail (2d list)
 		"""
 		self._assignments = assign
+
 		
 	def conflict(self, timestart, timeend):
 		"""
@@ -309,16 +315,6 @@ class Employee(models.Model):
 			
 			return True
 
-
-	#def addtime(self, days):
-		"""
-		Adds certain amount of days to employee's assignment period
-		Attributes
-			Self (employee)
-			days (int) - days needed to be added
-		"""
-		#
-		#if 
 
 class Surgeon(Employee, models.Model):
 	def __init__(self, fullName, exp, qualifications = [], assignments = [], availability = [], *args, **kwargs):
@@ -413,8 +409,7 @@ class Cleaner(Employee, models.Model):
 		Initializes class
 		Attributes
 			fullName (str): fullname of person
-			Availability (2d lists with ints) - [[day of week, start of availability, hours available], ...] - their availability based off of time of day, hours available, and day of week
-
+			Availability (2d lists with ints) - [[timestart, timeend], ...] 
 		"""
 		super(models.Model, self).__init__(self, *args, **kwargs)
 		super().__init__(fullName, availability, assignments)
