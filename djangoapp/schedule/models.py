@@ -190,8 +190,8 @@ class Schedule(models.Model):
 Timestart and timeend are always in yyyy, mm, dd, hh, mm
 """
 
-class Employee(models.Model):
-	def __init__(self, fullName, assignments = [], availability = [], *args, **kwargs):
+class Employee():
+	def __init__(self, fullName, assignments, availability, *args, **kwargs):
 		"""
 		Initializes class
 		Attributes
@@ -316,23 +316,20 @@ class Employee(models.Model):
 			return True
 
 
-class Surgeon(Employee, models.Model):
-	def __init__(self, fullName, exp, qualifications = [], assignments = [], availability = [], *args, **kwargs):
+class Surgeon(models.Model, Employee):
+	def __init__(self, fullName, assignments, availability, exp, qualifications):
 		"""
 		Initializes class
 		Attributes
 			fullName (str): fullname of person
+			assigments (2d list of ints): time periods of assigment 
 			availability (2d list of ints): availability of surgeon
 			Qualifications (list of strings): list of genre of surgeries surgeon can perform
 			exp (str): Senior or Junior ("Sr" or "Jr")
 		"""
-		super(models.Model, self).__init__(self, *args, **kwargs)
-		super().__init__(fullName, availability, assignments)
+		super().__init__(fullName = fullName, assignments = assignments, availability = availability)
 		self._qualifications = qualifications
 		self._exp = exp
-
-		self.qualifications = qualifications
-		self.exp = exp
 
 	def __str__(self):
 		"""
@@ -411,8 +408,8 @@ class Cleaner(Employee, models.Model):
 			fullName (str): fullname of person
 			Availability (2d lists with ints) - [[timestart, timeend], ...] 
 		"""
-		super(models.Model, self).__init__(self, *args, **kwargs)
-		super().__init__(fullName, availability, assignments)
+		super(models.Model).__init__(self, *args, **kwargs)
+		super(Employee).__init__(fullName, availability, assignments)
 
 	def __str__(self):
 		"""

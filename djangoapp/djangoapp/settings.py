@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'schedule',
     'homepage',
     'login',
-    'user_settings'
+    'user_settings',
 ]
 
 MIDDLEWARE = [

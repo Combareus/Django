@@ -5,15 +5,23 @@ from .models import Surgeon
 # Create your views here.
 # view function: request -> response (request handler)
 
-def say_hello(request):
+def masterschedule(request):
     '''
     Testing View Function that is called at an url
     '''
-    x=1
-    y=2
-    return render(request, 'hello.html', {
-        'key': '1', 
-        })
+    dict = {}
+    surgeonlst = [Surgeon("John Doe", ["www"], ["www"], "Sr", ["www"]), Surgeon(fullName = "John Smith", assignments = [], availability = [], exp = "Sr", qualifications = [])] #list of surgeon objects to be linked with database
+    dict["surgeons"] = surgeonlst
+    return render(request, 'masterschedule.html', dict)
+
+def appointment(request):
+    '''
+    Website to add scheduling stuff
+    '''
+    dict = {}
+    surgeonlst = [Surgeon("John Doe", ["www"], ["www"], "Sr", ["www"]), Surgeon(fullName = "John Smith", assignments = [], availability = [], exp = "Sr", qualifications = [])] #list of surgeon objects to be linked with database
+    dict["surgeons"] = surgeonlst
+    return render(request, 'appointment.html', dict)
 
 
 def index(request):
@@ -24,10 +32,7 @@ def index(request):
     Output:
         render() (HTML file): note 
     '''
-    surgeonlst = [Surgeon("John Doe", "Sr"), Surgeon("Smith", "Sr")] #list of surgeons to be linked with database
-    return render(request, 'index.html',{
-        'Surgeons': surgeonlst
-    })
+    return render(request, 'index.html',{})
 
 
 """
