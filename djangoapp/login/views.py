@@ -14,7 +14,7 @@ from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 
 # Create your views here.
 def home(request):
-    return render(request, "authentication/index.html")
+    return render(request, "index.html")
 
 def signup(request):
 
@@ -81,7 +81,7 @@ def signup(request):
 
         return redirect('signin')
 
-    return render(request, "login/signup.html")
+    return render(request, "signup.html")
 
 def signin(request):
 
@@ -100,7 +100,7 @@ def signin(request):
             messages.error(request, "Wrong Credentials.")
             return redirect('home')
 
-    return render(request, "login/signin.html")
+    return render(request, "signin.html")
 
 def signout(request):
     logout(request)
