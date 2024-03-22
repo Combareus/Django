@@ -190,7 +190,7 @@ class Schedule(models.Model):
 Timestart and timeend are always in yyyy, mm, dd, hh, mm
 """
 
-class Employee():
+class Employee(models.Model):
 	def __init__(self, fullName, assignments, availability, *args, **kwargs):
 		"""
 		Initializes class
@@ -200,14 +200,10 @@ class Employee():
 			Assignments (2d lists with ints) - [[timestart, timeend, patient], ...] - their assignments
 			sched (3d list with ints (7x_)) - [[[timestart, timeend], [timestart, timeend], [timestart, timeend], ...]*7] list of regular times available throughout week 
 		"""
-		super(models.Model, self).__init__(self, *args, **kwargs)
+		super().__init__(*args, **kwargs)
 		self._fullName = fullName
 		self._availability = availability
 		self._assignments = assignments
-
-		self.fullName = fullName
-		self.availability = availability
-		self.assignments = assignments
 
 	@property 
 	def fullName(self):
@@ -316,7 +312,7 @@ class Employee():
 			return True
 
 
-class Surgeon(models.Model, Employee):
+class Surgeon(Employee):
 	def __init__(self, fullName, assignments, availability, exp, qualifications):
 		"""
 		Initializes class
@@ -327,7 +323,10 @@ class Surgeon(models.Model, Employee):
 			Qualifications (list of strings): list of genre of surgeries surgeon can perform
 			exp (str): Senior or Junior ("Sr" or "Jr")
 		"""
-		super().__init__(fullName = fullName, assignments = assignments, availability = availability)
+		super(Employee, self).__init__()
+		self._fullName = fullName
+		self._assignments = assignments
+		self._availability = availability
 		self._qualifications = qualifications
 		self._exp = exp
 
@@ -336,7 +335,11 @@ class Surgeon(models.Model, Employee):
 		String (for testing printing)
 		"""
 		return f"Type: Surgeon \nName: {self._fullName} \nExperience: {self._exp}\n\n"
-
+	def test(self):
+		"""
+		(for testing printing)
+		"""
+		return f"Type: Surgeon \nName: {self._fullName} \nExperience: {self._exp}\n\n"
 	@property
 	def qualifications(self):
 		"""Getter for qualifications"""
@@ -401,16 +404,18 @@ class Surgeon(models.Model, Employee):
 	
 
 class Cleaner(Employee, models.Model):
-	def __init__(self, fullName, assignments = [], availability = [], *args, **kwargs):
+	def __init__(self, fullName, assignments = [], availability = []):
 		"""
 		Initializes class
 		Attributes
 			fullName (str): fullname of person
 			Availability (2d lists with ints) - [[timestart, timeend], ...] 
 		"""
-		super(models.Model).__init__(self, *args, **kwargs)
-		super(Employee).__init__(fullName, availability, assignments)
-
+		super(Employee, self).__init__()
+		self._fullName = fullName
+		self._assignments = assignments
+		self._availability = availability
+		
 	def __str__(self):
 		"""
 		String (for testing printing)
@@ -434,13 +439,6 @@ class Patient(models.Model):
 		self._severity = severity
 		self._admissionDate = admissionDate
 		self._status = status
-
-		self.fullName = fullName
-		self.conditionType = conditionType
-		self.severity = severity
-		self.admissionDate = admissionDate
-		self.status = status
-
 	
 	def __str__(self):
 		"""

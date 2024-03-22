@@ -10,8 +10,8 @@ def masterschedule(request):
     Testing View Function that is called at an url
     '''
     dict = {}
-    surgeonlst = [Surgeon("John Doe", ["www"], ["www"], "Sr", ["www"]), Surgeon(fullName = "John Smith", assignments = [], availability = [], exp = "Sr", qualifications = [])] #list of surgeon objects to be linked with database
-    dict["surgeons"] = surgeonlst
+    Surgeons = [Surgeon(fullName = "John Smith", assignments = [], availability = [], exp = "Sr", qualifications = [])] #list of surgeon objects to be linked with database
+    dict["surgeons"] = Surgeons
     return render(request, 'masterschedule.html', dict)
 
 def appointment(request):
