@@ -1,7 +1,12 @@
-from django.urls import path #importing the path functions
-from . import views #import view functions from current folder
+from django.contrib import admin
+from django.urls import path, include
+from . import views
 
-#url configuration
 urlpatterns = [
+    path('', views.home, name="home"),
+    path('signup', views.signup, name="signup"),
+    path('signin', views.signin, name="signin"),
+    path('signout', views.signout, name="signout"),
+    path('activate/<uidb64>/<token>', views.activate, name="activate"),
 
 ]
