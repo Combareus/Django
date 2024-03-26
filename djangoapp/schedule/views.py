@@ -23,6 +23,8 @@ def appointment(request):
     dict["surgeons"] = surgeonlst
     return render(request, 'appointment.html', dict)
 
+def personschedule(request):
+    return render(request, 'personschedule.html', {})
 
 def index(request):
     '''
