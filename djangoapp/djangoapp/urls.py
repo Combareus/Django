@@ -20,10 +20,10 @@ from django.urls import include, path
 #any url starting with schedule gets routed to that app's url file
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include("homepage.urls")),
+    path('', include("login.urls")),
     path('schedule/', include("schedule.urls")), 
     path('user/', include("user_settings.urls")), 
-    path('login/', include("login.urls"))
+    path('home/', include("homepage.urls"))
 ]
 
   

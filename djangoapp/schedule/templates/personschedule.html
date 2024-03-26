@@ -1,0 +1,159 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script>document.getElementsByTagName("html")[0].className += " js";</script>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
+  <title>Schedule</title>
+</head>
+<body>
+  <header class="cd-main-header text-center flex flex-column flex-center">
+    <h1 class ="text-xl" style="color:white">. </h1>
+    <h1 class="text-xl">Schedule Template</h1>
+  </header>
+  <button onclick = 'addday()'>Add day</button>
+  <div class="cd-schedule cd-schedule--loading margin-top-lg margin-bottom-lg js-cd-schedule">
+    <div class="cd-schedule__timeline">
+      <ul>
+        <li><span>00:00</span></li>
+        <li><span>00:30</span></li>
+        <li><span>01:00</span></li>
+        <li><span>01:30</span></li>
+        <li><span>02:00</span></li>
+        <li><span>02:30</span></li>
+        <li><span>03:00</span></li>
+        <li><span>03:30</span></li>
+        <li><span>04:00</span></li>
+        <li><span>04:30</span></li>
+        <li><span>05:00</span></li>
+        <li><span>05:30</span></li>
+        <li><span>06:00</span></li>
+        <li><span>06:30</span></li>
+        <li><span>07:00</span></li>
+        <li><span>07:30</span></li>
+        <li><span>08:00</span></li>
+        <li><span>08:30</span></li>
+        <li><span>09:00</span></li>
+        <li><span>09:30</span></li>
+        <li><span>10:00</span></li>
+        <li><span>10:30</span></li>
+        <li><span>11:00</span></li>
+        <li><span>11:30</span></li>
+        <li><span>12:00</span></li>
+        <li><span>12:30</span></li>
+        <li><span>13:00</span></li>
+        <li><span>13:30</span></li>
+        <li><span>14:00</span></li>
+        <li><span>14:30</span></li>
+        <li><span>15:00</span></li>
+        <li><span>15:30</span></li>
+        <li><span>16:00</span></li>
+        <li><span>16:30</span></li>
+        <li><span>17:00</span></li>
+        <li><span>17:30</span></li>
+        <li><span>18:00</span></li>
+        <li><span>18:30</span></li>
+        <li><span>19:00</span></li>
+        <li><span>19:30</span></li>
+        <li><span>20:00</span></li>
+        <li><span>20:30</span></li>
+        <li><span>21:00</span></li>
+        <li><span>21:30</span></li>
+        <li><span>22:00</span></li>
+        <li><span>22:30</span></li>
+        <li><span>23:00</span></li>
+        <li><span>23:30</span></li>
+      </ul>
+    </div> <!-- .cd-schedule__timeline -->
+    
+    <div class="cd-schedule__events">
+      <script src = 'script.js'></script>
+      <ul id = 'days'>
+        <li class="cd-schedule__group">
+          <div class="cd-schedule__top-info"><span>Monday</span></div>
+          <ul id = "MMDDYYYY">
+          </ul>
+        </li>
+        <li class="cd-schedule__group">
+          <div class="cd-schedule__top-info"><span>Tuesday</span></div>
+        </li>
+        <li class="cd-schedule__group">
+          <div class="cd-schedule__top-info"><span>Wednesday</span></div>
+        </li>
+        <li class="cd-schedule__group">
+          <div class="cd-schedule__top-info"><span>Thursday</span></div>
+        </li>
+        <li class="cd-schedule__group">
+          <div class="cd-schedule__top-info"><span>Friday</span></div>
+          <ul>
+            <li class="cd-schedule__event">
+              <a data-start="10:00" data-end="13:00"  data-content="event-sample" data-event="event-2">
+                <em class="cd-schedule__name">Sample</em>
+              </a>
+            </li>
+            <li class="cd-schedule__event">
+              <a data-start="13:30" data-end="15:00"  data-content="event-sample" data-event="event-2">
+                <em class="cd-schedule__name">Sample2</em>
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li class="cd-schedule__group">
+          <div class="cd-schedule__top-info"><span>Saturday</span></div>
+        </li>
+        <li class="cd-schedule__group">
+          <div class="cd-schedule__top-info"><span>Sunday</span></div>
+        </li>
+      </ul>
+      <button onclick = 'test("10:00", "13:00", "event-sample", "event-2")'>Testbutton</button>
+    </div>
+    <div class="cd-schedule-modal">
+      <header class="cd-schedule-modal__header">
+        <div class="cd-schedule-modal__content">
+          <span class="cd-schedule-modal__date"></span>
+          <h3 class="cd-schedule-modal__name"></h3>
+        </div>
+  
+        <div class="cd-schedule-modal__header-bg"></div>
+      </header>
+  
+      <div class="cd-schedule-modal__body">
+        <div class="cd-schedule-modal__event-info"></div>
+        <div class="cd-schedule-modal__body-bg"></div>
+      </div>
+  
+      <a href="#0" class="cd-schedule-modal__close text-replace">Close</a>
+    </div>
+  
+    <div class="cd-schedule__cover-layer"></div>
+  </div> <!-- .cd-schedule -->
+
+  <script src="static/js/util.js"></script> <!-- util functions included in the CodyHouse framework -->
+  <script src="static/js/main.js"></script>
+</body>
+</html>
+
+
+
+<script>
+function addday(){
+  
+  const list = document.getElementById("days");
+  list.innerHTML += `<li class="cd-schedule__group"><div class="cd-schedule__top-info"><span>day${(list.children.length + 1)%7}</span></div></li>`;
+}
+function test(timestart, timeend, eventsample, dataevent){
+  const list = document.getElementById("MMDDYYYY");
+  list.innerHTML +=
+  `<li class="cd-schedule__event">
+    <a data-start=${timestart} data-end=${timeend}  data-content=${eventsample} data-event=${dataevent} href="#0">
+      <em class="cd-schedule__name">Smple</em>
+    </a>
+  </li>`;
+  console.log("checkpoints");
+}
+
+</script>
