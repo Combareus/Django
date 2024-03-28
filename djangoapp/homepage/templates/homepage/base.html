@@ -37,18 +37,24 @@
 
 <body>
     <div class="sidenav">
-		<a href="/">Home</a>
+		<a href="/home">Home</a>
 		<a href="/schedule">Schedule</a>
         <a href="/schedule/personschedule">Personal Schedule</a>
 		<a href="/schedule/appointment">Add Schedule</a>
 	</div>
 
-    <div id='content', name='content'>
-        <p> {% block content %}</p>
-        <p> {% endblock  %}</p>
+
+
+
+
+
+
+    <div id='content', name='content', class="main">
+        <body> {% block content %}</body>
+        <body> {% endblock  %}</body>
     </div>
 
-    <div id='scheduling', name='scheduling'>
+    <div id='scheduling', name='scheduling', class="main">
         <p> {% block scheduling %}</p>
         <p> {% endblock  %}</p>
     </div>
