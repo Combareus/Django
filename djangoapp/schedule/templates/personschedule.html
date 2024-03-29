@@ -1,4 +1,7 @@
-{% load static %}
+{%extends 'homepage/base.html'%}
+<p> {% block title %}</p>
+<h1> Personal Schedule </h1> 
+<p> {% endblock  %}</p>
 <!doctype html>
 
 <html lang="en">
@@ -11,10 +14,11 @@
 
   <title>Schedule</title>
 </head>
-<body>
+
+<body> {% block content %}</body>
   <header class="cd-main-header text-center flex flex-column flex-center">
     <h1 class ="text-xl" style="color:white">. </h1>
-    <h1 class="text-xl">Schedule</h1>
+    <h1 class="text-xl">Schedule </h1>
   </header>
   <button onclick = 'addday()'>Add day</button>
   <div class="cd-schedule cd-schedule--loading margin-top-lg margin-bottom-lg js-cd-schedule">
@@ -135,7 +139,8 @@
 
   <script src="static/js/util.js"></script> <!-- util functions included in the CodyHouse framework -->
   <script src="static/js/main.js"></script>
-</body>
+<body> {% endblock  %}</body>
+
 </html>
 
 
