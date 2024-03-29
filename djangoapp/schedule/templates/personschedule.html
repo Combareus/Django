@@ -1,19 +1,20 @@
+{% load static %}
 <!doctype html>
 
 <html lang="en">
 <head>
+  <link rel="stylesheet" href="{ % static 'css/style.css'%}">
+  <link rel="stylesheet" href="{ % static 'css/style.scss'%}">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script>document.getElementsByTagName("html")[0].className += " js";</script>
-  {% load static %}
-  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 
   <title>Schedule</title>
 </head>
 <body>
   <header class="cd-main-header text-center flex flex-column flex-center">
     <h1 class ="text-xl" style="color:white">. </h1>
-    <h1 class="text-xl">Schedule Template</h1>
+    <h1 class="text-xl">Schedule</h1>
   </header>
   <button onclick = 'addday()'>Add day</button>
   <div class="cd-schedule cd-schedule--loading margin-top-lg margin-bottom-lg js-cd-schedule">
