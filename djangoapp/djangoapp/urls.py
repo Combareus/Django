@@ -16,6 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+import views
 
 #any url starting with schedule gets routed to that app's url file
 urlpatterns = [
@@ -23,7 +24,8 @@ urlpatterns = [
     path('', include("login.urls")),
     path('schedule/', include("schedule.urls")), 
     path('user/', include("user_settings.urls")), 
-    path('home/', include("homepage.urls"))
+    path('home/', include("homepage.urls")),
+    path('personschedule/', views.page.as_view(), name = "personschedule")
 ]
 
   

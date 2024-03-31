@@ -1,4 +1,3 @@
-{%extends 'homepage/base.html'%}
 <p> {% block title %}</p>
 <h1> Personal Schedule </h1> 
 <p> {% endblock  %}</p>
@@ -16,7 +15,7 @@
 </head>
 
 <body> {% block content %}</body>
-  <header class="cd-main-header text-center flex flex-column flex-center">
+  <header class="cd-main-header text-center flex flex-column flex-center"> 
     <h1 class ="text-xl" style="color:white">. </h1>
     <h1 class="text-xl">Schedule </h1>
   </header>
@@ -76,7 +75,7 @@
     </div> <!-- .cd-schedule__timeline -->
     
     <div class="cd-schedule__events">
-      <script src = 'script.js'></script>
+      <script href = 'script.js'></script>
       <ul id = 'days'>
         <li class="cd-schedule__group">
           <div class="cd-schedule__top-info"><span>Monday</span></div>
@@ -137,8 +136,8 @@
     <div class="cd-schedule__cover-layer"></div>
   </div> <!-- .cd-schedule -->
 
-  <script src="static/js/util.js"></script> <!-- util functions included in the CodyHouse framework -->
-  <script src="static/js/main.js"></script>
+  <script href="{ % static 'css/main.js'%}"></script> <!-- util functions included in the CodyHouse framework -->
+  <script href="{ % static 'css/util.js'%}"></script>
 <body> {% endblock  %}</body>
 
 </html>
