@@ -1,3 +1,4 @@
+{% load static %}
 <p> {% block title %}</p>
 <h1> Personal Schedule </h1> 
 <p> {% endblock  %}</p>
@@ -5,19 +6,18 @@
 
 <html lang="en">
 <head>
-  <link rel="stylesheet" href="{ % static 'css/style.css'%}">
-  <link rel="stylesheet" href="{ % static 'css/style.scss'%}">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script>document.getElementsByTagName("html")[0].className += " js";</script>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <link rel="stylesheet" href="{% static 'css/style.scss' %}">
 
   <title>Schedule</title>
 </head>
-
-<body> {% block content %}</body>
-  <header class="cd-main-header text-center flex flex-column flex-center"> 
+<body>
+  <header class="cd-main-header text-center flex flex-column flex-center">
     <h1 class ="text-xl" style="color:white">. </h1>
-    <h1 class="text-xl">Schedule </h1>
+    <h1 class="text-xl">Schedule Template</h1>
   </header>
   <button onclick = 'addday()'>Add day</button>
   <div class="cd-schedule cd-schedule--loading margin-top-lg margin-bottom-lg js-cd-schedule">
@@ -95,12 +95,12 @@
           <div class="cd-schedule__top-info"><span>Friday</span></div>
           <ul>
             <li class="cd-schedule__event">
-              <a data-start="10:00" data-end="13:00"  data-content="event-sample" data-event="event-2">
+              <a data-start="10:00" data-end="13:00"  data-content="event-sample" data-event="event-2" href = #0>
                 <em class="cd-schedule__name">Sample</em>
               </a>
             </li>
             <li class="cd-schedule__event">
-              <a data-start="13:30" data-end="15:00"  data-content="event-sample" data-event="event-2">
+              <a data-start="13:30" data-end="15:00"  data-content="event-sample" data-event="event-2" href = #0>
                 <em class="cd-schedule__name">Sample2</em>
               </a>
             </li>
@@ -136,10 +136,9 @@
     <div class="cd-schedule__cover-layer"></div>
   </div> <!-- .cd-schedule -->
 
-  <script href="{ % static 'css/main.js'%}"></script> <!-- util functions included in the CodyHouse framework -->
-  <script href="{ % static 'css/util.js'%}"></script>
-<body> {% endblock  %}</body>
-
+  <script href = "{% static 'js/util.js' %}"></script> <!-- util functions included in the CodyHouse framework -->
+  <script href = "{% static 'js/main.js' %}"></script>
+</body>
 </html>
 
 
