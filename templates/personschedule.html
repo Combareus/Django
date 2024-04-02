@@ -1,7 +1,5 @@
 {% load static %}
-<p> {% block title %}</p>
-<h1> Personal Schedule </h1> 
-<p> {% endblock  %}</p>
+
 <!doctype html>
 
 <html lang="en">
@@ -10,14 +8,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script>document.getElementsByTagName("html")[0].className += " js";</script>
   <link rel="stylesheet" href="{% static 'css/style.css' %}">
-  <link rel="stylesheet" href="{% static 'css/style.scss' %}">
 
   <title>Schedule</title>
 </head>
 <body>
   <header class="cd-main-header text-center flex flex-column flex-center">
     <h1 class ="text-xl" style="color:white">. </h1>
-    <h1 class="text-xl">Schedule Template</h1>
+    <h1 class="text-xl">Personal Schedule</h1>
   </header>
   <button onclick = 'addday()'>Add day</button>
   <div class="cd-schedule cd-schedule--loading margin-top-lg margin-bottom-lg js-cd-schedule">
@@ -75,7 +72,7 @@
     </div> <!-- .cd-schedule__timeline -->
     
     <div class="cd-schedule__events">
-      <script href = 'script.js'></script>
+      <script src = 'script.js'></script>
       <ul id = 'days'>
         <li class="cd-schedule__group">
           <div class="cd-schedule__top-info"><span>Monday</span></div>
@@ -136,8 +133,8 @@
     <div class="cd-schedule__cover-layer"></div>
   </div> <!-- .cd-schedule -->
 
-  <script href = "{% static 'js/util.js' %}"></script> <!-- util functions included in the CodyHouse framework -->
-  <script href = "{% static 'js/main.js' %}"></script>
+  <script src = "{% static 'js/util.js' %}"></script> <!-- util functions included in the CodyHouse framework -->
+  <script src = "{% static 'js/main.js' %}"></script>
 </body>
 </html>
 
@@ -146,12 +143,12 @@
 <script>
 function addday(){
   
-  const list = document.getElementById("days");
+  var list = document.getElementById("days");
   list.innerHTML += `<li class="cd-schedule__group"><div class="cd-schedule__top-info"><span>day${(list.children.length + 1)%7}</span></div></li>`;
 }
 function test(timestart, timeend, eventsample, dataevent){
-  const list = document.getElementById("MMDDYYYY");
-  list.innerHTML +=
+  var list = document.getElementById("MMDDYYYY");
+  list.write() +=
   `<li class="cd-schedule__event">
     <a data-start=${timestart} data-end=${timeend}  data-content=${eventsample} data-event=${dataevent} href="#0">
       <em class="cd-schedule__name">Smple</em>
