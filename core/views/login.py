@@ -12,7 +12,7 @@ from django.utils.encoding import force_bytes, force_str
 from ..login.tokens import generate_token
 from django.core.mail import EmailMessage, send_mail
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
-from django.urls import path
+
 
 # Create your views here.
 class default(TemplateView):
@@ -61,8 +61,8 @@ def signup(request):
         message = "Hello " + myuser.first_name + "! \n" + "Welcome to Medi-Cal! \nThank you for visiting our website. \nWe have also sent you a confirmation email, please confirm your email address in order to activate your account. \n\nThank you."
         from_email = settings.EMAIL_HOST_USER
         to_list = [myuser.email]
-        send_mail(subject, message, from_email, to_list, fail_silently=True)
-        
+        send_mail(subject, message, from_email, to_list)
+        print("Hello1")
         # Email Address Confirmation Email
         current_site = get_current_site(request)
         email_subject = "Confirm your email."
@@ -72,15 +72,17 @@ def signup(request):
             'uid': urlsafe_base64_encode(force_bytes(myuser.pk)),
             'token': generate_token.make_token(myuser),
         })
-        email = EmailMessage(
-            email_subject,
-            message2,
-            settings.EMAIL_HOST_USER,
-            [myuser.email],
-        )
-        email.fail_silently = True
-        email.send()
-
+        print("Hello2")
+        #email = EmailMessage(
+            #email_subject,
+            #message2,
+            #settings.EMAIL_HOST_USER,
+            #[myuser.email],
+        #)
+        #email.fail_silently = True
+        #email.send()
+        send_mail(email_subject, message2, from_email, to_list)
+        print("Hello3")
         return redirect('signin')
 
     return render(request, "signup.html")
