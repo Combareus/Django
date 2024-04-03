@@ -12,6 +12,7 @@ from django.utils.encoding import force_bytes, force_str
 from ..login.tokens import generate_token
 from django.core.mail import EmailMessage, send_mail
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
+from django.urls import path
 
 # Create your views here.
 class default(TemplateView):
@@ -68,7 +69,7 @@ def signup(request):
         message2 = render_to_string('email_confirmation.html',{
             'name': myuser.first_name,
             'domain': current_site.domain,
-            'uid': urlsafe_base64_encode(force_bytes(myuser.pk)).decode(),
+            'uid': urlsafe_base64_encode(force_bytes(myuser.pk)),
             'token': generate_token.make_token(myuser),
         })
         email = EmailMessage(
@@ -95,7 +96,7 @@ def signin(request):
         if user is not None:
             login(request, user)
             fname = user.first_name
-            return render(request, "index.html", {'fname': fname})
+            return render(request, "home.html", {'fname': fname})
 
         else:
             messages.error(request, "Wrong Credentials.")
