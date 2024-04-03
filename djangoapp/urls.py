@@ -20,13 +20,14 @@ from core import views
 
 #any url starting with schedule gets routed to that app's url file
 urlpatterns = [
+    path('test/', views.test, name="test"),
     path('admin/', admin.site.urls),
     path('', views.default.as_view(), name="default"),
     path('home/',views.home.as_view(), name = 'home'),
     path('signup/', views.signup, name='signup'),
     path('signin/', views.signin, name = 'signin'),
     path('signout/', views.signout, name = 'signout'),
-    path('activate/',views.activate, name = 'activate'),
+    #path('activate/',views.activate, name = 'activate'),
     path('index/',views.index.as_view(), name = 'index'),
     path('masterschedule/',views.masterschedule.as_view(), name = 'masterschedule'),
     path('appointment/',views.appointment.as_view(), name = 'appointment'),

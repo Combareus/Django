@@ -1,0 +1,13 @@
+body, html {
+    margin: 0;
+    font-family: system-ui;
+}
+
+.hero {
+    background-color: #074f57;
+    background-image: url("../https://img.freepik.com/premium-photo/modern-hospital-room-with-empty-bed-chair_605905-9855.jpg");
+    color: white;
+
+    padding-top: 200x;
+    padding-bottom: 200px;
+}

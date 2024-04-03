@@ -17,7 +17,8 @@ from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 # Create your views here.
 class default(TemplateView):
     template_name = 'index.html'
-
+def test(request):
+    return render(request, "test.html")
 def signup(request):
 
     if request.method == "POST":
@@ -55,24 +56,25 @@ def signup(request):
 
         messages.success(request, "Your account has been successfully created. A confirmation email has been sent. Please confirm your email in order to activate your account.")
 
-        
+        myuser.is_active = True
+        myuser.save()
         #Welcome Email
-        subject = "Welcome to Medi-Cal!"
-        message = "Hello " + myuser.first_name + "! \n" + "Welcome to Medi-Cal! \nThank you for visiting our website. \nWe have also sent you a confirmation email, please confirm your email address in order to activate your account. \n\nThank you."
-        from_email = settings.EMAIL_HOST_USER
-        to_list = [myuser.email]
-        send_mail(subject, message, from_email, to_list)
-        print("Hello1")
+        #subject = "Welcome to Medi-Cal!"
+        #message = "Hello " + myuser.first_name + "! \n" + "Welcome to Medi-Cal! \nThank you for visiting our website. \nWe have also sent you a confirmation email, please confirm your email address in order to activate your account. \n\nThank you."
+        #from_email = settings.EMAIL_HOST_USER
+        #to_list = [myuser.email]
+        #send_mail(subject, message, from_email, to_list)
+
         # Email Address Confirmation Email
-        current_site = get_current_site(request)
-        email_subject = "Confirm your email."
-        message2 = render_to_string('email_confirmation.html',{
-            'name': myuser.first_name,
-            'domain': current_site.domain,
-            'uid': urlsafe_base64_encode(force_bytes(myuser.pk)),
-            'token': generate_token.make_token(myuser),
-        })
-        print("Hello2")
+        #current_site = get_current_site(request)
+        #email_subject = "Confirm your email."
+        #message2 = render_to_string('email_confirmation.html',{
+            #'name': myuser.first_name,
+            #'domain': current_site.domain,
+            #'uid': urlsafe_base64_encode(force_bytes(myuser.pk)),
+            #'token': generate_token.make_token(myuser),
+        #})
+        
         #email = EmailMessage(
             #email_subject,
             #message2,
@@ -81,8 +83,8 @@ def signup(request):
         #)
         #email.fail_silently = True
         #email.send()
-        send_mail(email_subject, message2, from_email, to_list)
-        print("Hello3")
+        #send_mail(email_subject, message2, from_email, to_list)
+        
         return redirect('signin')
 
     return render(request, "signup.html")
@@ -94,6 +96,7 @@ def signin(request):
         pass1 = request.POST['pass1']
 
         user = authenticate(username=username, password=pass1)
+        
 
         if user is not None:
             login(request, user)
@@ -111,7 +114,7 @@ def signout(request):
     messages.success(request, "Logged Out Successfully.")
     return redirect('index')
 
-def activate(request, uidb64, token):
+#def activate(request, uidb64, token):
     try:
         uid = force_str(urlsafe_base64_decode(uidb64))
         myuser = User.objects.get(pk=uid)

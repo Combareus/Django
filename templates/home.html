@@ -1,4 +1,4 @@
-{%extends 'base.html'%}
+{% load static %}
 <!-- The html block inherits from the original base stuff -->
 
 <!DOCTYPE html>
@@ -6,17 +6,24 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Authentication</title>
+        <title>Home</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="">
+        <link rel="stylesheet" href="{% static 'css/style2.css' %}">
     </head>
+    
+
+    <body>
+        <div class="hero">
+            <div class="container">
+                <h1>asdads</h1>
+                <p>asdasd</p>
+            </div>
+        </div>
+    </body>
 
 
-
-    <body> {% block content %}</body>
-
-    <body background="medibed.jpg" link="#000" alink="#017bf5" vlink="#000">
+    <body> {% block content %} </body>
         <h3 align="left">
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <font face="Lato" size="5">Medi-Cal - Premium Management</font>
@@ -38,12 +45,7 @@
             <font face="Lato" color="#000">START SCHEDULING NOW</font>
         </a>
         </h3>
-
-        
-        
-        
-
-        
+    
 
     <body> {% endblock  %}</body>
 

@@ -1,7 +1,82 @@
-{%extends 'base.html'%}
 <!-- The html block inherits from the original base stuff -->
 <p> {% block title %}</p>
 <h1> Add Appointment </h1> 
 <p> {% endblock  %}</p>
 
+<script href = 'script.js'></script>
+<body>
+    <form action="/signup/" method="post">
+        <label for="">Patient First Name</label>
+        <input type="text" id="fname" name="fname" placeholder="Enter Patient's First Name" Required>
+        <br>
+        <label for="">Patient Last Name</label>
+        <input type="text" id="lname" name="lname" placeholder="Enter Patient's Last Name" Required>
+        <br>
+        <label for="">Junior Surgeon 1 First Name</label>
+        <input type="text" id="j1fname" name="j1fname" placeholder="First Name">
+        <br>
+        <label for="">Junior Surgeon 1 Last Name</label>
+        <input type="text" id="j1lname" name="j1lname" placeholder="Last Name">
+        <br>
+        <label for="">Junior Surgeon 2 First Name</label>
+        <input type="text" id="j2fname" name="j2fname" placeholder="First Name">
+        <br>
+        <label for="">Junior Surgeon 2 Last Name</label>
+        <input type="text" id="j2lname" name="j2lname" placeholder="Last Name">
+        <br>
+        <label for="">Date</label>
+        <select name="Month" id="Month" Required>
+            <option value="January">January</option>
+            <option value="February">February</option>
+            <option value="March">March</option>
+            <option value="April">April</option>
+            <option value="May">May</option>
+            <option value="June">June</option>
+            <option value="July">July</option>
+            <option value="August">August</option>
+            <option value="September">September</option>
+            <option value="October">October</option>
+            <option value="November">November</option>
+            <option value="December">December</option>
+        </select>
+        <input type="number" id="Day" name="Day" min="1" max="31" placeholder="1" Required></input>
+        <input type="number" id="Year" name="Year" min="2024" max="2027" placeholder="2024" Required></input>
 
+        <button onclick= submit()>Schedule</button>
+        <label id = "Errors"></label>
+    </form>
+</body>
+<script>
+
+function submit(){
+    var month = document.getElementbyId("Month");
+    var day = document.getElementById("Day");
+    var year = document.getElementById("Year");
+    var list1 = ["January", "March", "May", "July", "August", "October", "December"];
+    if (!(month in list1) && (day >= 31)){
+        document.getElementById("Errors") = "Day Error: Invalid Date";
+        return false;
+    }
+    else if ((month == "February") && (day >= 30)){
+        document.getElementById("Errors") = "Day Error: Invalid Date";
+        return false;
+    }
+    else if ((month == "February") && (day == 29)){
+        if (year % 4 == 0){
+            if (year % 400){
+                //pass
+            }
+            else if (year % 100 == 0){
+                document.getElementById("Errors") = "Day Error: Invalid Date";
+                return false;
+            }
+        }
+        else{
+            document.getElementById("Errors") = "Day Error: Invalid Date";
+            return false;
+        }
+    }
+    return true;
+}
+
+</script>

@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.generic import TemplateView
+from django.template import RequestContext
+
 from ..models import Surgeon
 # Create your views here.
 # view function: request -> response (request handler)
@@ -16,15 +18,14 @@ class masterschedule(TemplateView):
         return render(request, self.template_name, dict)
 
 class appointment(TemplateView):
-    template_name = 'personschedule.html'
+    template_name = 'appointment.html'
     def post(self, request):
         '''
         Website to add scheduling stuff
         '''
-        dict = {}
-        surgeonlst = [Surgeon("John Doe", ["www"], ["www"], "Sr", ["www"]), Surgeon(fullName = "John Smith", assignments = [], availability = [], exp = "Sr", qualifications = [])] #list of surgeon objects to be linked with database
-        dict["surgeons"] = surgeonlst
-        return render(request, self.template_name, dict)
+        
+        return render(request, self.template_name)
+
 
 class personschedule(TemplateView):
     template_name = 'personschedule.html'
