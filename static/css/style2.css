@@ -1,0 +1,26 @@
+body {
+    margin: 0;
+    font-family: system-ui;
+}
+
+.hero {
+    background-color: #9acfd5;
+    background-image: url("../../images/medibed.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    background-blend-mode: multiply;
+
+    color: white;
+
+    padding-top: 200px;
+    padding-bottom: 200px;
+}
+
+.container {
+    max-width: 960px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;;
+}
