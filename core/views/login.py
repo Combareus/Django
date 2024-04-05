@@ -51,10 +51,10 @@ def signup(request):
         myuser = User.objects.create_user(username, email, pass1)
         myuser.first_name = fname
         myuser.last_name = lname
-        myuser.is_active = False
+        myuser.is_active = True
         myuser.save()
 
-        messages.success(request, "Your account has been successfully created. A confirmation email has been sent. Please confirm your email in order to activate your account.")
+        messages.success(request, "Your account has been successfully created.")
 
         myuser.is_active = True
         myuser.save()
@@ -74,7 +74,6 @@ def signup(request):
             #'uid': urlsafe_base64_encode(force_bytes(myuser.pk)),
             #'token': generate_token.make_token(myuser),
         #})
-        
         #email = EmailMessage(
             #email_subject,
             #message2,
@@ -84,7 +83,8 @@ def signup(request):
         #email.fail_silently = True
         #email.send()
         #send_mail(email_subject, message2, from_email, to_list)
-        
+
+
         return redirect('signin')
 
     return render(request, "signup.html")
