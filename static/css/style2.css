@@ -4,17 +4,30 @@ body {
 }
 
 .hero {
-    background-color: #9acfd5;
-    background-image: url("../../images/medibed.jpg");
-    background-repeat: no-repeat;
+    background-color: #51969f;
+    background-image: url("https://media.licdn.com/dms/image/C5612AQGntBqIs3KfLw/article-cover_image-shrink_720_1280/0/1520104232366?e=2147483647&v=beta&t=0nHLITioWHsbc3pfsEhOH4LNTNvVWQdzuZLAUM7BAqE");
     background-size: cover;
+    
 
     background-blend-mode: multiply;
 
     color: white;
 
-    padding-top: 200px;
-    padding-bottom: 200px;
+    padding-top: 75px;
+    padding-bottom: 75px;
+}
+
+.hero2 {
+    background-color: #51969f;
+    background-size: cover;
+    
+
+    background-blend-mode: multiply;
+
+    color: white;
+
+    padding-top: 75px;
+    padding-bottom: 75px;
 }
 
 .container {

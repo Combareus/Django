@@ -2,6 +2,11 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.generic import TemplateView
 from django.template import RequestContext
+from django.shortcuts import redirect, render
+from django.contrib import messages
+from django.contrib.auth.models import User
+
+
 
 from ..models import Surgeon
 # Create your views here.
@@ -17,14 +22,45 @@ class masterschedule(TemplateView):
         dict["surgeons"] = Surgeons
         return render(request, self.template_name, dict)
 
-class appointment(TemplateView):
-    template_name = 'appointment.html'
-    def post(self, request):
-        '''
-        Website to add scheduling stuff
-        '''
+def appointment(request):
+
+    if request.method == "POST":
+        patientfname = request.POST['fname']
+        patientlname = request.POST['lname']
+        j1fname = request.POST['j1fname']
+        j1lname = request.POST['j1lname']
+        j2fname = request.POST['j2fname']
+        j2lname = request.POST['j2lname']
+        month = request.POST['Month']
+        day = request.POST['Day']
+        year = request.POST['Year']
+
+        list1 = ["January", "March", "May", "July", "August", "October", "December"]
+
+        if month not in list1 and day >= 31:
+            messages.error(request, "Day Error: Invalid Date.")
+            return redirect('appointment')
+        elif month == "February" and day >= 30:
+            messages.error(request, "Day Error: Invalid Date.")
+            return redirect('appointment')
+        elif month == "February" and day == 29:
+            if year % 4 == 0:
+                if year % 400 == 0:
+                    pass
+                elif year % 100 == 0:
+                    messages.error(request, "Day Error: Invalid Date.")
+                    return redirect('appointment')
+            else:
+                messages.error(request, "Day Error: Invalid Date.")
+                return redirect('appointment')
         
-        return render(request, self.template_name)
+        appoint = [patientfname, patientlname, month, day, year, j1fname, j1lname, j2fname, j2lname]
+
+        User.items.add(appoint)
+
+        return redirect('personschedule')
+
+    return render(request, "appointment.html")
 
 
 class personschedule(TemplateView):

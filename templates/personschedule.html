@@ -4,17 +4,20 @@
 <!doctype html>
 
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script>document.getElementsByTagName("html")[0].className += " js";</script>
-  <link rel="stylesheet" href="{% static 'css/style.css' %}">
-</head>
-{% block title %} Schedule {% endblock %}
-{% block schedule %} 
+
+
+{% block title %} Personal Schedule {% endblock %}
+
+{% block scheduling %} 
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script>document.getElementsByTagName("html")[0].className += " js";</script>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  </head>
   <header class="cd-main-header text-center flex flex-column flex-center">
     <h1 class ="text-xl" style="color:white">. </h1>
-    <h1 class="text-xl">Personal Scheduleeeeeeee</h1>
+    <h1 class="text-xl">Personal Schedule</h1>
   </header>
   <button onclick = 'addday()'>Add day</button>
   <div class="cd-schedule cd-schedule--loading margin-top-lg margin-bottom-lg js-cd-schedule">

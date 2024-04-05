@@ -1,11 +1,16 @@
-<!-- The html block inherits from the original base stuff -->
-<p> {% block title %}</p>
-<h1> Add Appointment </h1> 
-<p> {% endblock  %}</p>
+{%extends 'base.html'%}
+{% block title %} Add Appointment{% endblock %}
 
-<script href = 'script.js'></script>
+{% for message in messages %}
+    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+    <strong>Message:</strong> {{ message }}
+    </div>
+{% endfor %}
+
+{% block scheduling %} 
+<h1> Add Appointment </h1>
 <body>
-    <form action="/signup/" method="post">
+    <form action="/appointment/" method="post">
         <label for="">Patient First Name</label>
         <input type="text" id="fname" name="fname" placeholder="Enter Patient's First Name" Required>
         <br>
@@ -42,41 +47,8 @@
         <input type="number" id="Day" name="Day" min="1" max="31" placeholder="1" Required></input>
         <input type="number" id="Year" name="Year" min="2024" max="2027" placeholder="2024" Required></input>
 
-        <button onclick= submit()>Schedule</button>
+        <button type = 'submit'>Schedule</button>
         <label id = "Errors"></label>
     </form>
 </body>
-<script>
-
-function submit(){
-    var month = document.getElementbyId("Month");
-    var day = document.getElementById("Day");
-    var year = document.getElementById("Year");
-    var list1 = ["January", "March", "May", "July", "August", "October", "December"];
-    if (!(month in list1) && (day >= 31)){
-        document.getElementById("Errors") = "Day Error: Invalid Date";
-        return false;
-    }
-    else if ((month == "February") && (day >= 30)){
-        document.getElementById("Errors") = "Day Error: Invalid Date";
-        return false;
-    }
-    else if ((month == "February") && (day == 29)){
-        if (year % 4 == 0){
-            if (year % 400){
-                //pass
-            }
-            else if (year % 100 == 0){
-                document.getElementById("Errors") = "Day Error: Invalid Date";
-                return false;
-            }
-        }
-        else{
-            document.getElementById("Errors") = "Day Error: Invalid Date";
-            return false;
-        }
-    }
-    return true;
-}
-
-</script>
+{% endblock  %}

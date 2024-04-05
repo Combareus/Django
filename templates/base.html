@@ -1,6 +1,6 @@
+{% load static %}
 <html>
     <head>
-        <title>{% block title %}My amazing site{% endblock %}</title>
         <!-- Sidenav css-->
         <style type="text/css">
             .sidenav {
@@ -26,23 +26,27 @@
             .sidenav a:hover{
                 color:#f1f1f1;
             }	
-            <!-- Class for the html content outside nav bar-->
             .main{
                 margin-left:160px;
                 padding: 25px 25px 25px 25px;
             }
-     
         </style> 
+
+        <title> {%block title%} Title {% endblock %} </title>
     </head>
 
 <body>
     <div class="sidenav">
+
 		<a href="/home">Home</a>
-		<a href="/schedule">Schedule</a>
         <a href="/personschedule">Personal Schedule</a>
 		<a href="/appointment">Add Schedule</a>
         <a href="/index">Logout</a>
 	</div>
+
+    <div id='titlename', name='titlename', class="main">
+        <h1> {% block titlename %}{% endblock  %} </h1>
+    </div>
 
     <div id='content', name='content', class="main">
         {% block content %}{% endblock  %}
