@@ -27,13 +27,15 @@ def appointment(request):
     if request.method == "POST":
         patientfname = request.POST['fname']
         patientlname = request.POST['lname']
+        cleanerfname = request.POST['cfname']
+        cleanerlname = request.POST['clname']
         j1fname = request.POST['j1fname']
         j1lname = request.POST['j1lname']
         j2fname = request.POST['j2fname']
         j2lname = request.POST['j2lname']
         month = request.POST['Month']
-        day = request.POST['Day']
-        year = request.POST['Year']
+        day = int(request.POST['Day'])
+        year = int(request.POST['Year'])
 
         list1 = ["January", "March", "May", "July", "August", "October", "December"]
 
@@ -54,9 +56,9 @@ def appointment(request):
                 messages.error(request, "Day Error: Invalid Date.")
                 return redirect('appointment')
         
-        appoint = [patientfname, patientlname, month, day, year, j1fname, j1lname, j2fname, j2lname]
+        appoint = [patientfname, patientlname, month, day, year, cleanerfname, cleanerlname, j1fname, j1lname, j2fname, j2lname]
 
-        User.items.add(appoint)
+        #add appoint to something here
 
         return redirect('personschedule')
 
