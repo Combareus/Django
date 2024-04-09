@@ -55,10 +55,10 @@ def appointment(request):
             else:
                 messages.error(request, "Day Error: Invalid Date.")
                 return redirect('appointment')
-        
-        appoint = [patientfname, patientlname, month, day, year, cleanerfname, cleanerlname, j1fname, j1lname, j2fname, j2lname]
 
-        #add appoint to something here
+
+        #add appointment to objects here
+        
 
         return redirect('personschedule')
 
