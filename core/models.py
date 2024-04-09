@@ -1,7 +1,8 @@
 from django.db import models
 # Create your models here.
 """
-Classes for scheduling, employees (including surgeons, cleaner), patients
+Classes for scheduling, employees (including surgeons, cleaner), patients.
+Time, Employee, Surgeon, Cleaner, Patient, Surgery, Schedule
 Progress: 
 1/24/2024 - Classes for people created and initialized Lines: 180
 1/30/2024 - Classes for schedule created, some validation done Lines: 309
@@ -29,11 +30,16 @@ class Employee(models.Model):
 	# 	self._availability = availability
 	# 	self._assignments = assignments
 
-    fullName = models.CharField(max_length=100)
-    availability = models.ManyToManyField(Time, related_name='available_employees')
-    sched = models.ManyToManyField(Time, related_name='scheduled_employees')
-    assignments = models.ManyToManyField('Surgery') 
+	fullName = models.CharField(max_length=100)
+	availability = models.ManyToManyField(Time, related_name='available_employees')
+	sched = models.ManyToManyField(Time, related_name='scheduled_employees')
+	assignments = models.ManyToManyField('Surgery') 
 
+	def __str__(self):
+		"""
+		String (representation of employee)
+		"""
+		return f"Type: Employee \nName: {self._fullName}\n\n"
 	# @property 
 	# def fullName(self):
 	# 	"""Getter for fullName"""
@@ -161,11 +167,12 @@ class Surgeon(Employee):
 
 	qualifications = models.CharField(max_length=100)
 	exp = models.CharField(max_length=2)
-	# def __str__(self):
-	# 	"""
-	# 	String (for testing printing)
-	# 	"""
-	# 	return f"Type: Surgeon \nName: {self._fullName} \nExperience: {self._exp}\n\n"
+
+	def __str__(self):
+		"""
+		String (for testing printing)
+		"""
+		return f"Type: Surgeon \nName: {self._fullName} \nExperience: {self._exp}\n\n"
 	# def test(self):
 	# 	"""
 	# 	(for testing printing)
@@ -372,6 +379,8 @@ class Surgery(models.Model):
 	cleaners = models.ManyToManyField(Cleaner)
 	patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
 	time_period = models.ForeignKey(Time, on_delete=models.CASCADE)
+	def __str__(self):
+		return f"Surgeons: {self.surgeons} \nCleaners: {self.cleaners} \nPatient: {self.patient} \nTime: {self.time_period}\n\n"
 class Schedule(models.Model):
 	# def __init__(self, year, month, day, hour = 0, minute = 0, surgeries = [], *args, **kwargs):
 	# 	"""

@@ -3,6 +3,28 @@ body {
     font-family: system-ui;
 }
 
+.heading-primary {
+    font-family: "Lato", sans-serif;
+    font-size: 5.5em; 
+    color: #017bf5;
+}
+
+.heading-secondary {
+    font-family: "Lato", sans-serif;
+    font-size: 5em;
+    color: #000; 
+}
+
+
+
+.background1{
+    background-color: black;
+    background-size: cover;
+    background-position: center;
+}
+
+
+
 .hero {
     background-color: #51969f;
     background-image: url("https://media.licdn.com/dms/image/C5612AQGntBqIs3KfLw/article-cover_image-shrink_720_1280/0/1520104232366?e=2147483647&v=beta&t=0nHLITioWHsbc3pfsEhOH4LNTNvVWQdzuZLAUM7BAqE");
@@ -13,12 +35,12 @@ body {
 
     color: white;
 
-    padding-top: 75px;
-    padding-bottom: 75px;
+    padding-top: 150px;
+    padding-bottom: 150px;
 }
 
 .hero2 {
-    background-color: #51969f;
+    background-color: #042327;
     background-size: cover;
     
 
