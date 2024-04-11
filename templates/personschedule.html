@@ -20,7 +20,6 @@
     <h1 class ="text-xl" style="color:white">. </h1>
     <h1 class="text-xl">Personal Schedule</h1>
   </header>
-  <button onclick = 'addday()'>Add day</button>
   <div class="cd-schedule cd-schedule--loading margin-top-lg margin-bottom-lg js-cd-schedule">
     <div class="cd-schedule__timeline">
       <ul>
@@ -75,48 +74,7 @@
       </ul>
     </div> <!-- .cd-schedule__timeline -->
     
-    <div class="cd-schedule__events">
-      <ul id = 'days'>
-        {% for appointment in appointments %}
-          <li class="cd-schedule__group">
-            <div class="cd-schedule__top-info"><span>Monday</span></div>
-            <ul id = "MMDDYYYY">
-            </ul>
-          </li>
-        {% endfor %}
-        <li class="cd-schedule__group">
-          <div class="cd-schedule__top-info"><span>Tuesday</span></div>
-        </li>
-        <li class="cd-schedule__group">
-          <div class="cd-schedule__top-info"><span>Wednesday</span></div>
-        </li>
-        <li class="cd-schedule__group">
-          <div class="cd-schedule__top-info"><span>Thursday</span></div>
-        </li>
-        <li class="cd-schedule__group">
-          <div class="cd-schedule__top-info"><span>Friday</span></div>
-          <ul>
-            <li class="cd-schedule__event">
-              <a data-start="10:00" data-end="13:00"  data-content="event-sample" data-event="event-2" href = #0>
-                <em class="cd-schedule__name">Sample</em>
-              </a>
-            </li>
-            <li class="cd-schedule__event">
-              <a data-start="13:30" data-end="15:00"  data-content="event-sample" data-event="event-2" href = #0>
-                <em class="cd-schedule__name">Sample2</em>
-              </a>
-            </li>
-          </ul>
-        </li>
-        <li class="cd-schedule__group">
-          <div class="cd-schedule__top-info"><span>Saturday</span></div>
-        </li>
-        <li class="cd-schedule__group">
-          <div class="cd-schedule__top-info"><span>Sunday</span></div>
-        </li>
-      </ul>
-      <button onclick = 'test("10:00", "13:00", "event-sample", "event-2")'>Testbutton</button>
-    </div>
+    {{ schedule_string |safe }}
     <div class="cd-schedule-modal">
       <header class="cd-schedule-modal__header">
         <div class="cd-schedule-modal__content">

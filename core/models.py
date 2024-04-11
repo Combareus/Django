@@ -49,7 +49,6 @@ class Employee(models.Model):
 	fullName = models.CharField(max_length=100)
 	availability = models.ManyToManyField(Time, related_name='available_employees')
 	sched = models.ManyToManyField(Time, related_name='scheduled_employees')
-	assignments = models.ManyToManyField('Surgery') 
 
 	def __str__(self):
 		"""
@@ -184,11 +183,12 @@ class Surgeon(Employee):
 	qualifications = models.CharField(max_length=100)
 	exp = models.CharField(max_length=2)
 
+
 	def __str__(self):
 		"""
 		String (for testing printing)
 		"""
-		return f"Type: Surgeon \nName: {self._fullName} \nExperience: {self._exp}\n\n"
+		return f"Type: Surgeon \nName: {self.fullName} \nExperience: {self.exp}\n\n"
 	# def test(self):
 	# 	"""
 	# 	(for testing printing)
@@ -226,9 +226,9 @@ class Surgeon(Employee):
 
 	def qualcheck(self, type, title):
 		if title == "Sr":
-			if self._exp == "Jr":
+			if self.exp == "Jr":
 				return False
-		if type not in self._qualifications:
+		if type not in self.qualifications:
 			return False
 		return True
 
@@ -274,7 +274,7 @@ class Cleaner(Employee):
 		"""
 		String (for testing printing)
 		"""
-		return f"Type: Cleaner \nName: {self._fullName}\n\n"
+		return f"Type: Cleaner \nName: {self.fullName}\n\n"
 
 class Patient(models.Model):
 	# def __init__(self, fullName, conditionType, severity, admissionDate, status, *args, **kwargs):
@@ -293,11 +293,11 @@ class Patient(models.Model):
 	# 	self._severity = severity
 	# 	self._admissionDate = admissionDate
 	# 	self._status = status
-	full_name = models.CharField(max_length=255)
-	condition_type = models.CharField(max_length=255)
-	severity = models.CharField(max_length=255)
-	admission_date = models.DateField()
-	status = models.CharField(max_length=255)
+	fullName = models.CharField(max_length=255)
+	condition_type = models.CharField(max_length=255, null=True)
+	severity = models.CharField(max_length=255, null=True)
+	admission_date = models.DateField(null=True)
+	status = models.CharField(max_length=255, null=True)
 
 	def __str__(self):
 		"""
@@ -395,8 +395,18 @@ class Surgery(models.Model):
 	cleaners = models.ManyToManyField(Cleaner)
 	patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
 	time_period = models.ForeignKey(Time, on_delete=models.CASCADE)
+	def date(self):
+		'''
+		Returns date of surgery
+		'''
+		return self.time_period.timestart.date()
+
 	def __str__(self):
 		return f"Surgeons: {self.surgeons} \nCleaners: {self.cleaners} \nPatient: {self.patient} \nTime: {self.time_period}\n\n"
+	
+
+
+
 class Schedule(models.Model):
 	# def __init__(self, year, month, day, hour = 0, minute = 0, surgeries = [], *args, **kwargs):
 	# 	"""
