@@ -1,8 +1,56 @@
-body {
+*{
     margin: 0;
-    font-family: system-ui;
+    padding: 0;
+    font-family: "Playfair Display", serif;
 }
 
+<<<<<<< HEAD
+.header{
+    min-height: 100vh;
+    width: 100%;
+    background-image: linear-gradient(rgba(4,9,30,0.7), rgba(4,9,30,0.7)), url("https://media.licdn.com/dms/image/C5612AQGntBqIs3KfLw/article-cover_image-shrink_720_1280/0/1520104232366?e=2147483647&v=beta&t=0nHLITioWHsbc3pfsEhOH4LNTNvVWQdzuZLAUM7BAqE");
+    background-position: center;
+    background-size: cover;
+    position: relative;
+}
+
+nav{
+    display: flex;
+    padding: 2% 6%;
+    justify-content: space-between;
+    align-items: center;
+}
+
+nav img{
+    width: 150px;
+}
+
+.nav-links{
+    flex: 1;
+    text-align: right;
+}
+
+.nav-links ul li{
+    list-style: none;
+    display: inline-block;
+    padding: 8px 12px;
+    position: relative;
+}
+
+.nav-links ul li a{
+    color: #fff;
+    text-decoration: none;
+    font-size: 13px;
+}
+
+.nav-links ul li::after{
+    content: '';
+    width: 100%;
+    height: 2px;
+    background: #f44336;
+    display: block;
+    margin: auto;
+=======
 .heading-primary {
     font-family: "Lato", sans-serif;
     font-size: 5.5em; 
@@ -21,10 +69,17 @@ body {
     background-color: black;
     background-size: cover;
     background-position: center;
+>>>>>>> cbeb7836a6c588176432c3d5e7879e3824077f17
 }
 
 
 
+<<<<<<< HEAD
+
+
+
+=======
+>>>>>>> cbeb7836a6c588176432c3d5e7879e3824077f17
 .hero {
     background-color: #51969f;
     background-image: url("https://media.licdn.com/dms/image/C5612AQGntBqIs3KfLw/article-cover_image-shrink_720_1280/0/1520104232366?e=2147483647&v=beta&t=0nHLITioWHsbc3pfsEhOH4LNTNvVWQdzuZLAUM7BAqE");
