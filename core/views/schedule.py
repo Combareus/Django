@@ -33,12 +33,26 @@ def appointment(request):
         j1lname = request.POST['j1lname']
         j2fname = request.POST['j2fname']
         j2lname = request.POST['j2lname']
-        month = request.POST['Month']
+
+
+        month = datetime.datetime.strptime(request.POST['Month'], "%B").month #converts month string into int
         day = int(request.POST['Day'])
         year = int(request.POST['Year'])
         start = request.POST['StartTime']
         end = request.POST['EndTime']
+        
+        start_str = f"{day}-{month}-{year} {start}" #converts date and time into string
+        #converts string into datetime object of the surgery start time
+        start_obj = datetime.datetime.strptime(start_str, '%d-%m-%Y %H:%M') 
+        end_str = f"{day}-{month}-{year} {end}" #converts date and time into string
+        #converts string into datetime object of the surgery start time
+        end_obj = datetime.datetime.strptime(end_str, '%d-%m-%Y %H:%M') 
+        timeperiod = Time(timestart=start_obj, timeend=end_obj)
+        timeperiod.save()
 
+        
+        
+        
         list1 = ["January", "March", "May", "July", "August", "October", "December"]
 
         if month not in list1 and day >= 31:
@@ -59,7 +73,7 @@ def appointment(request):
                 return redirect('appointment')
         
         appoint = [patientfname, patientlname, month, day, year, cleanerfname, cleanerlname, j1fname, j1lname, j2fname, j2lname]
-        timeperiod = Time(timestart=start, timeend=end)
+        
 
         j1 = Surgeon(fullName=j1fname + " " + j1lname, exp="Jr", qualifications="Q1")
         j1.save()
@@ -71,17 +85,18 @@ def appointment(request):
 
         c = Cleaner(fullName=cleanerfname + " " + cleanerlname)
         c.save()
-        c.availability.set(Time.objects.get(id=1))
+        c.availability.add(Time.objects.get(id=1))
 
         patient = Patient(fullName=patientfname + " " + patientlname)
         patient.save()
 
-        surgery = Surgery.objects.create(patient=patient, time_period=timeperiod, cleaners=c)
+        surgery = Surgery.objects.create(patient=patient, time_period=timeperiod)
         surgery.save()
-        surgery.surgeons.add([j1, j2])
+        surgery.surgeons.add(j1)
+        surgery.surgeons.add(j2)
+        surgery.cleaners.add(c) 
 
 
-        User.items.add(appoint)
 
         return redirect('personschedule')
 
@@ -90,7 +105,7 @@ def appointment(request):
 
 class personschedule(TemplateView):
     template_name = 'personschedule.html'
-    def post(self, request):
+    def get(self, request):
         '''
         View function displays calls template to display schedule
         Input:
@@ -100,22 +115,25 @@ class personschedule(TemplateView):
         '''
         days = [[]]
         
+
         surgeries = list(Surgery.objects.all())
         earliest_surgery = Surgery.objects.earliest('time_period__timestart')
         latest_surgery = Surgery.objects.latest('time_period__timestart')
         
         patient = earliest_surgery.patient
-        patientname = patient.full_name 
+        patientname = patient.fullName
         #patient name
-
-        month1 = earliest_surgery.timestart.month #retruns 1,2,3,...,12
-        day1 = earliest_surgery.timestart.day #returns int
-        year1 = earliest_surgery.timestart.year #returns 2024
-        month2 = latest_surgery.timestart.month
-        day2 = latest_surgery.timestart.day
-        year2 = latest_surgery.timestart.year
-        allsurgeries = get_surgeries(earliest_surgery.timestart, latest_surgery.timestart) #gets the surgeries to be displayed from date_1 to date_2, which are datetime() objects
+        month1 = earliest_surgery.time_period.timestart.month #retruns 1,2,3,...,12
+        day1 = earliest_surgery.time_period.timestart.day #returns int
+        year1 = earliest_surgery.time_period.timestart.year #returns 2024
+        month2 = latest_surgery.time_period.timestart.month
+        day2 = latest_surgery.time_period.timestart.day
+        year2 = latest_surgery.time_period.timestart.year
+        allsurgeries = get_surgeries(earliest_surgery.time_period.timestart.date(), latest_surgery.time_period.timestart.date()) #gets the surgeries to be displayed from date_1 to date_2, which are datetime() objects
         
+        teststring = f'{month1}{day1}{year1}'
+        teststring2 = f'{month2}{day2}{year2}'
+
         list1 = [1, 3, 5, 7, 8, 10, 12]
         list2 = [x for x in range(1, 13)]
         daytracker = []
@@ -152,12 +170,16 @@ class personschedule(TemplateView):
 
         #fills days
         for x in allsurgeries:
-            month = x.timestart.month
-            day = x.timestart.day
-            year = x.timestart.year
-            ind = daytracker.index([month, day, year])
+            month = x.time_period.timestart.month
+            day = x.time_period.timestart.day
+            year = x.time_period.timestart.year
+            try:
+                ind = daytracker.index([month, day, year])
+                days[ind].append(x)
+            except ValueError:
+                #if its not in the list just pass and go next 
+                continue 
             days[ind].append(x)
-        
         #fills days_string
         days_string = f''
         for x in range(len(days)):
@@ -181,11 +203,11 @@ class personschedule(TemplateView):
                 dayofweek = "Sunday"
             appointments = f'<ul>'
             for y in days[x]:
-                timestart = f"{y.timestart.hour}:{y.timestart.minute}"
-                timeend = f"{y.timestart.hour}:{y.timestart.minute}"
+                timestart = f"{y.time_period.timestart.hour}:{y.time_period.timestart.minute}"
+                timeend = f"{y.time_period.timestart.hour}:{y.time_period.timestart.minute}"
 
                 patient = earliest_surgery.patient
-                patientname = patient.full_name 
+                patientname = patient.fullName 
                 name = f"Surgery for {patientname}"
                 appointments += f'<li class="cd-schedule__event"><a data-start="{timestart}" data-end="{timeend}"  data-content="event-sample" data-event="event-2" href = #0> <em class="cd-schedule__name">{name}</em></a></li>'
             appointments += '</ul>' 
@@ -194,7 +216,8 @@ class personschedule(TemplateView):
         
         #the big string :)
         schedule_string = f'<div class = "cd-schedule__events"><ul id = "days">{days_string}</ul></div>'
-        return render(request, self.template_name, {schedule_string: schedule_string})
+        print(schedule_string)
+        return render(request, self.template_name, {"schedule_string": schedule_string, "teststring":teststring, "teststring2":teststring2})
 
 class index(TemplateView):
     template_name = 'index.html'

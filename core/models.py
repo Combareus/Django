@@ -179,7 +179,7 @@ class Surgeon(Employee):
 	# 	self._availability = availability
 	# 	self._qualifications = qualifications
 	# 	self._exp = exp
-
+	
 	qualifications = models.CharField(max_length=100)
 	exp = models.CharField(max_length=2)
 
@@ -394,7 +394,7 @@ class Surgery(models.Model):
 	surgeons = models.ManyToManyField(Surgeon)
 	cleaners = models.ManyToManyField(Cleaner)
 	patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
-	time_period = models.ForeignKey(Time, on_delete=models.CASCADE)
+	time_period = models.ForeignKey(Time, on_delete=models.CASCADE) 
 	def date(self):
 		'''
 		Returns date of surgery

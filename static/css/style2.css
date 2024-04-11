@@ -171,13 +171,13 @@ h3{
 }
 
 .layer:hover{
-    background: rgba(226,0,0,0.7);
+    background: rgba(253,253,150);
 }
 
 .layer h3{
     width: 100%;
     font-weight: 500;
-    color: #fff;
+    color: black;
     font-size: 26px;
     bottom: 0;
     left: 50%;
