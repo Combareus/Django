@@ -14,6 +14,22 @@ Progress:
 class Time(models.Model):
 	timestart = models.DateTimeField()
 	timeend = models.DateTimeField()
+	def __str__():
+		return f"Start: {self.timestart} End: {self.timeend}"
+	def conflict(self, timeobject):
+		"""
+		Determines if there is a conflict with another time object
+		Attributes
+			self (time)
+			timeobject (time)
+		Returns
+			True - There is a conflict
+			False - There is no conflict
+		"""
+		if self.timestart < timeobject.timeend and self.timeend > timeobject.timestart:
+			return True
+		else:
+			return False
 
 class Employee(models.Model):
 	# def __init__(self, fullName, assignments, availability, *args, **kwargs):

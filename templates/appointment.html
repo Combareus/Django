@@ -46,6 +46,16 @@
         </select>
         <input type="number" id="Day" name="Day" min="1" max="31" placeholder="1" Required></input>
         <input type="number" id="Year" name="Year" min="2024" max="2027" placeholder="2024" Required></input>
+        
+        <br>
+        <label for="">Start Time (24hr format) </label>
+        <input type="time" id="StartTime" name="StartTime" Required>
+
+        <br>
+        <label for="">End Time (24hr format)</label>
+        <input type="time" id="EndTime" name="EndTime" Required>
+
+        <br>
 
         <button type = 'submit'>Schedule</button>
         <label id = "Errors"></label>
