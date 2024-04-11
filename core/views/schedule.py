@@ -33,8 +33,8 @@ def appointment(request):
         j2fname = request.POST['j2fname']
         j2lname = request.POST['j2lname']
         month = request.POST['Month']
-        day = request.POST['Day']
-        year = request.POST['Year']
+        day = int(request.POST['Day'])
+        year = int(request.POST['Year'])
 
         list1 = ["January", "March", "May", "July", "August", "October", "December"]
 
