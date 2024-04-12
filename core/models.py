@@ -408,7 +408,7 @@ class Surgery(models.Model):
 			s1 += str(surgeon) 
 		for cleaner in self.cleaners.all():
 			s2 += str(cleaner) 
-		return f"Surgeons:\n {s1} \nCleaners: \n{s2} \nPatient: \n{self.patient} \ {self.time_period}\n\n"
+		return f"Surgeons:\n {s1} \nCleaners: \n{s2} \nPatient: \n{self.patient} {self.time_period}\n\n"
 	
 
 
