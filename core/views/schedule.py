@@ -238,10 +238,11 @@ class personschedule(TemplateView):
                 patientname = patient.fullName 
                 teststring3 += f' {timestart}{timeend}{patient}{patientname}'
                 name = f"Surgery for {patientname}"
-                appointments += f'<li class="cd-schedule__event"><a data-start="{timestart}" data-end="{timeend}"  data-content="event-sample" data-event="event-2" href = #0> <em class="cd-schedule__name">{name}</em></a></li>'
+                appointments += f'<li class="cd-schedule__event"><a data-start="{timestart}" data-end="{timeend}"  data-content="event-sample" data-event="event-2" href = "#0"> <em class="cd-schedule__name">{name}</em></a></li>'
             appointments += '</ul>' 
-            day_string = f'<li class="cd-schedule__group"><div class="cd-schedule__top-info"><span>{dayofweek}</span></div></li>'
+            day_string = f'<li class="cd-schedule__group"><div class="cd-schedule__top-info"><span>{dayofweek}</span></div><ul>'
             day_string += appointments
+            day_string += '</ul></li>'
             days_string += day_string
         
         #the big string :)
