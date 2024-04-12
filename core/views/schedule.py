@@ -7,6 +7,7 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from core.models import Time, Employee, Surgeon, Cleaner, Patient, Surgery, Schedule
 import datetime
+from django.utils import timezone
 
 
 # Create your views here.
@@ -47,7 +48,7 @@ def appointment(request):
         end_str = f"{day}-{month}-{year} {end}" #converts date and time into string
         #converts string into datetime object of the surgery start time
         end_obj = datetime.datetime.strptime(end_str, '%d-%m-%Y %H:%M') 
-        timeperiod = Time(timestart=start_obj, timeend=end_obj)
+        timeperiod = Time(timestart=timezone.make_aware(start_obj), timeend=timezone.make_aware(end_obj))
         timeperiod.save()
 
         
@@ -95,6 +96,7 @@ def appointment(request):
         surgery.surgeons.add(j1)
         surgery.surgeons.add(j2)
         surgery.cleaners.add(c) 
+        print(surgery)
 
 
 
@@ -119,52 +121,64 @@ class personschedule(TemplateView):
         surgeries = list(Surgery.objects.all())
         earliest_surgery = Surgery.objects.earliest('time_period__timestart')
         latest_surgery = Surgery.objects.latest('time_period__timestart')
-        
-        patient = earliest_surgery.patient
-        patientname = patient.fullName
-        #patient name
+    
+
+        """
+        other option for display - displays earliest to latest - prob won't use this
         month1 = earliest_surgery.time_period.timestart.month #retruns 1,2,3,...,12
         day1 = earliest_surgery.time_period.timestart.day #returns int
         year1 = earliest_surgery.time_period.timestart.year #returns 2024
         month2 = latest_surgery.time_period.timestart.month
         day2 = latest_surgery.time_period.timestart.day
         year2 = latest_surgery.time_period.timestart.year
+        """
+
+
+        today = datetime.datetime.today()
+        month1 = today.month
+        day1 = today.day
+        year1 = today.year
+        month2 = today.month
+        day2 = today.day
+        year2 = today.year
+        
+        list1 = [1, 3, 5, 7, 8, 10, 12]
+        list2 = [x for x in range(1, 13)]
+        days = []
+        daytracker = []
+        for _ in range(7):
+            days.append([])
+            daytracker.append([month2, day2, year2])
+            day2 += 1
+            if day2 == 32:
+                day2 = 1
+                if list2.index(month2) == 11:
+                    year2 += 1
+                    month2 = 1
+                else:
+                    month1 += 1
+            elif month2 not in list1 and day2 == 31:
+                day2 = 1
+                month2 += 1
+            elif month2 == 2 and day2 == 30:
+                day2 = 1
+                month2 = 3
+            elif month2 == 2 and day2 == 29:
+                if year2 % 4 == 0:
+                    if year2 % 400 == 0:
+                        pass
+                    elif year2 % 100 == 0:
+                        day2 = 1
+                        month2 = 3
+                else:
+                    day2 = 1
+                    month2 = 3
+        daytracker.append([month2, day2, year2])
         allsurgeries = get_surgeries(earliest_surgery.time_period.timestart.date(), latest_surgery.time_period.timestart.date()) #gets the surgeries to be displayed from date_1 to date_2, which are datetime() objects
         
         teststring = f'{month1}{day1}{year1}'
         teststring2 = f'{month2}{day2}{year2}'
-
-        list1 = [1, 3, 5, 7, 8, 10, 12]
-        list2 = [x for x in range(1, 13)]
-        daytracker = []
-        while month1 != month2 and year1 != year2 and day1 != day2:
-            daytracker.append([month1, day1, year1])
-            day1 += 1
-            if day1 == 32:
-                day1 = 1
-                if list2.index(month1)+1 == 11:
-                    year1 += 1
-                    month1 = 1
-                else:
-                    month1 += 1
-            elif month1 not in list1 and day1 == 31:
-                day1 = 1
-                month1 += 1
-            elif month1 == 2 and day1 == 30:
-                day1 = 1
-                month1 = 3
-            elif month1 == 2 and day1 == 29:
-                if year1 % 4 == 0:
-                    if year1 % 400 == 0:
-                        pass
-                    elif year1 % 100 == 0:
-                        day1 = 1
-                        month1 = 3
-                else:
-                    day1 = 1
-                    month1 = 3
-            days.append([])
-        daytracker.append([month2, day2, year2])
+        teststring3 = "ape"
         #days is now [[],[],[],[], ...]
         #daytracker is now [[firstday], [secondday], ...]
 
@@ -176,13 +190,15 @@ class personschedule(TemplateView):
             try:
                 ind = daytracker.index([month, day, year])
                 days[ind].append(x)
+                teststring += f' {month}{day}{year}'
             except ValueError:
                 #if its not in the list just pass and go next 
                 continue 
-            days[ind].append(x)
         #fills days_string
         days_string = f''
-        for x in range(len(days)):
+        for x in range(7):
+
+            #get the day of the week
             year = daytracker[x][2]
             month = daytracker[x][0]
             day = daytracker[x][1]
@@ -201,23 +217,44 @@ class personschedule(TemplateView):
                 dayofweek = "Saturday"
             elif dayofweek == 6:
                 dayofweek = "Sunday"
+
             appointments = f'<ul>'
             for y in days[x]:
-                timestart = f"{y.time_period.timestart.hour}:{y.time_period.timestart.minute}"
-                timeend = f"{y.time_period.timestart.hour}:{y.time_period.timestart.minute}"
-
+                a = int(y.time_period.timestart.hour)
+                if a < 10:
+                    a = f"0{a}"
+                b = int(y.time_period.timestart.minute)
+                if b < 10:
+                    b = f"0{b}"
+                c = int(y.time_period.timeend.hour)
+                if c < 10:
+                    c = f"0{c}"
+                d = int(y.time_period.timeend.minute)
+                if d < 10:
+                    d = f"0{d}"
+                timestart = f"{a}:{b}"
+                timeend = f"{c}:{d}"
                 patient = earliest_surgery.patient
                 patientname = patient.fullName 
+                teststring3 += f' {timestart}{timeend}{patient}{patientname}'
                 name = f"Surgery for {patientname}"
                 appointments += f'<li class="cd-schedule__event"><a data-start="{timestart}" data-end="{timeend}"  data-content="event-sample" data-event="event-2" href = #0> <em class="cd-schedule__name">{name}</em></a></li>'
             appointments += '</ul>' 
             day_string = f'<li class="cd-schedule__group"><div class="cd-schedule__top-info"><span>{dayofweek}</span></div></li>'
+            day_string += appointments
             days_string += day_string
         
         #the big string :)
-        schedule_string = f'<div class = "cd-schedule__events"><ul id = "days">{days_string}</ul></div>'
+        schedule_string = f'<div class = "cd-schedule__events"><ul>{days_string}</ul></div>'
         print(schedule_string)
-        return render(request, self.template_name, {"schedule_string": schedule_string, "teststring":teststring, "teststring2":teststring2})
+        return render(request, self.template_name, 
+                      {"schedule_string": schedule_string, 
+                       "teststring":teststring, 
+                       "teststring2":teststring2, 
+                       "teststring3":teststring3, 
+                       "day_string":day_string, 
+                       "days_string":days_string}
+                       )
 
 class index(TemplateView):
     template_name = 'index.html'

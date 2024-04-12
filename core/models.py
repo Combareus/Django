@@ -14,7 +14,7 @@ Progress:
 class Time(models.Model):
 	timestart = models.DateTimeField()
 	timeend = models.DateTimeField()
-	def __str__():
+	def __str__(self):
 		return f"Start: {self.timestart} End: {self.timeend}"
 	def conflict(self, timeobject):
 		"""
@@ -188,7 +188,7 @@ class Surgeon(Employee):
 		"""
 		String (for testing printing)
 		"""
-		return f"Type: Surgeon \nName: {self.fullName} \nExperience: {self.exp}\n\n"
+		return f"Surgeon Name: {self.fullName} \nExperience: {self.exp}\n\n"
 	# def test(self):
 	# 	"""
 	# 	(for testing printing)
@@ -274,7 +274,7 @@ class Cleaner(Employee):
 		"""
 		String (for testing printing)
 		"""
-		return f"Type: Cleaner \nName: {self.fullName}\n\n"
+		return f"Cleaner Name: {self.fullName}\n"
 
 class Patient(models.Model):
 	# def __init__(self, fullName, conditionType, severity, admissionDate, status, *args, **kwargs):
@@ -303,7 +303,7 @@ class Patient(models.Model):
 		"""
 		String (for testing printing)
 		"""
-		return f"Type: Cleaner \nName: {self._fullName} \nCondition Type: {self._conditionType} \nSeverity: {self._severity}\n\n"
+		return f"Patient Name: {self.fullName} \nCondition Type: {self.condition_type} \nSeverity: {self.severity}\n\n"
 
 	# @property 
 	# def fullName(self):
@@ -402,7 +402,13 @@ class Surgery(models.Model):
 		return self.time_period.timestart.date()
 
 	def __str__(self):
-		return f"Surgeons: {self.surgeons} \nCleaners: {self.cleaners} \nPatient: {self.patient} \nTime: {self.time_period}\n\n"
+		s1 = ''
+		s2 = ''
+		for surgeon in self.surgeons.all():
+			s1 += str(surgeon) 
+		for cleaner in self.cleaners.all():
+			s2 += str(cleaner) 
+		return f"Surgeons:\n {s1} \nCleaners: \n{s2} \nPatient: \n{self.patient} \ {self.time_period}\n\n"
 	
 
 

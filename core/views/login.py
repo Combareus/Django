@@ -17,8 +17,10 @@ from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 # Create your views here.
 class default(TemplateView):
     template_name = 'index.html'
+
 def test(request):
     return render(request, "test.html")
+
 def signup(request):
 
     if request.method == "POST":
@@ -52,9 +54,6 @@ def signup(request):
         myuser.first_name = fname
         myuser.last_name = lname
 
-
-        messages.success(request, "Your account has been successfully created.")
-
         myuser.is_active = True
         myuser.save()
         #Welcome Email
@@ -86,7 +85,7 @@ def signup(request):
 
         return redirect('signin')
 
-    return render(request, "signup.html")
+    return render(request, "index.html")
 
 def signin(request):
 
@@ -106,11 +105,10 @@ def signin(request):
             messages.error(request, "Wrong Credentials.")
             return redirect('index')
 
-    return render(request, "signin.html")
+    return render(request, "index.html")
 
 def signout(request):
     logout(request)
-    messages.success(request, "Logged Out Successfully.")
     return redirect('index')
 
 #def activate(request, uidb64, token):

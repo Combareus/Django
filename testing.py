@@ -13,3 +13,10 @@ time_instance = Time.objects.create(
     timestart=timezone.make_aware(datetime.datetime(2024, 1, 1, 13, 0)),  # 1:00pm
     timeend=timezone.make_aware(datetime.datetime(2024, 12, 1, 13, 0))  # 2:00pm
 )
+
+
+def clear_database():
+    Time.objects.all().delete()
+    Employee.objects.all().delete()
+    Surgeon.objects.all().delete()
+    Patient.objects.all().delete()
