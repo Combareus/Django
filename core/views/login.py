@@ -111,6 +111,10 @@ def signout(request):
     logout(request)
     return redirect('index')
 
+def aboutus(request):
+    return render(request, "aboutus.html")
+
+
 #def activate(request, uidb64, token):
     try:
         uid = force_str(urlsafe_base64_decode(uidb64))

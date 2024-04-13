@@ -291,7 +291,7 @@
 	ScheduleTemplate.prototype.loadEventContent = function(content) {
 		// load the content of an event when user selects it
 		var self = this;
-
+		console.log(content);
 		httpRequest = new XMLHttpRequest();
 		httpRequest.onreadystatechange = function() {
 			if (httpRequest.readyState === XMLHttpRequest.DONE) {
@@ -302,7 +302,7 @@
 	    }
 		};
 		httpRequest.open('GET', content+'.html');
-    httpRequest.send();
+    	httpRequest.send();
 	};
 
 	ScheduleTemplate.prototype.getEventContent = function(string) {

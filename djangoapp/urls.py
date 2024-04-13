@@ -32,4 +32,7 @@ urlpatterns = [
     path('masterschedule/',views.masterschedule.as_view(), name = 'masterschedule'),
     path('appointment/', views.appointment, name = 'appointment'),
     path('personschedule/',views.personschedule.as_view(), name = 'personschedule'),
+    path('followups/',views.followups, name = 'followups'),
+    path('aboutus/',views.aboutus, name = 'aboutus'),
+    path('archive/', views.archive.as_view(), name='archive'),    
 ]
