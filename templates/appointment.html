@@ -1,11 +1,21 @@
 {%extends 'base.html'%}
+
+{% load static %}
+
+<!doctype html>
+
+<html lang="en">
+
 {% block title %} Add Appointment{% endblock %}
 
+
+{% block content %}
 {% for message in messages %}
     <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
     <strong>Message:</strong> {{ message }}
     </div>
 {% endfor %}
+{% endblock %}
 
 {% block scheduling %} 
 <h1> Add Appointment </h1>
@@ -24,17 +34,17 @@
         <label for="">Cleaner Last Name</label>
         <input type="text" id="clname" name="clname" placeholder="Enter Cleaner's Last Name" Required>
         <br>
-        <label for="">Junior Surgeon 1 First Name</label>
-        <input type="text" id="j1fname" name="j1fname" placeholder="First Name">
+        <label for="">Junior Surgeon First Name</label>
+        <input type="text" id="jfname" name="jfname" placeholder="First Name">
         <br>
-        <label for="">Junior Surgeon 1 Last Name</label>
-        <input type="text" id="j1lname" name="j1lname" placeholder="Last Name">
+        <label for="">Junior Surgeon Last Name</label>
+        <input type="text" id="jlname" name="jlname" placeholder="Last Name">
         <br>
-        <label for="">Junior Surgeon 2 First Name</label>
-        <input type="text" id="j2fname" name="j2fname" placeholder="First Name">
+        <label for="">Senior Surgeon First Name</label>
+        <input type="text" id="sfname" name="sfname" placeholder="First Name">
         <br>
-        <label for="">Junior Surgeon 2 Last Name</label>
-        <input type="text" id="j2lname" name="j2lname" placeholder="Last Name">
+        <label for="">Senior Surgeon Last Name</label>
+        <input type="text" id="slname" name="slname" placeholder="Last Name">
         <br>
         <label for="">Date</label>
         <select name="Month" id="Month" Required>

@@ -30,6 +30,9 @@ urlpatterns = [
     #path('activate/',views.activate, name = 'activate'),
     path('index/',views.index.as_view(), name = 'index'),
     path('masterschedule/',views.masterschedule.as_view(), name = 'masterschedule'),
-    path('appointment/', views.appointment, name = 'appointment'),
+    path('appointment/', views.appointment.as_view(), name = 'appointment'),
     path('personschedule/',views.personschedule.as_view(), name = 'personschedule'),
+    path('followups/',views.followups, name = 'followups'),
+    path('aboutus/',views.aboutus, name = 'aboutus'),
+    path('archive/', views.archive.as_view(), name='archive'),    
 ]
