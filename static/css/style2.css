@@ -298,11 +298,11 @@ h3{
 }
 
 .check-right{
-    flex-basis: 32%
+    flex-basis: 45%
 }
 
 .check-right img{
-    width: 60%;
+    width: 120%;
     position: center;
 }
 

@@ -104,21 +104,7 @@
 	ScheduleTemplate.prototype.openModal = function(target) {
 		const arr = [target.getAttribute('data-start'), target.getAttribute('data-end')];
 		console.log(5);
-		$.ajax({
-			type: "GET",
-			path: 'personschedule/event-sample.html',
-			data: {
-				"arr": arr,
-			},
-			dataType: "json",
-			success: function (data) {
-				// any process in data
-				alert("successfull")
-			},
-			failure: function () {
-				alert("failure");
-			}
-		});
+		
 		var self = this;
 		var mq = self.mq();
 		this.animating = true;
@@ -180,9 +166,19 @@
 				self.modalHeaderBg.removeEventListener('transitionend', cb);
 			});
 		}
-
+		$.ajax({
+			type: 'POST',
+			url: 'personschedule/event-sample.html',
+			data: data,
+			processData: false,
+			contentType: false,
+			success: function(json) {
+				alert(json);
+			}
+		})
 		//if browser do not support transitions -> no need to wait for the end of it
 		this.animationFallback();
+		
 	};
 
 	ScheduleTemplate.prototype.closeModal = function() {
