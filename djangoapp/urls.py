@@ -32,7 +32,11 @@ urlpatterns = [
     path('masterschedule/',views.masterschedule.as_view(), name = 'masterschedule'),
     path('appointment/', views.appointment.as_view(), name = 'appointment'),
     path('personschedule/',views.personschedule.as_view(), name = 'personschedule'),
+    path('personschedule/event-sample.html',views.eventsample, name = 'event-sample'),
     path('followups/',views.followups, name = 'followups'),
     path('aboutus/',views.aboutus, name = 'aboutus'),
     path('archive/', views.archive.as_view(), name='archive'),    
+    path('archive/event-sample.html', views.eventsample, name='event-sample'),
+    path('delete/', views.delete.as_view(), name='delete'),
+    path('get_surgery_info/', views.get_surgery_info, name='get_surgery_info'),
 ]

@@ -1,0 +1,69 @@
+{%extends 'base.html'%}
+
+{% load static %}
+
+<!doctype html>
+
+<html lang="en">
+
+{% block title %} Delete Appointment{% endblock %}
+
+
+
+{% block content %}
+{% for message in messages %}
+    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+    <strong>Message:</strong> {{ message }}
+    </div>
+{% endfor %}
+{% endblock %}
+
+{% block scheduling %} 
+<h1> Delete Appointment </h1>
+<head>
+    <link rel="stylesheet" href="{% static 'css/style4.css' %}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#deleteForm').on('submit', function(e) {
+                e.preventDefault();  // Prevent form from submitting normally and bypassing the ajax request in the view
+    
+                var ID = document.getElementById('ID').value;
+                $.ajax({
+                    type: "GET",
+                    url: "{% url 'get_surgery_info' %}",
+                    data: {
+                        "id": ID,
+                    },
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.error) {
+                            alert(data.error);
+                        } else {
+                            var confirmation = confirm('Are you sure you want to delete surgery with Patient ' + data.fullName + '?');
+                            if (confirmation) {
+                                $('#deleteForm').unbind('submit').submit();  // Manually submit the form
+                            }
+                        }
+                    },
+                    failure: function () {
+                        alert("some error idk why");
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <form action="/delete/" method="post">
+        {% csrf_token %}
+        <label for="">Surgery Id</label>
+        <input type="number" id="ID" name="ID" placeholder="Enter the surgery ID" Required>
+        
+        <br>
+        <button type = 'submit'>DELETE</button>
+        <label id = "Errors"></label>
+    </form>
+</body>
+
+{% endblock  %}

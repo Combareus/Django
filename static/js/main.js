@@ -102,6 +102,23 @@
 	};
 
 	ScheduleTemplate.prototype.openModal = function(target) {
+		const arr = [target.getAttribute('data-start'), target.getAttribute('data-end')];
+		console.log(5);
+		$.ajax({
+			type: "GET",
+			path: 'personschedule/event-sample.html',
+			data: {
+				"arr": arr,
+			},
+			dataType: "json",
+			success: function (data) {
+				// any process in data
+				alert("successfull")
+			},
+			failure: function () {
+				alert("failure");
+			}
+		});
 		var self = this;
 		var mq = self.mq();
 		this.animating = true;

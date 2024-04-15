@@ -395,6 +395,8 @@ class Surgery(models.Model):
 	cleaners = models.ManyToManyField(Cleaner)
 	patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
 	time_period = models.ForeignKey(Time, on_delete=models.CASCADE) 
+	info = models.CharField(max_length=500, null=True, blank=True)
+
 	def date(self):
 		'''
 		Returns date of surgery

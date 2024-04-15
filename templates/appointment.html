@@ -9,6 +9,7 @@
 {% block title %} Add Appointment{% endblock %}
 
 
+
 {% block content %}
 {% for message in messages %}
     <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
@@ -19,6 +20,9 @@
 
 {% block scheduling %} 
 <h1> Add Appointment </h1>
+<head>
+    <link rel="stylesheet" href="{% static 'css/style4.css' %}">
+</head>
 <body>
     <form action="/appointment/" method="post">
         {% csrf_token %}
@@ -71,9 +75,12 @@
         <br>
         <label for="">End Time (24hr format)</label>
         <input type="time" id="EndTime" name="EndTime" Required>
-
+        
         <br>
-
+        <label for="">Patient Notes</label>
+        
+        <input type="text" id="Notes" name="Notes" placeholder="Enter any notes about the patient">
+        <br>
         <button type = 'submit'>Schedule</button>
         <label id = "Errors"></label>
     </form>

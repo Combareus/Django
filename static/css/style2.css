@@ -275,3 +275,39 @@ h3{
 .red-btn:hover{
     color: #fff;
 }
+
+.check-content{
+    width: 80%;
+    margin: auto;
+    padding: 60px 0;
+}
+
+.check{
+    flex-basis: 50%;
+}
+
+.check h2{
+    color: #222;
+    font-weight: 600;
+    margin: 30px 0;
+}
+
+.check p{
+    color: #999;
+    padding: 0;
+}
+
+.check-right{
+    flex-basis: 32%
+}
+
+.check-right img{
+    width: 60%;
+    position: center;
+}
+
+.schedule-form{
+    border: 1px solid #ccc;
+    margin: 50px 0;
+    padding: 10px 20px;
+}

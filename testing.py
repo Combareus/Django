@@ -6,7 +6,13 @@ from django.utils import timezone
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'djangoapp.settings')
 application = get_wsgi_application()
 from core.models import Time, Employee, Surgeon, Cleaner, Patient, Surgery, Schedule
-
+def clear_database():
+    Time.objects.all().delete()
+    Employee.objects.all().delete()
+    Surgeon.objects.all().delete()
+    Patient.objects.all().delete()
+    Cleaner.objects.all().delete()
+clear_database()
 
 time_instance = Time.objects.create(
     id = 1,
@@ -15,8 +21,4 @@ time_instance = Time.objects.create(
 )
 
 
-def clear_database():
-    Time.objects.all().delete()
-    Employee.objects.all().delete()
-    Surgeon.objects.all().delete()
-    Patient.objects.all().delete()
+

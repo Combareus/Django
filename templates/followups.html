@@ -1,73 +1,114 @@
-{%extends 'base.html'%}
-{% load static %}
-
-
+<!-- The html block inherits from the original base stuff -->
 <!DOCTYPE html>
 
 <html>
     <head>
-        <title>Followups</title>
+        <title>About Us</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="../static/css/style4.css">
+        <link rel="stylesheet" href="../static/css/style2.css">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
     </head>
-
-    {% block title %} Add Followups{% endblock %}
-
-
-    {% block scheduling %} 
-    <h1> Add Followup Checkups </h1>
+    
     <body>
-        <form action="/followups/" method="post">
-            {% csrf_token %}
-            <label for="">Patient First Name</label>
-            <input type="text" id="fname" name="fname" placeholder="Enter Patient's First Name" Required>
-            <br>
-            <label for="">Patient Last Name</label>
-            <input type="text" id="lname" name="lname" placeholder="Enter Patient's Last Name" Required>
-            <br>
+        <section class="sub-header">
+            <nav>
+                <a href="home.html"></a>
+                <div class="nav-links">
+                    <ul>
+                        <li><a href="/home">Home</a></li>
+                        <li><a href="/personschedule">Personal Schedule</a></li>
+                        <li><a href="/appointment">Add Schedule</a></li>
+                        <li><a href="/followups">Checkups</a></li>
+                        <li><a href="/aboutus">About Us</a></li>
+                        <li><a href="/index">Logout</a></li>
+                    </ul>
+                </div>
+            </nav>
 
-            <br>
-            <label for="">Surgeon First Name</label>
-            <input type="text" id="surgfname" name="surgfname" placeholder="First Name">
-            <br>
-            <label for="">Surgeon Last Name</label>
-            <input type="text" id="surglname" name="surglname" placeholder="Last Name">
-            <br>
+        <h1>Followup Checkups</h1>
+    
+        </section>
+
+        <section class="check-content">
+            <div class="row">
+                <div class="check">
+                    <h2>Schedule Your Post-Surgery Checkups</h2>
+                    <p>To ensure seamless follow-up care, please use this convenient online system to schedule your post-surgery appointments.</p>
+                    <br>
+                    <p>Please select the most suitable dates and times for your follow-up consultations. Our system allows you to view available slots in real-time and choose the one that best fits your schedule.</p>
+
+                    <h2>Schedule Form</h2>
+                    <form class="schedule-form" action="/followups/" method="post">
+                        {% csrf_token %}
+                        <label for="">Patient First Name</label>
+                        <input type="text" id="fname" name="fname" placeholder="Enter Patient's First Name" Required>
+                        <br>
+                        <label for="">Patient Last Name</label>
+                        <input type="text" id="lname" name="lname" placeholder="Enter Patient's Last Name" Required>
+                        <br>
             
-            <br>
-            <label for="">Date</label>
-            <select name="Month" id="Month" Required>
-                <option value="January">January</option>
-                <option value="February">February</option>
-                <option value="March">March</option>
-                <option value="April">April</option>
-                <option value="May">May</option>
-                <option value="June">June</option>
-                <option value="July">July</option>
-                <option value="August">August</option>
-                <option value="September">September</option>
-                <option value="October">October</option>
-                <option value="November">November</option>
-                <option value="December">December</option>
-            </select>
-            <input type="number" id="Day" name="Day" min="1" max="31" placeholder="1" Required></input>
-            <input type="number" id="Year" name="Year" min="2024" max="2027" placeholder="2024" Required></input>
+                        <br>
+                        <label for="">Surgeon First Name</label>
+                        <input type="text" id="surgfname" name="surgfname" placeholder="First Name">
+                        <br>
+                        <label for="">Surgeon Last Name</label>
+                        <input type="text" id="surglname" name="surglname" placeholder="Last Name">
+                        <br>
+                        
+                        <br>
+                        <label for="">Date</label>
+                        <select name="Month" id="Month" Required>
+                            <option value="January">January</option>
+                            <option value="February">February</option>
+                            <option value="March">March</option>
+                            <option value="April">April</option>
+                            <option value="May">May</option>
+                            <option value="June">June</option>
+                            <option value="July">July</option>
+                            <option value="August">August</option>
+                            <option value="September">September</option>
+                            <option value="October">October</option>
+                            <option value="November">November</option>
+                            <option value="December">December</option>
+                        </select>
+                        <input type="number" id="Day" name="Day" min="1" max="31" placeholder="1" Required></input>
+                        <input type="number" id="Year" name="Year" min="2024" max="2027" placeholder="2024" Required></input>
+                        
+                        <br>
+                        <label for="">Start Time (24hr format) </label>
+                        <input type="time" id="StartTime" name="StartTime" Required>
             
-            <br>
-            <label for="">Start Time (24hr format) </label>
-            <input type="time" id="StartTime" name="StartTime" Required>
+                        <br>
+                        <label for="">End Time (24hr format)</label>
+                        <input type="time" id="EndTime" name="EndTime" Required>
+            
+                        <br>
+            
+                        <button class="hero-btn red-btn" type = 'submit'>Schedule</button>
+                    </form>
+                </div>
 
-            <br>
-            <label for="">End Time (24hr format)</label>
-            <input type="time" id="EndTime" name="EndTime" Required>
+                <div class="check-right">
+                    <img src="https://as1.ftcdn.net/v2/jpg/01/91/40/42/1000_F_191404295_WTD2cvTfRcdbZ90KB8fMp8DQuRBY1KWO.jpg">
+                </div>
+            </div> 
+        </section>
 
-            <br>
 
-            <button type = 'submit'>Schedule</button>
-            <label id = "Errors"></label>
-        </form>
+
+
+
+        <section class="footer">
+            <h4>About Us</h4>
+            <p>We are a group of dedicated high school students who want to make a positive impact in the rapidly developing world. This webapp is our attempt to simplify <br>the hectic schedules of surgeons and create a well-balanced work environment.</p>
+            <p>Made by Medi-Cal Project Team</p>
+
+        </section>
+
+
+        
+
     </body>
 </html>
-{% endblock  %}

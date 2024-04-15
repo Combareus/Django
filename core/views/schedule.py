@@ -8,10 +8,18 @@ from django.contrib.auth.models import User
 from core.models import Time, Employee, Surgeon, Cleaner, Patient, Surgery, Schedule
 import datetime
 from django.utils import timezone
-
+from django.http import JsonResponse
 
 # Create your views here.
 # view function: request -> response (request handler)
+def get_surgery_info(request):
+    surgery_id = request.GET.get('id')
+    try:
+        surgery = Surgery.objects.get(id=surgery_id)
+        return JsonResponse({'patient': surgery.patient.fullName, 'time': surgery.time_period.timestart, 'info': surgery.info})
+    except Surgery.DoesNotExist:
+        return JsonResponse({'error': 'Surgery doesn\'t exist'})
+    
 class masterschedule(TemplateView):
     template_name = 'masterschedule.html'
     def post(self, request):
@@ -22,24 +30,20 @@ class masterschedule(TemplateView):
         Surgeons = [Surgeon(fullName = "John Smith", assignments = [], availability = [], exp = "Sr", qualifications = [])] #list of surgeon objects to be linked with database
         dict["surgeons"] = Surgeons
         return render(request, self.template_name, dict)
-
+class delete(TemplateView):
+    template_name = 'delete.html'
+    def post(self, request):
+        surgery_id = request.POST['ID']
+        try:
+            surgery = Surgery.objects.get(id=surgery_id)
+            surgery.delete()
+            return redirect('personschedule')
+        except Surgery.DoesNotExist:
+            messages.error(request, "Error: Surgery with this ID does not exist.")
+            return redirect('delete')
 class appointment(TemplateView):
     template_name = 'appointment.html'
-    timeperiod = Time(timestart= datetime.datetime.today, timeend= datetime.datetime.today)
-    def get(self, request):
-        earliest_surgery = Surgery.objects.earliest('time_period__timestart')
-        latest_surgery = Surgery.objects.latest('time_period__timestart')
-        allsurgeries = get_surgeries(earliest_surgery.time_period.timestart.date(), latest_surgery.time_period.timestart.date()) #gets the surgeries to be displayed from date_1 to date_2, which are datetime() objects
-        for x in allsurgeries:
-            if x.time_period.timestart < self.timeperiod.timeend < x.time_period.timestart:
-                return False
-            elif x.time_period.timestart < self.timeperiod.timestart < x.time_period.timestart:
-                return False
-            elif self.timeperiod.timestart < x.time_period.timeend < self.timeperiod.timestart:
-                return False
-            elif self.timeperiod.timestart < x.time_period.timeend < self.timeperiod.timestart:
-                return False
-        return True
+    
     def post(self, request):
         patientfname = request.POST['fname']
         patientlname = request.POST['lname']
@@ -50,12 +54,19 @@ class appointment(TemplateView):
         sfname = request.POST['sfname']
         slname = request.POST['slname']
 
-
+        
         month = datetime.datetime.strptime(request.POST['Month'], "%B").month #converts month string into int
         day = int(request.POST['Day'])
         year = int(request.POST['Year'])
         start = request.POST['StartTime']
         end = request.POST['EndTime']
+        start_str = f"{day}-{month}-{year} {start}" #converts date and time into string
+        #converts string into datetime object of the surgery start time
+        start_obj = datetime.datetime.strptime(start_str, '%d-%m-%Y %H:%M') 
+        end_str = f"{day}-{month}-{year} {end}" #converts date and time into string
+        #converts string into datetime object of the surgery start time
+        end_obj = datetime.datetime.strptime(end_str, '%d-%m-%Y %H:%M') 
+        timeperiod = Time(timestart=timezone.make_aware(start_obj), timeend=timezone.make_aware(end_obj)) 
         
         
         list1 = [1, 3, 5, 7, 8, 10, 12]
@@ -77,18 +88,33 @@ class appointment(TemplateView):
                 messages.error(request, "Day Error: Invalid Date.")
                 return redirect('appointment')
         
-        start_str = f"{day}-{month}-{year} {start}" #converts date and time into string
-        #converts string into datetime object of the surgery start time
-        start_obj = datetime.datetime.strptime(start_str, '%d-%m-%Y %H:%M') 
-        end_str = f"{day}-{month}-{year} {end}" #converts date and time into string
-        #converts string into datetime object of the surgery start time
-        end_obj = datetime.datetime.strptime(end_str, '%d-%m-%Y %H:%M') 
-        self.timeperiod = Time(timestart=timezone.make_aware(start_obj), timeend=timezone.make_aware(end_obj))
-        timeperiod = Time(timestart=timezone.make_aware(start_obj), timeend=timezone.make_aware(end_obj))
-    
-        if not appointment.get(self, request):
-            messages.error(request, "Appointment Error: Overlap detected")
-            return redirect('appointment')
+        
+
+        try:
+            earliest_surgery = Surgery.objects.earliest('time_period__timestart')
+            latest_surgery = Surgery.objects.latest('time_period__timestart')
+        except Surgery.DoesNotExist:
+            earliest_surgery = None
+            latest_surgery = None
+        if earliest_surgery is not None and latest_surgery is not None:
+            allsurgeries = get_surgeries(earliest_surgery.time_period.timestart.date(), latest_surgery.time_period.timestart.date()) #gets the surgeries to be displayed from date_1 to date_2, which are datetime() objects
+            for x in allsurgeries:
+                if x.time_period.timestart < timeperiod.timeend and timeperiod.timeend < x.time_period.timeend:
+                    messages.error(request, "Time error: Overlap Detected")
+                    return redirect('appointment')
+                elif x.time_period.timestart < timeperiod.timestart and timeperiod.timestart < x.time_period.timeend:
+                    messages.error(request, "Time error: Overlap Detected")
+                    return redirect('appointment')
+                elif timeperiod.timestart < x.time_period.timestart and x.time_period.timestart < timeperiod.timeend:
+                    messages.error(request, "Time error: Overlap Detected")
+                    return redirect('appointment')
+                elif timeperiod.timestart < x.time_period.timeend and x.time_period.timeend < timeperiod.timeend:
+                    messages.error(request, "Time error: Overlap Detected")
+                    return redirect('appointment')
+            if timeperiod.timestart > timeperiod.timeend:
+                messages.error(request, "Time error: Overlap Detected")
+                return redirect('appointment')
+               
         timeperiod.save()
 
         j = Surgeon(fullName=jfname + " " + jlname, exp="Jr", qualifications="Q1")
@@ -130,7 +156,8 @@ def followups(request):
         year = int(request.POST['Year'])
         start = request.POST['StartTime']
         end = request.POST['EndTime']
-        
+        info = 'No notes for checkup'
+
         start_str = f"{day}-{month}-{year} {start}" #converts date and time into string
         #converts string into datetime object of the surgery start time
         start_obj = datetime.datetime.strptime(start_str, '%d-%m-%Y %H:%M') 
@@ -139,6 +166,8 @@ def followups(request):
         end_obj = datetime.datetime.strptime(end_str, '%d-%m-%Y %H:%M') 
         timeperiod = Time(timestart=timezone.make_aware(start_obj), timeend=timezone.make_aware(end_obj))
         timeperiod.save()
+
+        
 
         
         list1 = [1, 3, 5, 7, 8, 10, 12]
@@ -168,7 +197,7 @@ def followups(request):
         patient = Patient(fullName=patientfname + " " + patientlname)
         patient.save()
 
-        surgery = Surgery.objects.create(patient=patient, time_period=timeperiod)
+        surgery = Surgery.objects.create(patient=patient, time_period=timeperiod, info=info)
         surgery.save()
         surgery.surgeons.add(surg)
         print(surgery)
@@ -193,9 +222,16 @@ class personschedule(TemplateView):
         
 
         surgeries = list(Surgery.objects.all())
-        earliest_surgery = Surgery.objects.earliest('time_period__timestart')
-        latest_surgery = Surgery.objects.latest('time_period__timestart')
-        allsurgeries = get_surgeries(earliest_surgery.time_period.timestart.date(), latest_surgery.time_period.timestart.date()) #gets the surgeries to be displayed from date_1 to date_2, which are datetime() objects
+        try:
+            earliest_surgery = Surgery.objects.earliest('time_period__timestart')
+            latest_surgery = Surgery.objects.latest('time_period__timestart')
+        except Surgery.DoesNotExist:
+            earliest_surgery = None
+            latest_surgery = None
+        if earliest_surgery is not None and latest_surgery is not None:
+            allsurgeries = get_surgeries(earliest_surgery.time_period.timestart.date(), latest_surgery.time_period.timestart.date())
+        else:
+            allsurgeries = []
 
 
         """
@@ -219,7 +255,7 @@ class personschedule(TemplateView):
         
         list1 = [1, 3, 5, 7, 8, 10, 12]
         list2 = [x for x in range(1, 13)]
-        days = []
+        days = [] #list of surgery objects within seven days
         daytracker = []
         for _ in range(7):
             days.append([])
@@ -252,7 +288,8 @@ class personschedule(TemplateView):
         
         teststring = f'{month1}{day1}{year1}'
         teststring2 = f'{month2}{day2}{year2}'
-        teststring3 = "ape"
+        result = request.GET.get('result', None)
+        teststring3 = f'{result}'
         #days is now [[],[],[],[], ...]
         #daytracker is now [[firstday], [secondday], ...]
 
@@ -308,11 +345,10 @@ class personschedule(TemplateView):
                     d = f"0{d}"
                 timestart = f"{a}:{b}"
                 timeend = f"{c}:{d}"
-                patient = earliest_surgery.patient
+                patient = y.patient
                 patientname = patient.fullName 
-                teststring3 += f' {timestart}{timeend}{patient}{patientname}'
                 name = f"Surgery for {patientname}"
-                appointments += f'<li class="cd-schedule__event"><a data-start="{timestart}" data-end="{timeend}"  data-content="event-sample" data-event="event-2" href = "#0"> <em class="cd-schedule__name">{name}</em></a></li>'
+                appointments += f'<li class="cd-schedule__event"><a data-start="{timestart}" data-end="{timeend}"  data-content="event-sample" data-event="event-2" href = "event-sample.html"> <em class="cd-schedule__name">{name}</em></a></li>'
             appointments += '</ul>' 
             day_string = f'<li class="cd-schedule__group"><div class="cd-schedule__top-info"><span>{dayofweek}</span></div><ul>'
             day_string += appointments
@@ -354,36 +390,43 @@ class archive(TemplateView):
         self.month = datetime.datetime.strptime(request.POST['Month'], "%B").month #converts month string into int
         self.day = int(request.POST['Day'])
         self.year = int(request.POST['Year'])
-        return render(request, self.template_name)
+        return archive.get(self, request)
 
     def get(self, request):
-        earliest_surgery = Surgery.objects.earliest('time_period__timestart')
-        latest_surgery = Surgery.objects.latest('time_period__timestart')
-        allsurgeries = get_surgeries(earliest_surgery.time_period.timestart.date(), latest_surgery.time_period.timestart.date())
-        display_surgeries = []
+        dayofweek = 0
+        try:
+            earliest_surgery = Surgery.objects.earliest('time_period__timestart')
+            latest_surgery = Surgery.objects.latest('time_period__timestart')
+        except Surgery.DoesNotExist:
+            earliest_surgery = None
+            latest_surgery = None
+        if earliest_surgery is not None and latest_surgery is not None:
+            allsurgeries = get_surgeries(earliest_surgery.time_period.timestart.date(), latest_surgery.time_period.timestart.date())
+        else:
+            allsurgeries = []
+        display_surgeries = [] #list of surgery objects on the display date
         for x in allsurgeries:
             month = x.time_period.timestart.month
             day = x.time_period.timestart.day
             year = x.time_period.timestart.year
             if [month, day, year] == [self.month, self.day, self.year]:
                 display_surgeries.append(x)
-
-        days_string = f''
-        dayofweek = datetime.datetime(year, month, day).weekday()
-        if dayofweek == 0:
-            dayofweek = "Monday"
-        elif dayofweek == 1:
-            dayofweek = "Tuesday"
-        elif dayofweek == 2:
-            dayofweek = "Wednesday"
-        elif dayofweek == 3:
-            dayofweek = "Thursday"
-        elif dayofweek == 4:
-            dayofweek = "Friday"
-        elif dayofweek == 5:
-            dayofweek = "Saturday"
-        elif dayofweek == 6:
-            dayofweek = "Sunday"
+                dayofweek = datetime.datetime(year, month, day).weekday()
+                if dayofweek == 0:
+                    dayofweek = "Monday"
+                elif dayofweek == 1:
+                    dayofweek = "Tuesday"
+                elif dayofweek == 2:
+                    dayofweek = "Wednesday"
+                elif dayofweek == 3:
+                    dayofweek = "Thursday"
+                elif dayofweek == 4:
+                    dayofweek = "Friday"
+                elif dayofweek == 5:
+                    dayofweek = "Saturday"
+                elif dayofweek == 6:
+                    dayofweek = "Sunday"
+        days_string = f''        
 
         appointments = f'<ul>'
         for x in display_surgeries:
@@ -401,10 +444,10 @@ class archive(TemplateView):
                 d = f"0{d}"
             timestart = f"{a}:{b}"
             timeend = f"{c}:{d}"
-            patient = earliest_surgery.patient
+            patient = x.patient
             patientname = patient.fullName 
             name = f"Surgery for {patientname}"
-            appointments += f'<li class="cd-schedule__event"><a data-start="{timestart}" data-end="{timeend}"  data-content="event-sample" data-event="event-2" href = "#0"> <em class="cd-schedule__name">{name}</em></a></li>'
+            appointments += f'<li class="cd-schedule__event"><a data-start="{timestart}" data-end="{timeend}"  data-content="event-sample" data-event="event-2" href="event-sample.html"> <em class="cd-schedule__name">{name}</em></a></li>'
         appointments += '</ul>' 
         day_string = f'<li class="cd-schedule__group"><div class="cd-schedule__top-info"><span>{dayofweek}</span></div><ul>'
         day_string += appointments
@@ -412,10 +455,16 @@ class archive(TemplateView):
         days_string += day_string
     
         #the big string :)
-        schedule_string = f'<div class = "cd-schedule__events"><ul>{days_string}</ul></div>'
-        return render(request, self.template_name, {"schedule_string":schedule_string})
+        #<li class="cd-schedule__group"><div class="cd-schedule__top-info"><span></span></div><ul></ul></li>
+        schedule_string = f'<div class = "cd-schedule__events"><ul><li class="cd-schedule__group"><div class="cd-schedule__top-info"><span></span></div><ul></ul></li><li class="cd-schedule__group"><div class="cd-schedule__top-info"><span></span></div><ul></ul></li>{days_string}<li class="cd-schedule__group"><div class="cd-schedule__top-info"><span></span></div><ul></ul></li><li class="cd-schedule__group"><div class="cd-schedule__top-info"><span></span></div><ul></ul></li></ul></div>'
+        title = f'All Surgeries for {self.day}/{self.month}/{self.year} (dd/mm/yyyy)'
+        return render(request, self.template_name, {"schedule_string":schedule_string, "title":title})
 
-
+def eventsample(request):
+    result = request.GET.get('arr')
+    print(result)
+    return render(request, "event-sample.html", {'info':result})
+#commentee
 """
 #login page at /schedule/login
 def login(request):
