@@ -53,10 +53,6 @@ class appointment(TemplateView):
         jlname = request.POST['jlname']
         sfname = request.POST['sfname']
         slname = request.POST['slname']
-        jfname = request.POST['jfname']
-        jlname = request.POST['jlname']
-        sfname = request.POST['sfname']
-        slname = request.POST['slname']
 
         
         month = datetime.datetime.strptime(request.POST['Month'], "%B").month #converts month string into int
@@ -128,9 +124,6 @@ class appointment(TemplateView):
         s = Surgeon(fullName=sfname + " " + slname, exp="Sr", qualifications="Q2")
         s.save()
         s.availability.add(Time.objects.get(id=1))
-        s = Surgeon(fullName=sfname + " " + slname, exp="Sr", qualifications="Q2")
-        s.save()
-        s.availability.add(Time.objects.get(id=1))
 
         c = Cleaner(fullName=cleanerfname + " " + cleanerlname)
         c.save()
@@ -141,8 +134,6 @@ class appointment(TemplateView):
 
         surgery = Surgery.objects.create(patient=patient, time_period=timeperiod)
         surgery.save()
-        surgery.surgeons.add(j)
-        surgery.surgeons.add(s)
         surgery.surgeons.add(j)
         surgery.surgeons.add(s)
         surgery.cleaners.add(c) 
@@ -218,7 +209,6 @@ def followups(request):
 
 class personschedule(TemplateView):
     template_name = 'personschedule.html'
-    template_2 = 'event-sample.html'
     template_2 = 'event-sample.html'
     def get(self, request):
         '''
@@ -369,14 +359,11 @@ class personschedule(TemplateView):
         schedule_string = f'<div class = "cd-schedule__events"><ul>{days_string}</ul></div>'
         print(schedule_string)
         return render(request, self.template_name,
-        return render(request, self.template_name,
                       {"schedule_string": schedule_string, 
                        "teststring":teststring, 
                        "teststring2":teststring2, 
                        "teststring3":teststring3, 
                        "day_string":day_string, 
-                       "days_string":days_string,
-                       "template_2":self.template_2}
                        "days_string":days_string,
                        "template_2":self.template_2}
                        )
