@@ -119,12 +119,12 @@ class appointment(TemplateView):
                 return redirect('appointment')
                
         timeperiod.save()
-
-        j = Surgeon(fullName=jfname + " " + jlname, exp="Jr", qualifications="Q1")
+    
+        j = Surgeon(fullName=jfname + " " + jlname, exp="Jr", qualifications="Qualified")
         j.save()
         j.availability.add(Time.objects.get(id=1))
 
-        s = Surgeon(fullName=sfname + " " + slname, exp="Sr", qualifications="Q2")
+        s = Surgeon(fullName=sfname + " " + slname, exp="Jr", qualifications="Qualified")
         s.save()
         s.availability.add(Time.objects.get(id=1))
 
@@ -140,6 +140,7 @@ class appointment(TemplateView):
         surgery.surgeons.add(j)
         surgery.surgeons.add(s)
         surgery.cleaners.add(c) 
+        
         print(surgery)
 
 
@@ -472,6 +473,8 @@ class eventsample(TemplateView):
             self.result = request.GET.get('arr')
             data = {}
             return JsonResponse(data)
+        else:
+            print(request)
         return render(request, "event-sample.html", {'info':self.result})
 #commentee
 """

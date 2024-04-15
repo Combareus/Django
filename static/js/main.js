@@ -167,7 +167,7 @@
 			});
 		}
 		$.ajax({
-			type: 'POST',
+			type: 'AJAX',
 			url: 'personschedule/event-sample.html',
 			data: data,
 			processData: false,
