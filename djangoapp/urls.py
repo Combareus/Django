@@ -39,4 +39,7 @@ urlpatterns = [
     path('archive/event-sample.html', views.eventsample, name='event-sample'),
     path('delete/', views.delete.as_view(), name='delete'),
     path('get_surgery_info/', views.get_surgery_info, name='get_surgery_info'),
+    path('followups/',views.followups, name = 'followups'),
+    path('aboutus/',views.aboutus, name = 'aboutus'),
+    path('archive/', views.archive.as_view(), name='archive'),    
 ]
