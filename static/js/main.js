@@ -2,6 +2,7 @@
 	// Schedule Template - by CodyHouse.co
 	function ScheduleTemplate( element ) {
 		this.element = element;
+		this.info = '';
 		this.timelineItems = this.element.getElementsByClassName('cd-schedule__timeline')[0].getElementsByTagName('li');
 		this.timelineStart = getScheduleTimestamp(this.timelineItems[0].textContent);
 		this.timelineUnitDuration = getScheduleTimestamp(this.timelineItems[1].textContent) - getScheduleTimestamp(this.timelineItems[0].textContent);
@@ -85,10 +86,6 @@
 		var self = this;
 		for(var i = 0; i < this.singleEvents.length; i++) {
 			// open modal when user selects an event
-			this.singleEvents[i].addEventListener('click', function(event){
-				event.preventDefault();
-				if(!self.animating) self.openModal(this.getElementsByTagName('a')[0]);
-			});
 		}
 		//close modal window
 		this.modalClose.addEventListener('click', function(event){
@@ -102,23 +99,14 @@
 	};
 
 	ScheduleTemplate.prototype.openModal = function(target) {
-		const arr = [target.getAttribute('data-start'), target.getAttribute('data-end')];
-		console.log(5);
-		$.ajax({
-			type: "GET",
-			path: 'personschedule/event-sample.html',
-			data: {
-				"arr": arr,
+		this.info = [target.getAttribute('data-start'), target.getAttribute('data-end')];
+		console.log(this.info)
+		$.get(
+			'personschedule/',
+			{
+				"arr": this.info,
 			},
-			dataType: "json",
-			success: function (data) {
-				// any process in data
-				alert("successfull")
-			},
-			failure: function () {
-				alert("failure");
-			}
-		});
+		);
 		var self = this;
 		var mq = self.mq();
 		this.animating = true;

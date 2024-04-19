@@ -210,6 +210,7 @@ def followups(request):
 class personschedule(TemplateView):
     template_name = 'personschedule.html'
     template_2 = 'event-sample.html'
+    result = "BLANK"
     def get(self, request):
         '''
         View function displays calls template to display schedule
@@ -357,7 +358,14 @@ class personschedule(TemplateView):
         
         #the big string :)
         schedule_string = f'<div class = "cd-schedule__events"><ul>{days_string}</ul></div>'
-        print(schedule_string)
+
+        if 'arr' in request.GET:
+            self.result = request.GET['arr']
+        else:
+            self.result = False
+        print(self.result)
+        
+
         return render(request, self.template_name,
                       {"schedule_string": schedule_string, 
                        "teststring":teststring, 
@@ -365,7 +373,8 @@ class personschedule(TemplateView):
                        "teststring3":teststring3, 
                        "day_string":day_string, 
                        "days_string":days_string,
-                       "template_2":self.template_2}
+                       "template_2":self.template_2,
+                       "info":self.result,}
                        )
 
 class index(TemplateView):
@@ -458,12 +467,20 @@ class archive(TemplateView):
         #<li class="cd-schedule__group"><div class="cd-schedule__top-info"><span></span></div><ul></ul></li>
         schedule_string = f'<div class = "cd-schedule__events"><ul><li class="cd-schedule__group"><div class="cd-schedule__top-info"><span></span></div><ul></ul></li><li class="cd-schedule__group"><div class="cd-schedule__top-info"><span></span></div><ul></ul></li>{days_string}<li class="cd-schedule__group"><div class="cd-schedule__top-info"><span></span></div><ul></ul></li><li class="cd-schedule__group"><div class="cd-schedule__top-info"><span></span></div><ul></ul></li></ul></div>'
         title = f'All Surgeries for {self.day}/{self.month}/{self.year} (dd/mm/yyyy)'
+      
         return render(request, self.template_name, {"schedule_string":schedule_string, "title":title})
 
-def eventsample(request):
-    result = request.GET.get('arr')
-    print(result)
-    return render(request, "event-sample.html", {'info':result})
+class eventsample(TemplateView):
+    result = "lolol"
+    template_name = 'event-sample.html'
+    def get(self, request):
+        if 'arr' in request.GET:
+            self.result = request.GET['arr']
+        else:
+            self.result = False
+        print(self.result)
+        return render(request, self.template_name, {"info":self.result})
+    
 #commentee
 """
 #login page at /schedule/login
