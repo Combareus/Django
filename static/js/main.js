@@ -99,6 +99,7 @@
 	};
 
 	ScheduleTemplate.prototype.openModal = function(target) {
+<<<<<<< HEAD
 		this.info = [target.getAttribute('data-start'), target.getAttribute('data-end')];
 		console.log(this.info)
 		$.get(
@@ -107,6 +108,11 @@
 				"arr": this.info,
 			},
 		);
+=======
+		const arr = [target.getAttribute('data-start'), target.getAttribute('data-end')];
+		console.log(5);
+		
+>>>>>>> f63f11be3d797409e11ac14ad1a89031366d6d2b
 		var self = this;
 		var mq = self.mq();
 		this.animating = true;
@@ -168,9 +174,19 @@
 				self.modalHeaderBg.removeEventListener('transitionend', cb);
 			});
 		}
-
+		$.ajax({
+			type: 'AJAX',
+			url: 'personschedule/event-sample.html',
+			data: data,
+			processData: false,
+			contentType: false,
+			success: function(json) {
+				alert(json);
+			}
+		})
 		//if browser do not support transitions -> no need to wait for the end of it
 		this.animationFallback();
+		
 	};
 
 	ScheduleTemplate.prototype.closeModal = function() {

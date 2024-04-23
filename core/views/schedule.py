@@ -9,6 +9,9 @@ from core.models import Time, Employee, Surgeon, Cleaner, Patient, Surgery, Sche
 import datetime
 from django.utils import timezone
 from django.http import JsonResponse
+import json
+from django.contrib.auth.decorators import login_required
+
 
 # Create your views here.
 # view function: request -> response (request handler)
@@ -116,12 +119,12 @@ class appointment(TemplateView):
                 return redirect('appointment')
                
         timeperiod.save()
-
-        j = Surgeon(fullName=jfname + " " + jlname, exp="Jr", qualifications="Q1")
+    
+        j = Surgeon(fullName=jfname + " " + jlname, exp="Jr", qualifications="Qualified")
         j.save()
         j.availability.add(Time.objects.get(id=1))
 
-        s = Surgeon(fullName=sfname + " " + slname, exp="Sr", qualifications="Q2")
+        s = Surgeon(fullName=sfname + " " + slname, exp="Jr", qualifications="Qualified")
         s.save()
         s.availability.add(Time.objects.get(id=1))
 
@@ -137,6 +140,7 @@ class appointment(TemplateView):
         surgery.surgeons.add(j)
         surgery.surgeons.add(s)
         surgery.cleaners.add(c) 
+        
         print(surgery)
 
 
@@ -469,9 +473,12 @@ class archive(TemplateView):
         title = f'All Surgeries for {self.day}/{self.month}/{self.year} (dd/mm/yyyy)'
       
         return render(request, self.template_name, {"schedule_string":schedule_string, "title":title})
+def is_ajax(request):
+    return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
 
 class eventsample(TemplateView):
     result = "lolol"
+<<<<<<< HEAD
     template_name = 'event-sample.html'
     def get(self, request):
         if 'arr' in request.GET:
@@ -481,6 +488,16 @@ class eventsample(TemplateView):
         print(self.result)
         return render(request, self.template_name, {"info":self.result})
     
+=======
+    def get(self, request):
+        if is_ajax(request = request):
+            self.result = request.GET.get('arr')
+            data = {}
+            return JsonResponse(data)
+        else:
+            print(request)
+        return render(request, "event-sample.html", {'info':self.result})
+>>>>>>> f63f11be3d797409e11ac14ad1a89031366d6d2b
 #commentee
 """
 #login page at /schedule/login
