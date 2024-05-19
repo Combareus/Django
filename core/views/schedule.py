@@ -355,30 +355,18 @@ class personschedule(TemplateView):
                 name = f"Surgery for {patientname}"
                 appointments += f'<li class="cd-schedule__event"><a data-start="{timestart}" data-end="{timeend}"  data-content="event-sample" data-event="event-2" href = "event-sample.html"> <em class="cd-schedule__name">{name}</em></a></li>'
             appointments += '</ul>' 
-            day_string = f'<li class="cd-schedule__group"><div class="cd-schedule__top-info"><span>{dayofweek}</span></div><ul>'
+            day_string = f'<li class="cd-schedule__group"><div class="cd-schedule__top-info"><span>{dayofweek}</span></div>'
             day_string += appointments
-            day_string += '</ul></li>'
+            day_string += '</li>'
             days_string += day_string
         
         #the big string :)
         schedule_string = f'<div class = "cd-schedule__events"><ul>{days_string}</ul></div>'
-
-        if 'arr' in request.GET:
-            self.result = request.GET['arr']
-        else:
-            self.result = False
-        print(self.result)
+        
         
 
         return render(request, self.template_name,
-                      {"schedule_string": schedule_string, 
-                       "teststring":teststring, 
-                       "teststring2":teststring2, 
-                       "teststring3":teststring3, 
-                       "day_string":day_string, 
-                       "days_string":days_string,
-                       "template_2":self.template_2,
-                       "info":self.result,}
+                      {"schedule_string": schedule_string,}
                        )
 
 class index(TemplateView):
@@ -478,7 +466,6 @@ def is_ajax(request):
 
 class eventsample(TemplateView):
     result = "lolol"
-<<<<<<< HEAD
     template_name = 'event-sample.html'
     def get(self, request):
         if 'arr' in request.GET:
@@ -488,16 +475,6 @@ class eventsample(TemplateView):
         print(self.result)
         return render(request, self.template_name, {"info":self.result})
     
-=======
-    def get(self, request):
-        if is_ajax(request = request):
-            self.result = request.GET.get('arr')
-            data = {}
-            return JsonResponse(data)
-        else:
-            print(request)
-        return render(request, "event-sample.html", {'info':self.result})
->>>>>>> f63f11be3d797409e11ac14ad1a89031366d6d2b
 #commentee
 """
 #login page at /schedule/login

@@ -12,7 +12,7 @@ from django.utils.encoding import force_bytes, force_str
 from ..login.tokens import generate_token
 from django.core.mail import EmailMessage, send_mail
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
-from core import Surgeon, Time, Employee
+# from core import Surgeon, Time, Employee
 
 # Create your views here.
 class default(TemplateView):
@@ -56,7 +56,6 @@ def signup(request):
 
         myuser.is_active = True
         myuser.save()
-        s = Surgeon()
         #Welcome Email
         #subject = "Welcome to Medi-Cal!"
         #message = "Hello " + myuser.first_name + "! \n" + "Welcome to Medi-Cal! \nThank you for visiting our website. \nWe have also sent you a confirmation email, please confirm your email address in order to activate your account. \n\nThank you."

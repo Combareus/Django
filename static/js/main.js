@@ -2,7 +2,6 @@
 	// Schedule Template - by CodyHouse.co
 	function ScheduleTemplate( element ) {
 		this.element = element;
-		this.info = '';
 		this.timelineItems = this.element.getElementsByClassName('cd-schedule__timeline')[0].getElementsByTagName('li');
 		this.timelineStart = getScheduleTimestamp(this.timelineItems[0].textContent);
 		this.timelineUnitDuration = getScheduleTimestamp(this.timelineItems[1].textContent) - getScheduleTimestamp(this.timelineItems[0].textContent);
@@ -99,20 +98,6 @@
 	};
 
 	ScheduleTemplate.prototype.openModal = function(target) {
-<<<<<<< HEAD
-		this.info = [target.getAttribute('data-start'), target.getAttribute('data-end')];
-		console.log(this.info)
-		$.get(
-			'personschedule/',
-			{
-				"arr": this.info,
-			},
-		);
-=======
-		const arr = [target.getAttribute('data-start'), target.getAttribute('data-end')];
-		console.log(5);
-		
->>>>>>> f63f11be3d797409e11ac14ad1a89031366d6d2b
 		var self = this;
 		var mq = self.mq();
 		this.animating = true;
@@ -174,16 +159,7 @@
 				self.modalHeaderBg.removeEventListener('transitionend', cb);
 			});
 		}
-		$.ajax({
-			type: 'AJAX',
-			url: 'personschedule/event-sample.html',
-			data: data,
-			processData: false,
-			contentType: false,
-			success: function(json) {
-				alert(json);
-			}
-		})
+
 		//if browser do not support transitions -> no need to wait for the end of it
 		this.animationFallback();
 		
