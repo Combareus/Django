@@ -1,4 +1,65 @@
+var script = document.createElement('script');
+script.src = 'https://code.jquery.com/jquery-3.6.3.min.js'; // Check https://jquery.com/ for the current version
+document.getElementsByTagName('head')[0].appendChild(script);
+
+
+function Delete(timeend, dateend) {
+    console.log("sending request");
+	console.log(timeend[0], timeend[1]);
+	console.log(dateend);
+	console.log('still sneding');
+    // Extract CSRF token from cookies
+    var csrftoken = getCookie('csrftoken');
+    $.ajax({
+        type: "POST",
+        url: "/personschedule/event-sample.html/",
+        headers: {
+            "X-CSRFToken": csrftoken // Include CSRF token in headers
+        },
+        data: {
+            'day': dateend[0],
+			'month': dateend[1],
+			'year': dateend[2],
+            'hour': timeend[0],
+			'minute': timeend[1],
+        },
+        success: function(response) {
+            // Handle the response from Django view
+            console.log(response);
+        },
+        error: function(xhr, errmsg, err) {
+            // Handle error
+            console.log(xhr.status + ": " + xhr.responseText);
+        }
+    });
+}
+
+// Function to extract CSRF token from cookies
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].trim();
+            // Check if the cookie name matches the csrf token name
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+// Lots of this code was provided by codyhouse with a free use license (https://codyhouse.co/license under framework) and (heavily) edited by team
+
 (function() {
+	// initialize global variables
+	var gdataend = '';
+	var gdatadate = '';
+	var glastdiv = '';
+	var gflag = false;
+	var gstring = '<!DOCTYPE html><html><head><link rel="stylesheet" href="/static/css/style.css"><script src = "/static/js/util.js"></script> <!-- util functions included in the CodyHouse framework --><script src = "/static/js/main.js"></script></head><body><div class="cd-schedule-modal__event-info"><h1>  Surgery Infohehehehaw</h1></div></body></html>';
 	// Schedule Template - by CodyHouse.co
 	function ScheduleTemplate( element ) {
 		this.element = element;
@@ -32,6 +93,7 @@
 		this.scheduleReset();
 		this.initEvents();
 	};
+
 
 	ScheduleTemplate.prototype.scheduleReset = function() {
 		// according to the mq value, init the style of the template
@@ -81,10 +143,23 @@
 		Util.removeClass(this.element, 'cd-schedule--loading');
 	};
 
+
+
 	ScheduleTemplate.prototype.initEvents = function() {
 		var self = this;
+		console.log("here");
 		for(var i = 0; i < this.singleEvents.length; i++) {
 			// open modal when user selects an event
+			this.singleEvents[i].addEventListener('click', function(event){
+				//self.sendRequest(this.getElementsByTagName('a')[0]);
+				event.preventDefault();
+				if(!self.animating && !gflag){
+					self.openModal(this.getElementsByTagName('a')[0]);
+					gflag = true;
+				}
+				gflag = false;
+			});
+			gflag = false;
 		}
 		//close modal window
 		this.modalClose.addEventListener('click', function(event){
@@ -98,24 +173,53 @@
 	};
 
 	ScheduleTemplate.prototype.openModal = function(target) {
+		gdataend = target.getAttribute('data-end');
+		gdatadate = target.getAttribute('data-date');
+		$.ajax({
+			type: "GET", // or "GET" depending on your requirements
+			url: "/personschedule/event-sample.html/",
+			data: {
+				'dataend': gdataend, // Send your variable as data
+				'datadate': gdatadate,
+			},
+			success: function(response) {
+				// Handle the response from Django view
+				gstring = response.string;
+			},
+			error: function(xhr, errmsg, err) {
+				// Handle error (never happens :))
+				console.log(xhr.status + ": " + xhr.responseText); // Log any errors
+			}
+		});
 		var self = this;
-		var mq = self.mq();
-		this.animating = true;
-
+		if (!gflag){
+			gflag = true;
+			self.openModal(target);
+		}
+		gflag = false;
+		
 		//update event name and time
+		var mq = self.mq();
+		this.animating = true;	
 		this.modalEventName.textContent = target.getElementsByTagName('em')[0].textContent;
 		this.modalDate.textContent = target.getAttribute('data-start')+' - '+target.getAttribute('data-end');
 		this.modal.setAttribute('data-event', target.getAttribute('data-event'));
-
+		console.log(this.modalDate);
+		//this.modalBody.getElementById('label').innerHTML = 'success!';
 		//update event content
 		this.loadEventContent(target.getAttribute('data-content'));
-
+		
+		
+		
 		Util.addClass(this.modal, 'cd-schedule-modal--open');
 		
 		setTimeout(function(){
 			//fixes a flash when an event is selected - desktop version only
 			Util.addClass(target.closest('li'), 'cd-schedule__event--selected');
 		}, 10);
+
+
+		
 
 		if( mq == 'mobile' ) {
 			self.modal.addEventListener('transitionend', function cb(){
@@ -159,7 +263,6 @@
 				self.modalHeaderBg.removeEventListener('transitionend', cb);
 			});
 		}
-
 		//if browser do not support transitions -> no need to wait for the end of it
 		this.animationFallback();
 		
@@ -286,19 +389,26 @@
 	};
 
 	ScheduleTemplate.prototype.loadEventContent = function(content) {
-		// load the content of an event when user selects it
 		var self = this;
-		console.log(content);
-		httpRequest = new XMLHttpRequest();
+		var httpRequest = new XMLHttpRequest();
 		httpRequest.onreadystatechange = function() {
 			if (httpRequest.readyState === XMLHttpRequest.DONE) {
-	      if (httpRequest.status === 200) {
-	      	self.modal.getElementsByClassName('cd-schedule-modal__event-info')[0].innerHTML = self.getEventContent(httpRequest.responseText); 
-	      	Util.addClass(self.modal, 'cd-schedule-modal--content-loaded');
-	      }
-	    }
+				if (httpRequest.status === 200) {
+					var eventInfoElement = self.modal.querySelector('.cd-schedule-modal__event-info');
+					if (eventInfoElement) {
+						eventInfoElement.innerHTML = gstring;
+						Util.addClass(self.modal, 'cd-schedule-modal--content-loaded');
+					} else {
+						console.error('Element with class "cd-schedule-modal__event-info" not found in modal.');
+					}
+				} else {
+					console.error('Error:', httpRequest.status); // Log error status
+				}
+			}
 		};
-		httpRequest.open('GET', content+'.html');
+		// Construct the AJAX request URL with the info parameter
+		var url = "/personschedule?dataend=" + encodeURIComponent(gdataend) + "&datadate=" + encodeURIComponent(gdatadate);
+    	httpRequest.open('GET', url);
     	httpRequest.send();
 	};
 
@@ -306,7 +416,12 @@
 		// reset the loaded event content so that it can be inserted in the modal
 		var div = document.createElement('div');
 		div.innerHTML = string.trim();
-		return div.getElementsByClassName('cd-schedule-modal__event-info')[0].innerHTML;
+		console.log(div.getElementsByClassName('cd-schedule-modal__event-info')[0]);
+		console.log(glastdiv)
+		if (div.getElementsByClassName('cd-schedule-modal__event-info')[0] == true){
+			glastdiv = div.getElementsByClassName('cd-schedule-modal__event-info')[0];
+		}
+		return glastdiv;
 	};
 
 	ScheduleTemplate.prototype.animationFallback = function() {

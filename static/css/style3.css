@@ -8,8 +8,8 @@
 }
 
 body{
-    background-color: #c9d6ff;
-    background: linear-gradient(to right, #e2e2e2, #c9d6ff);
+    background-color: #f99bc5;
+    background: linear-gradient(to right, #e2e2e2, #c580e7);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -23,9 +23,9 @@ body{
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
     position: relative;
     overflow: hidden;
-    width: 768px;
+    width: 1000px;
     max-width: 100%;
-    min-height: 480px;
+    min-height: 600px;
 }
 
 .container p{

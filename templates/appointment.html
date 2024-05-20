@@ -34,73 +34,86 @@
         </section>
 
         <section class="check-content">
+            <div class="row">
+                <div class="check">
+                    <h2>Incoming Tasks To Accomplish?</h2>
+                    <p>Stay organized by always updating your timetable with new upcoming tasks! Insert the required information to schedule new appointments.</p>
+                    <h2>Schedule New Appointments Here</h2>
 
-            <form class="schedule-form" action="/appointment/" method="post">
-                {% csrf_token %}
-                <label for="">Patient First Name</label>
-                <input type="text" id="fname" name="fname" placeholder="Enter Patient's First Name" Required>
-                <br>
-                <label for="">Patient Last Name</label>
-                <input type="text" id="lname" name="lname" placeholder="Enter Patient's Last Name" Required>
-                <br>
-                <br>
-                <label for="">Cleaner First Name</label>
-                <input type="text" id="cfname" name="cfname" placeholder="Enter Cleaner's First Name" Required>
-                <br>
-                <label for="">Cleaner Last Name</label>
-                <input type="text" id="clname" name="clname" placeholder="Enter Cleaner's Last Name" Required>
-                <br>
-                <br>
-                <label for="">Junior Surgeon First Name</label>
-                <input type="text" id="jfname" name="jfname" placeholder="First Name">
-                <br>
-                <label for="">Junior Surgeon Last Name</label>
-                <input type="text" id="jlname" name="jlname" placeholder="Last Name">
-                <br>
-                <br>
-                <label for="">Senior Surgeon First Name</label>
-                <input type="text" id="sfname" name="sfname" placeholder="First Name">
-                <br>
-                <label for="">Senior Surgeon Last Name</label>
-                <input type="text" id="slname" name="slname" placeholder="Last Name">
-                <br>
-                <br>
-                <label for="">Date</label>
-                <select name="Month" id="Month" Required>
-                    <option value="January">January</option>
-                    <option value="February">February</option>
-                    <option value="March">March</option>
-                    <option value="April">April</option>
-                    <option value="May">May</option>
-                    <option value="June">June</option>
-                    <option value="July">July</option>
-                    <option value="August">August</option>
-                    <option value="September">September</option>
-                    <option value="October">October</option>
-                    <option value="November">November</option>
-                    <option value="December">December</option>
-                </select>
-                <input type="number" id="Day" name="Day" min="1" max="31" placeholder="1" Required></input>
-                <input type="number" id="Year" name="Year" min="2024" max="2027" placeholder="2024" Required></input>
+
+                    <form class="schedule-form" action="/appointment/" method="post">
+                        {% csrf_token %}
+                        <label for="">Patient First Name</label>
+                        <input type="text" id="fname" name="fname" placeholder="Enter Patient's First Name" Required>
+                        <br>
+                        <label for="">Patient Last Name</label>
+                        <input type="text" id="lname" name="lname" placeholder="Enter Patient's Last Name" Required>
+                        <br>
+                        <br>
+                        <label for="">Cleaner First Name</label>
+                        <input type="text" id="cfname" name="cfname" placeholder="Enter Cleaner's First Name" Required>
+                        <br>
+                        <label for="">Cleaner Last Name</label>
+                        <input type="text" id="clname" name="clname" placeholder="Enter Cleaner's Last Name" Required>
+                        <br>
+                        <br>
+                        <label for="">Junior Surgeon First Name</label>
+                        <input type="text" id="jfname" name="jfname" placeholder="First Name">
+                        <br>
+                        <label for="">Junior Surgeon Last Name</label>
+                        <input type="text" id="jlname" name="jlname" placeholder="Last Name">
+                        <br>
+                        <br>
+                        <label for="">Senior Surgeon First Name</label>
+                        <input type="text" id="sfname" name="sfname" placeholder="First Name">
+                        <br>
+                        <label for="">Senior Surgeon Last Name</label>
+                        <input type="text" id="slname" name="slname" placeholder="Last Name">
+                        <br>
+                        <br>
+                        <label for="">Date</label>
+                        <select name="Month" id="Month" Required>
+                            <option value="January">January</option>
+                            <option value="February">February</option>
+                            <option value="March">March</option>
+                            <option value="April">April</option>
+                            <option value="May">May</option>
+                            <option value="June">June</option>
+                            <option value="July">July</option>
+                            <option value="August">August</option>
+                            <option value="September">September</option>
+                            <option value="October">October</option>
+                            <option value="November">November</option>
+                            <option value="December">December</option>
+                        </select>
+                        <input type="number" id="Day" name="Day" min="1" max="31" placeholder="1" Required></input>
+                        <input type="number" id="Year" name="Year" min="2024" max="2027" placeholder="2024" Required></input>
+                        
+                        <br>
+                        <label for="">Start Time (24hr format) </label>
+                        <input type="time" id="StartTime" name="StartTime" Required>
                 
-                <br>
-                <label for="">Start Time (24hr format) </label>
-                <input type="time" id="StartTime" name="StartTime" Required>
-        
-                <br>
-                <label for="">End Time (24hr format)</label>
-                <input type="time" id="EndTime" name="EndTime" Required>
-                
-                <br>
-                <br>
-                <label for="">Patient Notes</label>
-                
-                <input type="text" id="Notes" name="Notes" placeholder="Enter any notes about the patient">
-                <br>
-                <br>
-                <button type = 'submit' class="hero-btn red-btn">SCHEDULE</button>
-                <label id = "Errors"></label>
-            </form>
+                        <br>
+                        <label for="">End Time (24hr format)</label>
+                        <input type="time" id="EndTime" name="EndTime" Required>
+                        
+                        <br>
+                        <br>
+                        <label for="">Patient Notes</label>
+                        
+                        <input type="text" id="Notes" name="Notes" placeholder="Enter any notes about the patient">
+                        <br>
+                        <br>
+                        <button type = 'submit' class="hero-btn red-btn">SCHEDULE</button>
+                        <label id = "Errors"></label>
+                    </form>
+                </div>
+            
+
+                <div class="check-right">
+                    <img src="https://images.squarespace-cdn.com/content/v1/644f377bcdcff95fb90fd4a5/d75f8535-901a-4192-b624-66585073cf8d/Image2.png">
+                </div>
+            </div>
         </section>
 
         
