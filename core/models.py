@@ -123,7 +123,8 @@ class Surgery(models.Model):
 	patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
 	time_period = models.ForeignKey(Time, on_delete=models.CASCADE) 
 	info = models.CharField(max_length=500, null=True, blank=True)
-
+	is_checkup = models.BooleanField(default = False)
+	
 	def date(self):
 		'''
 		Returns date of surgery

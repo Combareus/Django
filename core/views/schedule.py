@@ -360,9 +360,14 @@ class personschedule(TemplateView):
                 timedate = f"{day}/{month}/{year}"
                 patient = y.patient
                 patientname = patient.fullName 
-                name = f"Surgery for {patientname}"
-                appointments += f'<li class="cd-schedule__event"><a data-start="{timestart}" data-end="{timeend}" data-content="event-sample" data-event="event-2" href = "event-sample.html" data-date="{timedate}"> <em class="cd-schedule__name">{name}</em></a></li>'
-            appointments += '</ul>' 
+                is_checkup = y.is_checkup
+                if is_checkup:
+                    name = f"Followup for {patientname}"
+                    appointments += f'<li class="cd-schedule__event"><a data-start="{timestart}" data-end="{timeend}" data-content="event-followups" data-event="event-1" href = "event-followups.html" data-date="{timedate}"> <em class="cd-schedule__name">{name}</em></a></li>'
+                else:
+                    name = f"Surgery for {patientname}"
+                    appointments += f'<li class="cd-schedule__event"><a data-start="{timestart}" data-end="{timeend}" data-content="event-sample" data-event="event-2" href = "event-sample.html" data-date="{timedate}"> <em class="cd-schedule__name">{name}</em></a></li>'
+                appointments += '</ul>' 
             day_string = f'<li class="cd-schedule__group"><div class="cd-schedule__top-info"><span>{dayofweek}</span></div><ul>'
             day_string += appointments
             day_string += '</ul></li>'
@@ -461,9 +466,14 @@ class archive(TemplateView):
             timedate = f"{day}/{month}/{year}"
             patient = x.patient
             patientname = patient.fullName 
-            name = f"Surgery for {patientname}"
-            appointments += f'<li class="cd-schedule__event"><a data-start="{timestart}" data-end="{timeend}" data-content="event-sample" data-event="event-2" href = "event-sample.html" data-date="{timedate}"> <em class="cd-schedule__name">{name}</em></a></li>'
-        appointments += '</ul>' 
+            is_checkup = x.is_checkup
+            if is_checkup:
+                name = f"Followup for {patientname}"
+                appointments += f'<li class="cd-schedule__event"><a data-start="{timestart}" data-end="{timeend}" data-content="event-followups" data-event="event-1" href = "event-followups.html" data-date="{timedate}"> <em class="cd-schedule__name">{name}</em></a></li>'
+            else:
+                name = f"Surgery for {patientname}"
+                appointments += f'<li class="cd-schedule__event"><a data-start="{timestart}" data-end="{timeend}" data-content="event-sample" data-event="event-2" href = "event-sample.html" data-date="{timedate}"> <em class="cd-schedule__name">{name}</em></a></li>'
+            appointments += '</ul>' 
         day_string = f'<li class="cd-schedule__group"><div class="cd-schedule__top-info"><span>{dayofweek}</span></div><ul>'
         day_string += appointments
         day_string += '</ul></li>'
@@ -528,7 +538,11 @@ def eventsample(request):
                 surgeons += f'{surgeon.fullName}, '
             surgeons = surgeons[:-2]
             id = surgery.id
-            string = f'<!DOCTYPE html><html><head><link rel="stylesheet" href="/static/css/style.css"><script src = "/static/js/util.js"></script> <!-- util functions included in the CodyHouse framework --><script src = "/static/js/main.js"></script></head><body><div class="cd-schedule-modal__event-info"><h1>  Surgery Info</h1> <br> <h4>ID: {id} <h4><h4>Patient Name: {patient}</h4><h4>Surgeons: {surgeons}</h4><h4>Cleaners: {cleaners}</h4><h4>Notes: {notes}</h4><br><br><br><button onclick="Delete({dataend}, {datadate})">Delete Appointment</button></div></body></html>'
+            is_checkup = surgery.is_checkup
+            if not is_checkup:
+                string = f'<!DOCTYPE html><html><head><link rel="stylesheet" href="/static/css/style.css"><script src = "/static/js/util.js"></script> <!-- util functions included in the CodyHouse framework --><script src = "/static/js/main.js"></script></head><body><div class="cd-schedule-modal__event-info"><h1>  Surgery Info</h1> <br> <h4>ID: {id} <h4><h4>Patient Name: {patient}</h4><h4>Surgeons: {surgeons}</h4><h4>Cleaners: {cleaners}</h4><h4>Notes: {notes}</h4><br><br><br><button onclick="Delete({dataend}, {datadate})">Delete Appointment</button></div></body></html>'
+            else:
+                string = f'<!DOCTYPE html><html><head><link rel="stylesheet" href="/static/css/style.css"><script src = "/static/js/util.js"></script> <!-- util functions included in the CodyHouse framework --><script src = "/static/js/main.js"></script></head><body><div class="cd-schedule-modal__event-info"><h1>  Followup Info</h1> <br> <h4>ID: {id} <h4><h4>Patient Name: {patient}</h4><h4>Surgeons: {surgeons}</h4><h4>Cleaners: {cleaners}</h4><h4>Notes: {notes}</h4><br><br><br><button onclick="Delete({dataend}, {datadate})">Delete Appointment</button></div></body></html>'
             data = {'string':string}
             return JsonResponse(data)
     else:
