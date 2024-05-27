@@ -12,6 +12,8 @@ from django.utils.encoding import force_bytes, force_str
 from ..login.tokens import generate_token
 from django.core.mail import EmailMessage, send_mail
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
+from core.models import Time, Employee, Surgeon, Cleaner, Patient, Surgery
+
 # from core import Surgeon, Time, Employee
 
 # Create your views here.
@@ -64,7 +66,7 @@ def signup(request):
         #send_mail(subject, message, from_email, to_list)
 
         # Email Address Confirmation Email
-        #current_site = get_current_site(request)
+        #current_site = current_site(request)
         #email_subject = "Confirm your email."
         #message2 = render_to_string('email_confirmation.html',{
             #'name': myuser.first_name,
@@ -100,6 +102,8 @@ def signin(request):
             login(request, user)
             fname = user.first_name
             return render(request, "home.html", {'fname': fname})
+            
+            
 
         else:
             messages.error(request, "Wrong Credentials.")

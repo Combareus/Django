@@ -1,10 +1,11 @@
-from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.generic import TemplateView
 from django.template import RequestContext
 from django.shortcuts import redirect, render
 from django.contrib import messages
 from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
+
 from core.models import Time, Employee, Surgeon, Cleaner, Patient, Surgery
 import datetime
 from django.utils import timezone
@@ -12,12 +13,10 @@ from django.http import JsonResponse
 import json
 from django.contrib.auth.decorators import login_required
 
-
 # Create your views here.
 # view function: request -> response (request handler)
 
 
-# Test Functions
 
 def get_surgery_info(request):
     surgery_id = request.GET.get('id')
@@ -131,6 +130,9 @@ class appointment(TemplateView):
                 elif timeperiod.timestart < x.time_period.timeend and x.time_period.timeend < timeperiod.timeend:
                     messages.error(request, "Time error: Overlap Detected")
                     return redirect('appointment')
+                elif timeperiod.timestart == x.time_period.timestart or timeperiod.timeend == x.time_period.timeend:
+                    messages.error(request, "Time error: Overlap Detected")
+                    return redirect('appointment')
             if timeperiod.timestart > timeperiod.timeend:
                 messages.error(request, "Time error: Overlap Detected")
                 return redirect('appointment')
@@ -153,7 +155,8 @@ class appointment(TemplateView):
         patient = Patient(fullName=patientfname + " " + patientlname)
         patient.save()
 
-        surgery = Surgery.objects.create(patient=patient, time_period=timeperiod, info = notes)
+        surgery = Surgery.objects.create(patient=patient, time_period=timeperiod, info = notes, is_checkup = False)
+        surgery.user = request.user 
         surgery.save()
         #save surgery
         surgery.surgeons.add(j)
@@ -187,6 +190,40 @@ def followups(request):
         #converts string into datetime object of the surgery start time
         end_obj = datetime.datetime.strptime(end_str, '%d-%m-%Y %H:%M') 
         timeperiod = Time(timestart=timezone.make_aware(start_obj), timeend=timezone.make_aware(end_obj))
+         #get all surgeries
+        try:
+            earliest_surgery = Surgery.objects.earliest('time_period__timestart')
+            latest_surgery = Surgery.objects.latest('time_period__timestart')
+        #validation
+        except Surgery.DoesNotExist:
+            earliest_surgery = None
+            latest_surgery = None
+
+        #validation
+        if earliest_surgery is not None and latest_surgery is not None:
+            allsurgeries = get_surgeries(earliest_surgery.time_period.timestart.date(), latest_surgery.time_period.timestart.date()) #gets the surgeries to be displayed from date_1 to date_2, which are datetime() objects
+            for x in allsurgeries:
+                #make sure there are no overlaps with other surgeries
+                if x.time_period.timestart < timeperiod.timeend and timeperiod.timeend < x.time_period.timeend:
+                    messages.error(request, "Time error: Overlap Detected")
+                    return redirect('followups')
+                elif x.time_period.timestart < timeperiod.timestart and timeperiod.timestart < x.time_period.timeend:
+                    messages.error(request, "Time error: Overlap Detected")
+                    return redirect('followups')
+                elif timeperiod.timestart < x.time_period.timestart and x.time_period.timestart < timeperiod.timeend:
+                    messages.error(request, "Time error: Overlap Detected")
+                    return redirect('followups')
+                elif timeperiod.timestart < x.time_period.timeend and x.time_period.timeend < timeperiod.timeend:
+                    messages.error(request, "Time error: Overlap Detected")
+                    return redirect('followups')
+                elif timeperiod.timestart == x.time_period.timestart or timeperiod.timeend == x.time_period.timeend:
+                    messages.error(request, "Time error: Overlap Detected")
+                    return redirect('followups')
+            if timeperiod.timestart > timeperiod.timeend:
+                messages.error(request, "Time error: Overlap Detected")
+                return redirect('followups')
+
+
         timeperiod.save()
 
         
@@ -219,7 +256,7 @@ def followups(request):
         patient = Patient(fullName=patientfname + " " + patientlname)
         patient.save()
 
-        surgery = Surgery.objects.create(patient=patient, time_period=timeperiod, info=info)
+        surgery = Surgery.objects.create(patient=patient, time_period=timeperiod, info=info, is_checkup = True)
         surgery.save()
         surgery.surgeons.add(surg)
         print(surgery)
@@ -279,7 +316,7 @@ class personschedule(TemplateView):
                     year2 += 1
                     month2 = 1
                 else:
-                    month1 += 1
+                    month2 += 1
             elif month2 not in list1 and day2 == 31:
                 day2 = 1
                 month2 += 1
@@ -319,13 +356,15 @@ class personschedule(TemplateView):
                 continue 
         #fills days_string
         days_string = f''
+        print(daytracker)
         for x in range(7):
-
+            
             #get the day of the week
             year = daytracker[x][2]
             month = daytracker[x][0]
             day = daytracker[x][1]
             dayofweek = datetime.datetime(year, month, day).weekday()
+            print(dayofweek)
             if dayofweek == 0:
                 dayofweek = "Monday"
             elif dayofweek == 1:
@@ -340,7 +379,7 @@ class personschedule(TemplateView):
                 dayofweek = "Saturday"
             elif dayofweek == 6:
                 dayofweek = "Sunday"
-
+            print(dayofweek)
             appointments = f'<ul>'
             for y in days[x]:
                 a = int(y.time_period.timestart.hour)
@@ -363,11 +402,12 @@ class personschedule(TemplateView):
                 is_checkup = y.is_checkup
                 if is_checkup:
                     name = f"Followup for {patientname}"
-                    appointments += f'<li class="cd-schedule__event"><a data-start="{timestart}" data-end="{timeend}" data-content="event-followups" data-event="event-1" href = "event-followups.html" data-date="{timedate}"> <em class="cd-schedule__name">{name}</em></a></li>'
+                    appointments += f'<li class="cd-schedule__event"><a data-start="{timestart}" data-end="{timeend}" data-content="event-sample" data-event="event-1" href = "event-sample.html" data-date="{timedate}"> <em class="cd-schedule__name">{name}</em></a></li>'
                 else:
                     name = f"Surgery for {patientname}"
                     appointments += f'<li class="cd-schedule__event"><a data-start="{timestart}" data-end="{timeend}" data-content="event-sample" data-event="event-2" href = "event-sample.html" data-date="{timedate}"> <em class="cd-schedule__name">{name}</em></a></li>'
-                appointments += '</ul>' 
+                
+            appointments += '</ul>' 
             day_string = f'<li class="cd-schedule__group"><div class="cd-schedule__top-info"><span>{dayofweek}</span></div><ul>'
             day_string += appointments
             day_string += '</ul></li>'
@@ -469,7 +509,7 @@ class archive(TemplateView):
             is_checkup = x.is_checkup
             if is_checkup:
                 name = f"Followup for {patientname}"
-                appointments += f'<li class="cd-schedule__event"><a data-start="{timestart}" data-end="{timeend}" data-content="event-followups" data-event="event-1" href = "event-followups.html" data-date="{timedate}"> <em class="cd-schedule__name">{name}</em></a></li>'
+                appointments += f'<li class="cd-schedule__event"><a data-start="{timestart}" data-end="{timeend}" data-content="event-sample" data-event="event-1" href = "event-sample.html" data-date="{timedate}"> <em class="cd-schedule__name">{name}</em></a></li>'
             else:
                 name = f"Surgery for {patientname}"
                 appointments += f'<li class="cd-schedule__event"><a data-start="{timestart}" data-end="{timeend}" data-content="event-sample" data-event="event-2" href = "event-sample.html" data-date="{timedate}"> <em class="cd-schedule__name">{name}</em></a></li>'
@@ -543,6 +583,7 @@ def eventsample(request):
                 string = f'<!DOCTYPE html><html><head><link rel="stylesheet" href="/static/css/style.css"><script src = "/static/js/util.js"></script> <!-- util functions included in the CodyHouse framework --><script src = "/static/js/main.js"></script></head><body><div class="cd-schedule-modal__event-info"><h1>  Surgery Info</h1> <br> <h4>ID: {id} <h4><h4>Patient Name: {patient}</h4><h4>Surgeons: {surgeons}</h4><h4>Cleaners: {cleaners}</h4><h4>Notes: {notes}</h4><br><br><br><button onclick="Delete({dataend}, {datadate})">Delete Appointment</button></div></body></html>'
             else:
                 string = f'<!DOCTYPE html><html><head><link rel="stylesheet" href="/static/css/style.css"><script src = "/static/js/util.js"></script> <!-- util functions included in the CodyHouse framework --><script src = "/static/js/main.js"></script></head><body><div class="cd-schedule-modal__event-info"><h1>  Followup Info</h1> <br> <h4>ID: {id} <h4><h4>Patient Name: {patient}</h4><h4>Surgeons: {surgeons}</h4><h4>Cleaners: {cleaners}</h4><h4>Notes: {notes}</h4><br><br><br><button onclick="Delete({dataend}, {datadate})">Delete Appointment</button></div></body></html>'
+            
             data = {'string':string}
             return JsonResponse(data)
     else:
@@ -572,22 +613,6 @@ def eventsample(request):
                 break
         return redirect('personschedule')
 
-    #else:
-     #   return JsonResponse({'error': 'Only GET requests are allowed.'}, status=400)
-"""
-def eventsample(request):
-    return render(request, "event-sample.html")
-"""
-#commentee
-"""
-#login page at /schedule/login
-def login(request):
-    return HttpResponse('<h1> This is a login page </h1>')
-
-#signup page at /schedule/signup
-def signup(request):
-    return HttpResponse('<h1> This is a signup page </h1>')
-"""
 
 def get_surgeries(date_1, date_2):
 	'''

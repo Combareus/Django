@@ -24,5 +24,4 @@ Users may bypass the login system by manually inputting the url, however, they w
 Please contact khu1@ocdsb.ca for any problems or concerns.
 ## Sources
 
-### Installation
 

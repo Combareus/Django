@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings 
 # Create your models here.
 """
 Classes for scheduling, employees (including surgeons, cleaner), patients.
@@ -124,6 +125,8 @@ class Surgery(models.Model):
 	time_period = models.ForeignKey(Time, on_delete=models.CASCADE) 
 	info = models.CharField(max_length=500, null=True, blank=True)
 	is_checkup = models.BooleanField(default = False)
+	user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True )
+
 	
 	def date(self):
 		'''
