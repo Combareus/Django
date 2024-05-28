@@ -1,17 +1,17 @@
+from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.generic import TemplateView
 from django.template import RequestContext
 from django.shortcuts import redirect, render
 from django.contrib import messages
 from django.contrib.auth.models import User
-from django.contrib.auth import get_user_model
-
 from core.models import Time, Employee, Surgeon, Cleaner, Patient, Surgery
 import datetime
 from django.utils import timezone
 from django.http import JsonResponse
 import json
 from django.contrib.auth.decorators import login_required
+
 
 # Create your views here.
 # view function: request -> response (request handler)
@@ -115,7 +115,7 @@ class appointment(TemplateView):
 
         #validation
         if earliest_surgery is not None and latest_surgery is not None:
-            allsurgeries = get_surgeries(earliest_surgery.time_period.timestart.date(), latest_surgery.time_period.timestart.date(), request) #gets the surgeries to be displayed from date_1 to date_2, which are datetime() objects
+            allsurgeries = get_surgeries(earliest_surgery.time_period.timestart.date(), latest_surgery.time_period.timestart.date()) #gets the surgeries to be displayed from date_1 to date_2, which are datetime() objects
             for x in allsurgeries:
                 #make sure there are no overlaps with other surgeries
                 if x.time_period.timestart < timeperiod.timeend and timeperiod.timeend < x.time_period.timeend:
@@ -156,7 +156,6 @@ class appointment(TemplateView):
         patient.save()
 
         surgery = Surgery.objects.create(patient=patient, time_period=timeperiod, info = notes, is_checkup = False)
-        surgery.user = request.user 
         surgery.save()
         #save surgery
         surgery.surgeons.add(j)
@@ -201,7 +200,7 @@ def followups(request):
 
         #validation
         if earliest_surgery is not None and latest_surgery is not None:
-            allsurgeries = get_surgeries(earliest_surgery.time_period.timestart.date(), latest_surgery.time_period.timestart.date(), request) #gets the surgeries to be displayed from date_1 to date_2, which are datetime() objects
+            allsurgeries = get_surgeries(earliest_surgery.time_period.timestart.date(), latest_surgery.time_period.timestart.date()) #gets the surgeries to be displayed from date_1 to date_2, which are datetime() objects
             for x in allsurgeries:
                 #make sure there are no overlaps with other surgeries
                 if x.time_period.timestart < timeperiod.timeend and timeperiod.timeend < x.time_period.timeend:
@@ -257,8 +256,6 @@ def followups(request):
         patient.save()
 
         surgery = Surgery.objects.create(patient=patient, time_period=timeperiod, info=info, is_checkup = True)
-        surgery.user = request.user 
-
         surgery.save()
         surgery.surgeons.add(surg)
         print(surgery)
@@ -291,7 +288,7 @@ class personschedule(TemplateView):
             earliest_surgery = None
             latest_surgery = None
         if earliest_surgery is not None and latest_surgery is not None:
-            allsurgeries = get_surgeries(earliest_surgery.time_period.timestart.date(), latest_surgery.time_period.timestart.date(), request)
+            allsurgeries = get_surgeries(earliest_surgery.time_period.timestart.date(), latest_surgery.time_period.timestart.date())
         else:
             allsurgeries = []
 
@@ -462,7 +459,7 @@ class archive(TemplateView):
             earliest_surgery = None
             latest_surgery = None
         if earliest_surgery is not None and latest_surgery is not None:
-            allsurgeries = get_surgeries(earliest_surgery.time_period.timestart.date(), latest_surgery.time_period.timestart.date(), request)
+            allsurgeries = get_surgeries(earliest_surgery.time_period.timestart.date(), latest_surgery.time_period.timestart.date())
         else:
             allsurgeries = []
         display_surgeries = [] #list of surgery objects on the display date
@@ -537,7 +534,7 @@ from django.template import loader
 from django.template.loader import render_to_string
 
 from django.views.decorators.csrf import csrf_protect
-def eventsample(request):
+def eventsurgery(request):
     if request.method == 'GET':
         dataend = request.GET.get('dataend')
         print(dataend)
@@ -555,7 +552,7 @@ def eventsample(request):
             surgery = ''
             earliest_surgery = Surgery.objects.earliest('time_period__timestart')
             latest_surgery = Surgery.objects.latest('time_period__timestart')
-            allsurgeries = get_surgeries(earliest_surgery.time_period.timestart.date(), latest_surgery.time_period.timestart.date(), request)
+            allsurgeries = get_surgeries(earliest_surgery.time_period.timestart.date(), latest_surgery.time_period.timestart.date())
             for x in allsurgeries:
                 month = x.time_period.timeend.month
                 day = x.time_period.timeend.day
@@ -596,7 +593,7 @@ def eventsample(request):
         targethour = int(request.POST.get('hour'))
         earliest_surgery = Surgery.objects.earliest('time_period__timestart')
         latest_surgery = Surgery.objects.latest('time_period__timestart')
-        allsurgeries = get_surgeries(earliest_surgery.time_period.timestart.date(), latest_surgery.time_period.timestart.date(), request)
+        allsurgeries = get_surgeries(earliest_surgery.time_period.timestart.date(), latest_surgery.time_period.timestart.date())
         surgery = ''
         for x in allsurgeries:
             month = x.time_period.timeend.month
@@ -616,7 +613,7 @@ def eventsample(request):
         return redirect('personschedule')
 
 
-def get_surgeries(date_1, date_2, request):
+def get_surgeries(date_1, date_2):
 	'''
 	Returns all surgery objects with a start date between date_1 and date_2
 	date_1, date_2 - date objects, ex: datetime.now().date()
@@ -624,6 +621,6 @@ def get_surgeries(date_1, date_2, request):
 	surgeries = Surgery.objects.all()
 	filtered_surgeries = []
 	for surgery in surgeries:
-		if surgery.date() >= date_1 and surgery.date() <= date_2 and surgery.user == request.user:
+		if surgery.date() >= date_1 and surgery.date() <= date_2:
 			filtered_surgeries.append(surgery)
 	return filtered_surgeries
