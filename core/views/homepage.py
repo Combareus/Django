@@ -20,7 +20,6 @@ class home(TemplateView):
         '''
         dict = {"name": "test name, should be accessing model though"} 
         return render(request, self.template_name, dict)
-# Create your views here.
 
 
 class index(TemplateView):

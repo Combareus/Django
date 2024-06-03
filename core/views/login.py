@@ -20,8 +20,7 @@ from core.models import Time, Employee, Surgeon, Cleaner, Patient, Surgery
 class default(TemplateView):
     template_name = 'index.html'
 
-def test(request):
-    return render(request, "test.html")
+
 
 def signup(request):
 

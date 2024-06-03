@@ -13,27 +13,45 @@ Progress:
 4/07 - Changed the class styling to have Django fields from regular python properties
 """
 class Time(models.Model):
-	timestart = models.DateTimeField()
-	timeend = models.DateTimeField()
-	def __str__(self):
-		return f"Start: {self.timestart} End: {self.timeend}"
-	def conflict(self, timeobject):
-		"""
-		Determines if there is a conflict with another time object
-		Attributes
-			self (time)
-			timeobject (time)
-		Returns
-			True - There is a conflict
-			False - There is no conflict
-		"""
-		if self.timestart < timeobject.timeend and self.timeend > timeobject.timestart:
-			return True
-		else:
-			return False
+    """
+    A model to represent a time interval with a start and end time.
+    
+    Attributes:
+        timestart (DateTimeField): The starting time of the interval.
+        timeend (DateTimeField): The ending time of the interval.
+    """
+    
+    timestart = models.DateTimeField()
+    timeend = models.DateTimeField()
+
+    def __str__(self):
+        """
+        Returns:
+            str: A string displaying the start and end time of the interval.
+        """
+        return f"Start: {self.timestart} End: {self.timeend}"
+
+    def conflict(self, timeobject):
+        """
+        Determines if there is a conflict with another Time object.
+        Args:
+            timeobject (Time): Another Time object to compare with.
+        
+        Returns:
+            bool: True if there is a conflict, False otherwise.
+        """
+        return self.timestart < timeobject.timeend and self.timeend > timeobject.timestart
+
 
 class Employee(models.Model):
+	'''
+	Model to represent an employee.
 
+	Attributes
+		fullName (charfield): the fullname of the employeje
+		availability (ManytoManyField of Time model): the time intervals at which the employee is available
+		sched (ManytoManyField of Time model): the time intervals at which the employee is scheduled for work 
+	'''
 	fullName = models.CharField(max_length=100)
 	availability = models.ManyToManyField(Time, related_name='available_employees')
 	sched = models.ManyToManyField(Time, related_name='scheduled_employees')
@@ -45,7 +63,13 @@ class Employee(models.Model):
 		return f"Type: Employee \nName: {self._fullName}\n\n"
 
 class Surgeon(Employee):
-	
+	'''
+	Model to represent a surgeon, which is a child of Employee
+	Attributes 
+		Inheritance from Employee attributes
+		qualifications (charField): the qualifications of the surgeon
+		exp (charField): the experience of the surgeon
+	'''
 	qualifications = models.CharField(max_length=100)
 	exp = models.CharField(max_length=2)
 
@@ -90,7 +114,9 @@ class Surgeon(Employee):
 	
 
 class Cleaner(Employee):
-		
+	'''
+	A child of the Employee model, this class represents an employee
+	'''
 	def __str__(self):
 		"""
 		String (for testing printing)
@@ -98,6 +124,15 @@ class Cleaner(Employee):
 		return f"Cleaner Name: {self.fullName}\n"
 
 class Patient(models.Model):
+	'''
+	Model represents a patient in the hospital
+	Attributes
+		fullName (charfield): the Patient's full name
+		condition_type (charfield): the medical condition of the patient'
+		severity (charfield): the level of severity of the surgery
+		admission_date (DateField): the date of admission, when condition was first known
+		status (charField): the current status of the surgery
+	'''
 	fullName = models.CharField(max_length=255)
 	condition_type = models.CharField(max_length=255, null=True)
 	severity = models.CharField(max_length=255, null=True)
