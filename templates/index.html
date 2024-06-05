@@ -1,3 +1,6 @@
+<!--References [2]-->
+<!--This page represents the Login page in our web application-->
+
 {% load static %}
 
 <!DOCTYPE html>
@@ -9,15 +12,17 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!--Imports the style3.css file-->
     <link rel="stylesheet" href="../static/css/style3.css">
     <title>Account Creation</title>
 </head>
 
 <body>
-
+    <!--This is the sign up option where the user inputs all their desired account credentials.-->
     <div class="container" id="container">
         <div class="form-container sign-up">
             <form action="/signup/" method="post">
+            <!--Validated with csrf token-->
             {% csrf_token %}
                 <h1>Create Account</h1>
                 <br>
@@ -31,10 +36,13 @@
                 <button type="submit">Sign Up</button>
             </form>
             <script src="" async defer></script>
-
+        
         </div>
+        
+        <!--This is the sign in option where the user inputs their already existing account credentials to access the web application's features-->
         <div class="form-container sign-in">
             <form action="/signin/" method="post">
+            <!--Validated with csrf token-->
             {% csrf_token %}
                 <h1>Sign In</h1>
                 <br>
@@ -46,6 +54,8 @@
             <script src="" async defer></script>
 
         </div>
+
+        <!--These are the buttons the user clicks to toggle between sign up and sign in-->
         <div class="toggle-container">
             <div class="toggle">
                 <div class="toggle-panel toggle-left">
@@ -62,6 +72,7 @@
         </div>
     </div>
 
+    <!--References script.js for the animation between toggling between sign up and sign in-->
     <script src="../static/js/script.js"></script>
 </body>
 

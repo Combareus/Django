@@ -2,6 +2,13 @@
 Functions to be used in main (a lot of logic)
 Creation - 02/28
 """
+
+
+""""
+This file was a repository for logic that was created so the back end could be written without having to wait for the front end to be  fully developed
+It is a test file
+It is no longer used in any of the actual code
+"""
 #testing
 #imports 
 from .models import Surgeon

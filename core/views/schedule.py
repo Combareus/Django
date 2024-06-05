@@ -39,6 +39,9 @@ class delete(TemplateView):
 
 #schedule appointment view
 class appointment(TemplateView):
+    """
+    View for appointment.html
+    """
     template_name = 'appointment.html'
     
     def post(self, request):
@@ -395,6 +398,7 @@ class personschedule(TemplateView):
             dayofweek = datetime.datetime(year, month, day).weekday()
             print(dayofweek)
 
+            #turn day of week int into string
             #yes, i know this is a braindead way of doing it, don't judge me
             if dayofweek == 0:
                 dayofweek = "Monday"
@@ -650,12 +654,14 @@ def eventsurgery(request):
             patient = surgery.patient.fullName
             cleaners = ''
             print(surgery.cleaners)
+            #add cleaners to info 
             for cleaner in surgery.cleaners.all():
                 cleaners += f'{cleaner.fullName}, '
             cleaners = cleaners[:-2]
             
             notes = surgery.info
             surgeons = ''
+            #add surgeon to info
             for surgeon in surgery.surgeons.all():
                 surgeons += f'{surgeon.fullName}, '
             surgeons = surgeons[:-2]

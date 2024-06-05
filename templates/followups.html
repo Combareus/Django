@@ -1,11 +1,14 @@
-<!-- The html block inherits from the original base stuff -->
+<!--This page represents the Check Up page in our web application-->
+<!--References [3]-->
 <!DOCTYPE html>
 
 <html>
     <head>
         <title>Check up</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!--Imports the style2.css file-->
         <link rel="stylesheet" href="../static/css/style2.css">
+        <!--This is importing Google font-->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
@@ -13,6 +16,7 @@
 
     <body>
         <section class="sub-header">
+            <!--This is the navigation bar that redirects the user to their respective pages-->
             <nav>
                 <a href="home.html"></a>
                 <div class="nav-links">
@@ -36,12 +40,14 @@
         <section class="check-content">
             <div class="row">
                 <div class="check">
+                    <!--Some text to instruct the reader about what to do-->
                     <h2>Schedule Your Post-Surgery Checkups</h2>
                     <p>To ensure seamless follow-up care, please use this convenient online system to schedule your post-surgery appointments.</p>
                     <br>
                     <p>Please select the most suitable dates and times for your follow-up consultations. Our system allows you to view available slots in real-time and choose the one that best fits your schedule.</p>
 
                     <h2>Schedule Form</h2>
+                    <!--This asks the user for a specific inputs so that it can validate and then add it the calendar-->
                     <form class="schedule-form" action="/followups/" method="post">
                         {% csrf_token %}
                         <label for="">Patient First Name</label>
@@ -93,6 +99,7 @@
                     </form>
                 </div>
 
+                <!--this is the image on the right to add visual elements-->
                 <div class="check-right">
                     <img src="https://as1.ftcdn.net/v2/jpg/01/91/40/42/1000_F_191404295_WTD2cvTfRcdbZ90KB8fMp8DQuRBY1KWO.jpg">
                 </div>
@@ -100,9 +107,7 @@
         </section>
 
 
-
-
-
+        <!--This is the footer under most pages-->
         <section class="footer">
             <h4>About Us</h4>
             <p>We are a group of dedicated high school students who want to make a positive impact in the rapidly developing world. This webapp is our attempt to simplify <br>the hectic schedules of surgeons and create a well-balanced work environment.</p>
@@ -110,8 +115,6 @@
 
         </section>
 
-
-        
 
     </body>
 </html>

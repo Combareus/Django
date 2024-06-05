@@ -2,14 +2,12 @@ from django.shortcuts import redirect, render
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
-from ..medical import settings
 from django.views.generic import TemplateView
 from django.core.mail import send_mail
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes, force_str
-from ..login.tokens import generate_token
 from django.core.mail import EmailMessage, send_mail
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from core.models import Time, Employee, Surgeon, Cleaner, Patient, Surgery
@@ -18,13 +16,17 @@ from core.models import Time, Employee, Surgeon, Cleaner, Patient, Surgery
 
 # Create your views here.
 class default(TemplateView):
+    """
+    Default template which returns index.html
+    """
     template_name = 'index.html'
 
 
-
+#signup view 
 def signup(request):
-
+    #POST is only request method
     if request.method == "POST":
+        #get input via POST
         username = request.POST['username']
         fname = request.POST['fname']
         lname = request.POST['lname']
@@ -32,6 +34,8 @@ def signup(request):
         pass1 = request.POST['pass1']
         pass2 = request.POST['pass2']
 
+        #validation for fields
+        #if invalid, return a message error and redirect
         if User.objects.filter(username=username):
             messages.error(request, "Username already exists.")
             return redirect('index')
@@ -50,53 +54,33 @@ def signup(request):
             messages.error(request, "Username must be alpha-numeric.")
             return redirect('index')
 
-
+        #create user
         myuser = User.objects.create_user(username, email, pass1)
         myuser.first_name = fname
         myuser.last_name = lname
 
+        #save
         myuser.is_active = True
         myuser.save()
-        #Welcome Email
-        #subject = "Welcome to Medi-Cal!"
-        #message = "Hello " + myuser.first_name + "! \n" + "Welcome to Medi-Cal! \nThank you for visiting our website. \nWe have also sent you a confirmation email, please confirm your email address in order to activate your account. \n\nThank you."
-        #from_email = settings.EMAIL_HOST_USER
-        #to_list = [myuser.email]
-        #send_mail(subject, message, from_email, to_list)
 
-        # Email Address Confirmation Email
-        #current_site = current_site(request)
-        #email_subject = "Confirm your email."
-        #message2 = render_to_string('email_confirmation.html',{
-            #'name': myuser.first_name,
-            #'domain': current_site.domain,
-            #'uid': urlsafe_base64_encode(force_bytes(myuser.pk)),
-            #'token': generate_token.make_token(myuser),
-        #})
-        #email = EmailMessage(
-            #email_subject,
-            #message2,
-            #settings.EMAIL_HOST_USER,
-            #[myuser.email],
-        #)
-        #email.fail_silently = True
-        #email.send()
-        #send_mail(email_subject, message2, from_email, to_list)
-
-
+        #redirect to signin
         return redirect('signin')
 
     return render(request, "index.html")
 
-def signin(request):
 
+#signin view
+def signin(request):
+    #POST is only method
     if request.method == 'POST': 
+        #get input via POST
         username = request.POST['username']
         pass1 = request.POST['pass1']
 
+        #authenticate
         user = authenticate(username=username, password=pass1)
         
-
+        #if it works, login
         if user is not None:
             login(request, user)
             fname = user.first_name
@@ -105,31 +89,20 @@ def signin(request):
             
 
         else:
+            #return error message otherwise
             messages.error(request, "Wrong Credentials.")
             return redirect('index')
 
 
     return render(request, "index.html")
 
+#signout 
 def signout(request):
     logout(request)
+    #redirect to index
     return redirect('index')
 
 def aboutus(request):
+    #about us view, returns aboutus.html
     return render(request, "aboutus.html")
 
-
-#def activate(request, uidb64, token):
-    try:
-        uid = force_str(urlsafe_base64_decode(uidb64))
-        myuser = User.objects.get(pk=uid)
-    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
-        myuser = None
-    
-    if myuser is not None and generate_token.check_token(myuser, token):
-        myuser.is_active = True
-        myuser.save()
-        login(request, myuser)
-        return redirect('home')
-    else:
-        return render(request, 'activation_failed.html')

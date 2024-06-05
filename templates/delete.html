@@ -1,11 +1,15 @@
+<!--This page represents the Delete page in our web application-->
+<!--References [3]-->
 
 <!DOCTYPE html>
 
 <html>
     <head>
-        <title>About Us</title>
+        <title>Delete</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!--Imports the style2.css file-->
         <link rel="stylesheet" href="../static/css/style2.css">
+        <!--This is importing Google font-->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -46,6 +50,7 @@
 
     <body>
         <section class="sub-header">
+            <!--This is the navigation bar that redirects the user to their respective pages-->
             <nav>
                 <a href="home.html"></a>
                 <div class="nav-links">
@@ -67,13 +72,14 @@
         </section>
 
         <section class="check-content">
-
+            <!--This is the body text and image for the about us page-->
             <div class="row">
                 <div class="check">
                     <h2>Keep Everything Organized</h2>
                     <p>Finished with a job or appointment? Keep your schedule clean by deleting the unecessary appointments here. Select the corresponding appointment ID. Confirm the ID by clicking on the appointment in your calendar.</p>
                     <h2>Select An Appointment</h2>
 
+                    <!--This asks the user for a surgery ID input so that it can validate and then delete it-->
                     <form class="schedule-form" action="/delete/" method="post">
                         {% csrf_token %}
                         <label for="">Surgery Id</label>
@@ -86,6 +92,7 @@
                     </form>
                 </div>
 
+                <!--this is the image on the right to add visual elements-->
                 <div class="check-right">
                     <img src="https://i.pinimg.com/originals/d5/11/ba/d511ba5195487625ab44986e9a27ee9a.png">
                 </div>
@@ -94,7 +101,7 @@
         </section>
 
         
-
+        <!--This is the footer under most pages-->
         <section class="footer">
             <h4>About Us</h4>
             <p>We are a group of dedicated high school students who want to make a positive impact in the rapidly developing world. This webapp is our attempt to simplify <br>the hectic schedules of surgeons and create a well-balanced work environment.</p>

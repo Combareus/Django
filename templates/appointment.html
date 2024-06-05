@@ -1,10 +1,14 @@
+<!--This page represents our Booking page for our web application-->
+<!--References [3]-->
 <!DOCTYPE html>
 
 <html>
     <head>
-        <title>About Us</title>
+        <title>Booking</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!--Imports the style2.css file-->
         <link rel="stylesheet" href="../static/css/style2.css">
+        <!--This is importing Google font-->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
@@ -13,6 +17,7 @@
 
     <body>
         <section class="sub-header">
+            <!--This is the navigation bar that redirects the user to their respective pages-->
             <nav>
                 <a href="home.html"></a>
                 <div class="nav-links">
@@ -40,8 +45,9 @@
                     <p>Stay organized by always updating your timetable with new upcoming tasks! Insert the required information to schedule new appointments.</p>
                     <h2>Schedule New Appointments Here</h2>
 
-
+                    <!--Here is where the user inputs the required information for an appointment-->
                     <form class="schedule-form" action="/appointment/" method="post">
+                        <!--A csrf token is used for verification-->
                         {% csrf_token %}
                         <label for="">Patient First Name</label>
                         <input type="text" id="fname" name="fname" placeholder="Enter Patient's First Name" Required>
@@ -109,7 +115,7 @@
                     </form>
                 </div>
             
-
+                <!--this is the image on the right to add visual elements-->
                 <div class="check-right">
                     <img src="https://images.squarespace-cdn.com/content/v1/644f377bcdcff95fb90fd4a5/d75f8535-901a-4192-b624-66585073cf8d/Image2.png">
                 </div>
@@ -117,7 +123,7 @@
         </section>
 
         
-
+        <!--This is the footer under most pages-->
         <section class="footer">
             <h4>About Us</h4>
             <p>We are a group of dedicated high school students who want to make a positive impact in the rapidly developing world. This webapp is our attempt to simplify <br>the hectic schedules of surgeons and create a well-balanced work environment.</p>

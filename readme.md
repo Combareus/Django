@@ -34,4 +34,6 @@ Please contact khu1@ocdsb.ca for any problems or concerns.
 
 [4] Tech With Tim. "Django Tutorial - Templates & Custom HTML," YouTube, Apr 15, 2019 [Video file]. Available: https://www.youtube.com/watch?v=b0CgA_Ap_Mc&ab_channel=TechWithTim. [Accessed: Jun. 03, 2024].
 
-[5] “Django documentation,” Django Project, https://docs.djangoproject.com/en/5.0/ (accessed Jun. 3, 2024). 
+[5]“Django documentation,” Django Project, https://docs.djangoproject.com/en/5.0/ (accessed Jun. 3, 2024). 
+
+[6]“Schedule template in CSS and JavaScript,” CodyHouse, https://codyhouse.co/gem/schedule-template (accessed Jun. 3, 2024). 

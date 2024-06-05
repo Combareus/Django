@@ -81,6 +81,9 @@ class Surgeon(Employee):
 		return f"Surgeon Name: {self.fullName} \nExperience: {self.exp}\n\n"
 
 	def qualcheck(self, type, title):
+		"""
+		determine qualifications for surgery
+		"""
 		if title == "Sr":
 			if self.exp == "Jr":
 				return False
@@ -149,10 +152,13 @@ class Surgery(models.Model):
 	"""
 	Class for a specific Surgery
 	Attributes
-		surgeons
-		cleaners
-		patient
-		time
+		surgeons - surgeon object
+		cleaners - cleaner object
+		patient - patient object
+		time - time object
+		info - string
+		ischeckup - boolean 
+		user - user object
 	"""
 	surgeons = models.ManyToManyField(Surgeon)
 	cleaners = models.ManyToManyField(Cleaner)
@@ -170,6 +176,9 @@ class Surgery(models.Model):
 		return self.time_period.timestart.date()
 
 	def __str__(self):
+		"""
+		print statement for testing
+		"""
 		s1 = ''
 		s2 = ''
 		for surgeon in self.surgeons.all():
